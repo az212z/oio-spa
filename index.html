@@ -255,7 +255,9 @@ section{position:relative}
   .g-a{grid-column:span 12;grid-row:span 1;min-height:340px}.g-b,.g-c,.g-d{grid-column:span 6;min-height:220px}
 }
 @media(max-width:600px){
-  .wrap,.hero-in{padding-left:18px;padding-right:18px}.hero-meta{left:18px}
+  .wrap,.hero-in{padding-left:18px;padding-right:18px}
+  .hero{flex-direction:column;align-items:stretch;justify-content:flex-end;padding-bottom:116px}
+  .hero-meta{position:static;left:auto;bottom:auto;margin:20px 0 0;padding:0 18px;align-items:flex-start}
   .exp-grid{grid-template-columns:1fr}
   .mcols{grid-template-columns:1fr}.mcard.span2{grid-column:span 1}
   .g-a,.g-b,.g-c,.g-d{grid-column:span 12;min-height:280px}
