@@ -32,44 +32,70 @@ const FIREBASE_CONFIG = {
 2. اختاري **Production mode** ← اختاري المنطقة (مثلاً `eur3` أو الأقرب) ← Enable.
 3. افتحي تبويب **Rules** والصقي التالي ثم **Publish**:
 
+> ✏️ استبدلي `manager@oio.com` بالبريد الحقيقي للمديرة (بأحرف صغيرة) في السطر المعلّم.
+
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn(){ return request.auth != null; }
+    function hasDoc(){ return exists(/databases/$(database)/documents/users/$(request.auth.uid)); }
+    function role(){ return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role; }
+    function isManager(){ return signedIn() && (
+      (request.auth.token.email != null && request.auth.token.email.lower() == 'manager@oio.com') ||   // ← بريد المديرة
+      (hasDoc() && role() == 'manager')
+    ); }
 
-    // الحجوزات: تحوي بيانات العميلة — القراءة للمدير فقط (خصوصية)
+    // الحجوزات: تحوي بيانات العميلة — للمنتسبات فقط
     match /bookings/{id} {
       allow create: if request.resource.data.status == 'pending'
-                    && request.resource.data.name is string
-                    && request.resource.data.phone is string
-                    && request.resource.data.date is string
-                    && request.resource.data.time is string;
-      allow read, update, delete: if request.auth != null;
+                    && request.resource.data.name is string && request.resource.data.phone is string
+                    && request.resource.data.date is string && request.resource.data.time is string;
+      allow read, update: if signedIn();
+      allow delete: if isManager();
     }
-
-    // الجدولة: نسخة بلا بيانات شخصية يقرأها الموقع لحساب الأوقات المتاحة
+    // الجدولة العامة (بلا بيانات شخصية) — يقرأها الموقع لحساب التوفّر
     match /slots/{id} {
       allow read: if true;
-      allow create: if request.resource.data.status == 'pending'
-                    && request.resource.data.date is string
-                    && request.resource.data.time is string;
-      allow update, delete: if request.auth != null;
+      allow create: if request.resource.data.date is string && request.resource.data.time is string;
+      allow update, delete: if signedIn();
     }
-
-    // الأوقات المحظورة (غير متاح): يقرأها الموقع، ويديرها المدير فقط
+    // الأوقات المحظورة — يقرأها الموقع، تديرها المنتسبات
     match /blocks/{id} {
       allow read: if true;
-      allow create, update, delete: if request.auth != null;
+      allow create, update, delete: if signedIn();
+    }
+    // الموظتات (أسماء وألوان فقط) — يقرأها الموقع، تديرها المديرة
+    match /staff/{id} {
+      allow read: if true;
+      allow write: if isManager();
+    }
+    // حسابات الموظتات وأدوارهنّ — المديرة، وكل موظفة تقرأ سجلها
+    match /users/{uid} {
+      allow read: if isManager() || (signedIn() && request.auth.uid == uid);
+      allow write: if isManager();
+    }
+    // إعدادات الصالون — يقرأها الموقع، تعدّلها المديرة
+    match /config/{id} {
+      allow read: if true;
+      allow write: if isManager();
     }
   }
 }
 ```
 
-## ٤) تفعيل تسجيل الدخول للمدير
-1. من القائمة: **Build ← Authentication ← Get started**.
-2. فعّلي مزوّد **Email/Password**.
-3. تبويب **Users ← Add user**: أدخلي بريد وكلمة مرور للمديرة (مثال: `admin@oio.com`).
-   هذا هو حساب الدخول إلى صفحة `admin.html`.
+## ٤) تفعيل تسجيل الدخول والأدوار
+1. من القائمة: **Build ← Authentication ← Get started** ← فعّلي مزوّد **Email/Password**.
+2. تبويب **Users ← Add user**: أدخلي بريد وكلمة مرور **المديرة** (مثال: `manager@oio.com`).
+3. في ملف **`firebase-config.js`** اضبطي بريد المديرة داخل `SALON`:
+   ```js
+   managerEmail: "manager@oio.com",   // نفس البريد، وبأحرف صغيرة في القواعد أعلاه
+   ```
+   بهذا تُمنح المديرة الصلاحية الكاملة تلقائيًا.
+
+> **حسابات الموظتات تُنشأ من اللوحة نفسها** — لا حاجة لـ Firebase Console:
+> ادخلي كمديرة ← تبويب **الموظتات** ← «إنشاء صفحة دخول» لكل موظفة (بريد وكلمة مرور).
+> كل موظفة تدخل بصفحتها فترى **مواعيدها هي فقط**. أي تسجيل دخول بلا صلاحية يُرفض تلقائيًا.
 
 ## ٥) رفع الموقع
 ارفعي الملفات إلى المستودع كالمعتاد:

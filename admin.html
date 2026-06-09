@@ -25,26 +25,28 @@
   --line:rgba(34,29,23,.13); --line2:rgba(34,29,23,.07);
   --green:#1faa55; --amber:#c8901f; --blue:#3a7ca5; --red:#c0392b;
   --fa-d:'El Messiri',serif; --fa:'Tajawal',sans-serif; --fd:'Cormorant Garamond',serif; --fu:'Jost',sans-serif;
-  --ease:cubic-bezier(.32,.72,0,1); --maxw:1180px;
+  --ease:cubic-bezier(.32,.72,0,1); --maxw:1240px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--fa);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100dvh}
+[dir=ltr] body{font-family:var(--fu)}
 ::selection{background:var(--rust);color:#fff}
 a{color:inherit;text-decoration:none}
-button{font-family:var(--fa);cursor:pointer}
+button{font-family:inherit;cursor:pointer}
 .num{font-family:var(--fd);direction:ltr;unicode-bidi:isolate}
 .lat{font-family:var(--fd)}
 
 /* ---------- LOGIN ---------- */
-#login{position:fixed;inset:0;z-index:100;background:var(--char);display:flex;align-items:center;justify-content:center;padding:24px}
+#login{position:fixed;inset:0;z-index:100;background:radial-gradient(120% 100% at 50% 0%,#272119,#16130f);display:flex;align-items:center;justify-content:center;padding:24px}
 #login.hide{display:none}
-.lg-card{width:100%;max-width:380px;background:var(--paper);border-radius:26px;padding:38px 32px;box-shadow:0 50px 100px -40px rgba(0,0,0,.6);animation:up .6s var(--ease)}
+.lg-card{width:100%;max-width:390px;background:var(--paper);border-radius:26px;padding:38px 32px;box-shadow:0 50px 110px -40px rgba(0,0,0,.7);animation:up .6s var(--ease)}
 @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-.lg-bk{width:54px;height:54px;border-radius:50%;border:1.6px solid var(--rust);display:grid;place-items:center;margin:0 auto 16px}
-.lg-bk b{font-family:var(--fd);font-size:21px}.lg-bk b i{color:var(--rust);font-style:normal}
-.lg-card h1{font-family:var(--fa-d);font-size:23px;text-align:center}
-.lg-card .sub{text-align:center;font-family:var(--fu);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);margin-top:3px}
+.lg-bk{width:58px;height:58px;border-radius:50%;border:1.6px solid var(--rust);display:grid;place-items:center;margin:0 auto 16px}
+.lg-bk b{font-family:var(--fd);font-size:22px}.lg-bk b i{color:var(--rust);font-style:normal}
+.lg-card h1{font-family:var(--fa-d);font-size:24px;text-align:center}
+[dir=ltr] .lg-card h1{font-family:var(--fu);font-weight:500}
+.lg-card .sub{text-align:center;font-family:var(--fu);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);margin-top:4px}
 .lg-card form{margin-top:26px}
 .lg-fld{margin-bottom:14px}
 .lg-fld label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
@@ -54,74 +56,100 @@ button{font-family:var(--fa);cursor:pointer}
 .lg-btn:hover{background:var(--rust-d)}
 .lg-btn:disabled{opacity:.5}
 .lg-err{color:var(--red);font-size:13px;text-align:center;margin-top:14px;min-height:18px}
-.lg-note{font-family:var(--fu);font-size:10px;letter-spacing:.04em;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.7}
+.lg-note{font-family:var(--fu);font-size:10px;letter-spacing:.03em;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.7}
+.lg-lang{display:flex;justify-content:center;gap:6px;margin-top:18px}
+.lg-lang button{border:1px solid var(--line);background:#fff;border-radius:100px;padding:5px 14px;font-size:12px;color:var(--ink2)}
+.lg-lang button.on{background:var(--char);color:#fff;border-color:var(--char)}
 
-/* ---------- APP ---------- */
+/* ---------- APP SHELL ---------- */
 #app{display:none;min-height:100dvh;flex-direction:column}
 #app.show{display:flex}
-.top{position:sticky;top:0;z-index:40;background:rgba(255,253,248,.85);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--line)}
-.top-in{max-width:var(--maxw);margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.top{position:sticky;top:0;z-index:40;background:rgba(255,253,248,.9);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--line)}
+.top-in{max-width:var(--maxw);margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .brand{display:flex;align-items:center;gap:11px}
-.brand .bk{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rust);display:grid;place-items:center;flex:none}
-.brand .bk b{font-family:var(--fd);font-size:15px}.brand .bk b i{color:var(--rust);font-style:normal}
-.brand .bn b{font-family:var(--fa-d);font-size:17px;display:block;line-height:1.1}
-.brand .bn small{font-family:var(--fu);font-size:8px;letter-spacing:.26em;color:var(--ink3);text-transform:uppercase}
-.top-r{display:flex;align-items:center;gap:10px}
-.pill{font-family:var(--fu);font-size:10px;letter-spacing:.08em;padding:6px 12px;border-radius:100px;border:1px solid var(--line);color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
-.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
-.pill.local .dot{background:var(--amber)}
-.lo{background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:9px 16px;font-size:13.5px;color:var(--ink2);transition:.25s}
+.brand .bk{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--rust);display:grid;place-items:center;flex:none}
+.brand .bk b{font-family:var(--fd);font-size:16px}.brand .bk b i{color:var(--rust);font-style:normal}
+.brand .bn b{font-family:var(--fa-d);font-size:17px;display:block;line-height:1.05}
+[dir=ltr] .brand .bn b{font-family:var(--fu);font-weight:500}
+.brand .bn small{font-family:var(--fu);font-size:8px;letter-spacing:.24em;color:var(--ink3);text-transform:uppercase}
+.top-r{display:flex;align-items:center;gap:9px}
+.who{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;margin-inline-end:2px}
+.who b{font-size:13.5px;font-weight:500}
+.who small{font-family:var(--fu);font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.who small.mgr{color:var(--rust-d)} .who small.stf{color:var(--blue)}
+.langbtn{border:1px solid var(--line);background:#fff;border-radius:100px;padding:8px 13px;font-size:12px;color:var(--ink2);font-family:var(--fu);letter-spacing:.04em;transition:.25s}
+.langbtn:hover{background:var(--bg2)}
+.lo{background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:9px 15px;font-size:13px;color:var(--ink2);transition:.25s}
 .lo:hover{background:var(--bg2);color:var(--ink)}
 
-.wrap{max-width:var(--maxw);margin:0 auto;padding:24px 22px 60px;width:100%}
+/* tab nav */
+.tabnav{position:sticky;top:64px;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabnav-in{max-width:var(--maxw);margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+.tabnav a{padding:14px 16px;font-size:14.5px;color:var(--ink3);border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:.2s}
+.tabnav a:hover{color:var(--ink)}
+.tabnav a.on{color:var(--ink);border-bottom-color:var(--rust)}
+.tabnav a .ic{font-size:15px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:22px 20px 70px;width:100%}
+.view{display:none}.view.on{display:block;animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .banner{background:#fff7ec;border:1px solid #e8d4ad;border-radius:14px;padding:12px 16px;font-size:13px;color:#7a5a1a;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start}
 .banner b{font-weight:700}
-.banner a{color:var(--rust-d);border-bottom:1px solid var(--rust)}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.scard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
-.scard::before{content:"";position:absolute;top:0;right:0;width:4px;height:100%;background:var(--rust)}
+.scard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:17px 19px;position:relative;overflow:hidden}
+.scard::before{content:"";position:absolute;top:0;inset-inline-end:0;width:4px;height:100%;background:var(--rust)}
 .scard.s2::before{background:var(--amber)} .scard.s3::before{background:var(--blue)} .scard.s4::before{background:var(--green)}
-.scard small{font-family:var(--fu);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-.scard .v{font-family:var(--fd);font-size:38px;font-weight:600;line-height:1;margin-top:8px;color:var(--ink)}
-.scard .v s{font-size:.42em;color:var(--ink3);text-decoration:none;margin-right:3px}
+.scard small{font-family:var(--fu);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.scard .v{font-family:var(--fd);font-size:36px;font-weight:600;line-height:1;margin-top:8px;color:var(--ink)}
+.scard .v s{font-size:.42em;color:var(--ink3);text-decoration:none;margin-inline-start:3px}
 
-/* controls */
+/* section heading */
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sec-h h2{font-family:var(--fa-d);font-size:20px}
+[dir=ltr] .sec-h h2{font-family:var(--fu);font-weight:500}
+.sec-h p{font-size:13px;color:var(--ink3);margin-top:2px}
+.btn-pri{background:var(--rust);color:#fff;border:none;border-radius:100px;padding:10px 18px;font-size:13.5px;transition:.25s}
+.btn-pri:hover{background:var(--rust-d)}
+.btn-dk{background:var(--char);color:#fff;border:none;border-radius:100px;padding:10px 18px;font-size:13.5px;transition:.25s}
+.btn-dk:hover{background:var(--rust-d)}
+
+/* controls (list) */
 .controls{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
 .tab{font-size:13.5px;padding:8px 15px;border-radius:100px;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.25s}
-.tab .c{font-family:var(--fd);font-size:12px;color:var(--ink3);margin-right:4px}
+.tab .c{font-family:var(--fd);font-size:12px;color:var(--ink3);margin-inline-start:4px}
 .tab:hover{border-color:var(--sand)}
 .tab.on{background:var(--char);color:#fff;border-color:var(--char)}
 .tab.on .c{color:var(--sand)}
 .ctr-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.sel,.search{border:1px solid var(--line);border-radius:11px;padding:10px 13px;font-family:var(--fa);font-size:14px;background:#fff;color:var(--ink)}
-.search{min-width:180px}
-.sel:focus,.search:focus{outline:none;border-color:var(--rust)}
-.csv{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:10px 14px;font-size:13.5px;color:var(--ink2);transition:.25s}
-.csv:hover{background:var(--bg2);color:var(--ink)}
+.sel,.search,.fld{border:1px solid var(--line);border-radius:11px;padding:10px 13px;font-family:var(--fa);font-size:14px;background:#fff;color:var(--ink)}
+.search{min-width:170px}
+.sel:focus,.search:focus,.fld:focus{outline:none;border-color:var(--rust)}
+.csv{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:10px 14px;font-size:13.5px;color:var(--ink2)}
+.csv:hover{background:var(--bg2)}
 
-/* day group */
-.daygrp{margin-bottom:26px}
+/* day group + booking card (list) */
+.daygrp{margin-bottom:24px}
 .dayhd{display:flex;align-items:center;gap:12px;margin:0 2px 12px}
-.dayhd b{font-family:var(--fa-d);font-size:16px;color:var(--ink)}
-.dayhd .dn{font-family:var(--fu);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);background:var(--bg2);padding:3px 10px;border-radius:100px}
+.dayhd b{font-family:var(--fa-d);font-size:16px}
+[dir=ltr] .dayhd b{font-family:var(--fu);font-weight:600}
+.dayhd .dn{font-family:var(--fu);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);background:var(--bg2);padding:3px 10px;border-radius:100px}
 .dayhd .ln{flex:1;height:1px;background:var(--line)}
-
-/* booking card */
-.bk-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:11px;display:flex;gap:18px;align-items:flex-start;transition:.3s var(--ease);animation:fadein .4s var(--ease)}
-@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bk-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:11px;display:flex;gap:18px;align-items:flex-start;transition:.3s var(--ease)}
 .bk-card:hover{box-shadow:0 22px 44px -34px rgba(34,29,23,.45);border-color:rgba(169,106,74,.3)}
 .bk-card.cancelled{opacity:.62}
-.bk-time{flex:none;text-align:center;min-width:74px;padding-left:18px;border-left:1px solid var(--line2)}
-.bk-time .t{font-family:var(--fd);font-size:25px;font-weight:600;color:var(--ink);direction:ltr;line-height:1}
-.bk-time .ap{font-family:var(--fu);font-size:10px;letter-spacing:.1em;color:var(--rust-d);text-transform:uppercase;margin-top:2px}
+.bk-time{flex:none;text-align:center;min-width:74px;padding-inline-end:18px;border-inline-end:1px solid var(--line2)}
+.bk-time .t{font-family:var(--fd);font-size:24px;font-weight:600;direction:ltr;line-height:1}
+.bk-time .ap{font-family:var(--fu);font-size:10px;letter-spacing:.08em;color:var(--rust-d);text-transform:uppercase;margin-top:2px}
 .bk-time .dur{font-family:var(--fu);font-size:9.5px;color:var(--ink3);margin-top:7px}
 .bk-main{flex:1;min-width:0}
 .bk-name{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.bk-name b{font-family:var(--fa-d);font-size:17px;color:var(--ink)}
+.bk-name b{font-family:var(--fa-d);font-size:17px}
+[dir=ltr] .bk-name b{font-family:var(--fu);font-weight:600}
 .bk-ref{font-family:var(--fd);font-size:12px;color:var(--ink3);direction:ltr;border:1px solid var(--line);padding:1px 8px;border-radius:100px}
+.bk-staff{font-family:var(--fu);font-size:10px;letter-spacing:.04em;padding:2px 9px;border-radius:100px;color:#fff}
 .bk-contact{display:flex;gap:8px;align-items:center;margin-top:5px;flex-wrap:wrap}
 .bk-contact .ph{font-family:var(--fd);font-size:14px;color:var(--ink2);direction:ltr}
 .icbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink2);background:#fff;transition:.25s}
@@ -131,10 +159,10 @@ button{font-family:var(--fa);cursor:pointer}
 .bk-svcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{font-size:12px;background:var(--bg);border:1px solid var(--line2);color:var(--ink2);padding:4px 11px;border-radius:100px}
 .bk-notes{font-size:12.5px;color:var(--ink3);margin-top:8px;background:var(--bg);border-radius:10px;padding:8px 12px;border:1px dashed var(--line)}
-.bk-right{flex:none;text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:130px}
+.bk-right{flex:none;text-align:start;display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:130px}
 .bk-total{font-family:var(--fd);font-size:21px;font-weight:600;color:var(--rust-d);direction:ltr}
 .bk-total s{font-size:.55em;color:var(--ink3);text-decoration:none}
-.badge{font-family:var(--fu);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:100px;font-weight:500}
+.badge{font-family:var(--fu);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:100px;font-weight:500}
 .st-pending{background:rgba(200,144,31,.14);color:#946716}
 .st-confirmed{background:rgba(58,124,165,.14);color:#2c6280}
 .st-done{background:rgba(31,170,85,.14);color:#178045}
@@ -142,84 +170,81 @@ button{font-family:var(--fa);cursor:pointer}
 .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .act{font-size:12.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.22s}
 .act:hover{border-color:var(--ink);color:var(--ink)}
-.act.go{background:var(--char);color:#fff;border-color:var(--char)}
-.act.go:hover{background:var(--rust-d)}
-.act.ok{border-color:var(--green);color:var(--green)}.act.ok:hover{background:var(--green);color:#fff}
-.act.danger{color:var(--red);border-color:rgba(192,57,43,.3)}.act.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.act.go{background:var(--char);color:#fff;border-color:var(--char)} .act.go:hover{background:var(--rust-d)}
+.act.ok{border-color:var(--green);color:var(--green)} .act.ok:hover{background:var(--green);color:#fff}
+.act.danger{color:var(--red);border-color:rgba(192,57,43,.3)} .act.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
 .act.del{width:32px;padding:7px 0;text-align:center}
-
-.empty{text-align:center;padding:70px 20px;color:var(--ink3)}
-.empty .ic{font-size:40px;opacity:.4}
+.empty{text-align:center;padding:64px 20px;color:var(--ink3)}
+.empty .ic{font-size:38px;opacity:.4}
 .empty p{margin-top:12px;font-size:15px}
 
-@media(max-width:880px){
-  .stats{grid-template-columns:1fr 1fr}
-  .controls{flex-direction:column;align-items:stretch}
-  .ctr-r{justify-content:space-between}
-}
-@media(max-width:640px){
-  .bk-card{flex-wrap:wrap;gap:12px}
-  .bk-time{min-width:0;border-left:none;padding-left:0;text-align:right;display:flex;align-items:baseline;gap:8px;width:100%}
-  .bk-time .dur{margin-top:0}
-  .bk-right{width:100%;flex-direction:row;align-items:center;justify-content:space-between;min-width:0}
-  .search{flex:1}
-}
-
-/* ---------- VIEW SWITCH ---------- */
-.vswitch{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:4px;margin-bottom:18px;gap:4px}
-.vbtn{border:none;background:none;padding:9px 22px;border-radius:100px;font-size:14px;color:var(--ink2);display:flex;align-items:center;gap:7px;transition:.25s}
-.vbtn.on{background:var(--char);color:#fff}
-
-/* ---------- CALENDAR ---------- */
+/* CALENDAR */
 .cal-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .cal-nav{display:flex;align-items:center;gap:8px}
 .cnav{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-size:18px;color:var(--ink);display:grid;place-items:center;transition:.25s}
 .cnav:hover{background:var(--bg2)}
 .cnav.today{width:auto;border-radius:100px;padding:0 16px;font-size:13.5px;height:38px}
 .cal-nav b{font-family:var(--fa-d);font-size:16px;margin-inline-start:6px}
+[dir=ltr] .cal-nav b{font-family:var(--fu);font-weight:500}
 .cal-actions{display:flex;gap:8px;flex-wrap:wrap}
-.addblk{background:var(--char);color:#fff;border:none;border-radius:100px;padding:10px 18px;font-size:13.5px;transition:.25s}
-.addblk:hover{background:var(--rust-d)}
-.addblk.pri{background:var(--rust)}
-.addblk.pri:hover{background:var(--rust-d)}
-.msvc{max-height:190px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:6px 8px;background:#fff}
-.msvc-g{font-family:var(--fa-d);font-size:12px;color:var(--rust-d);margin:8px 2px 4px}
-.msvc-g:first-child{margin-top:2px}
-.msvc-i{display:flex;align-items:center;gap:9px;padding:6px 6px;border-radius:8px;cursor:pointer;font-size:13.5px}
-.msvc-i:hover{background:var(--bg)}
-.msvc-i input{width:17px;height:17px;accent-color:var(--rust);flex:none}
-.msvc-i span{flex:1}
-.msvc-i b{font-family:var(--fd);font-weight:600;color:var(--rust-d);direction:ltr}
-.cal-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:16px;background:var(--paper);-webkit-overflow-scrolling:touch}
+.cal-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
 .cal-grid{display:flex;min-width:max-content;position:relative}
 .cal-col{flex:1 0 150px;min-width:150px;border-inline-start:1px solid var(--line2)}
 .cal-col.gutter{flex:0 0 54px;min-width:54px;border-inline-start:none;position:sticky;inset-inline-start:0;background:var(--paper);z-index:5}
-.cal-head{height:46px;display:flex;align-items:center;justify-content:center;gap:7px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:6;font-family:var(--fa-d);font-size:14px;color:var(--ink)}
+.cal-head{height:46px;display:flex;align-items:center;justify-content:center;gap:7px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:6;font-family:var(--fa-d);font-size:14px}
+[dir=ltr] .cal-head{font-family:var(--fu);font-weight:500}
 .cal-head .sd{width:9px;height:9px;border-radius:50%;flex:none}
 .cal-body{position:relative;cursor:copy}
+.cal-body.ro{cursor:default}
 .cal-hour{position:absolute;inset-inline:0;border-top:1px solid var(--line2);pointer-events:none}
 .gutter .cal-hour{font-family:var(--fd);font-size:11.5px;color:var(--ink3);text-align:center;transform:translateY(-8px);direction:ltr}
 .cal-now{position:absolute;inset-inline:0;height:2px;background:var(--red);z-index:4;pointer-events:none}
 .cal-now::before{content:"";position:absolute;inset-inline-start:0;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--red)}
-.ev{position:absolute;inset-inline:3px;border-radius:8px;padding:4px 7px;overflow:hidden;cursor:pointer;font-size:11px;line-height:1.25;border-inline-start:3px solid;background:#eaf4fb;border-color:#5aa9d6;color:#1d3a4a;transition:filter .2s;z-index:2}
-.ev:hover{filter:brightness(.97)}
+.ev{position:absolute;inset-inline:3px;border-radius:8px;padding:4px 7px;overflow:hidden;cursor:pointer;font-size:11px;line-height:1.25;border-inline-start:3px solid;background:#eaf4fb;border-color:#5aa9d6;color:#1d3a4a;z-index:2}
 .ev .et{font-family:var(--fd);font-weight:600;direction:ltr;font-size:12px}
 .ev .en{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev .es{opacity:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev.st-pending{background:#fdf4e3;border-color:var(--amber);color:#6b4e12}
 .ev.st-confirmed{background:#eaf4fb;border-color:var(--blue);color:#214b63}
 .ev.st-done{background:#e9f7ee;border-color:var(--green);color:#15663a}
-.ev.block{background:repeating-linear-gradient(45deg,#efe7da,#efe7da 6px,#e6dccb 6px,#e6dccb 12px);border-color:#b9692f;color:#7a4a22;cursor:pointer}
+.ev.block{background:repeating-linear-gradient(45deg,#efe7da,#efe7da 6px,#e6dccb 6px,#e6dccb 12px);border-color:#b9692f;color:#7a4a22}
 .cal-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink3)}
 .cal-legend span{display:inline-flex;align-items:center;gap:6px}
 .cal-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
 
-/* ---------- MODALS ---------- */
+/* STAFF + SETTINGS */
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.stcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.stcard .row1{display:flex;align-items:center;gap:11px}
+.stcard .dot{width:26px;height:26px;border-radius:50%;flex:none;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.stcard .nm{font-family:var(--fa-d);font-size:16px;flex:1}
+[dir=ltr] .stcard .nm{font-family:var(--fu);font-weight:500}
+.stcard .acct{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink3);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stcard .acct .has{color:var(--green)}
+.stcard .stbtns{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+
+.form-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:640px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fitem{margin-bottom:15px}
+.fitem.full{grid-column:1/-1}
+.fitem label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.fitem input,.fitem select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--fa);font-size:15px;background:#fff;color:var(--ink)}
+.fitem input:focus,.fitem select:focus{outline:none;border-color:var(--rust)}
+.wkdays{display:flex;gap:6px;flex-wrap:wrap}
+.wkchip{border:1px solid var(--line);border-radius:100px;padding:7px 13px;font-size:13px;background:#fff;color:var(--ink2);cursor:pointer}
+.wkchip.on{background:var(--rust);color:#fff;border-color:var(--rust)}
+.colorpick{display:flex;gap:8px;flex-wrap:wrap}
+.colorpick .c{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.colorpick .c.on{box-shadow:0 0 0 2px var(--char)}
+.saved-msg{color:var(--green);font-size:13px;margin-inline-start:10px}
+
+/* MODALS */
 .mdl{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:20px}
 .mdl.on{display:flex}
 .mdl-sc{position:absolute;inset:0;background:rgba(20,17,13,.6);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 .mdl-card{position:relative;z-index:2;width:100%;max-width:430px;background:var(--paper);border-radius:22px;padding:22px 22px 20px;box-shadow:0 40px 90px -36px rgba(0,0,0,.6);max-height:90vh;overflow:auto;animation:up .4s var(--ease)}
 .mdl-card h3{font-family:var(--fa-d);font-size:19px;margin-bottom:2px}
+[dir=ltr] .mdl-card h3{font-family:var(--fu);font-weight:500}
 .mdl-sub{font-size:13px;color:var(--ink3);margin-bottom:16px}
 .mfld{margin-bottom:13px}
 .mfld label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
@@ -230,9 +255,28 @@ button{font-family:var(--fa);cursor:pointer}
 .mdl-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line2);font-size:14px}
 .mdl-row:last-of-type{border-bottom:none}
 .mdl-row .k{color:var(--ink3);font-family:var(--fu);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
-.mdl-row .v{font-weight:500;text-align:left}
+.mdl-row .v{font-weight:500;text-align:start}
 .mdl-chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
-@media(max-width:600px){ .cal-col{flex:1 0 132px;min-width:132px} }
+.msvc{max-height:190px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:6px 8px;background:#fff}
+.msvc-g{font-family:var(--fa-d);font-size:12px;color:var(--rust-d);margin:8px 2px 4px}
+[dir=ltr] .msvc-g{font-family:var(--fu);font-weight:600}
+.msvc-g:first-child{margin-top:2px}
+.msvc-i{display:flex;align-items:center;gap:9px;padding:6px;border-radius:8px;cursor:pointer;font-size:13.5px}
+.msvc-i:hover{background:var(--bg)}
+.msvc-i input{width:17px;height:17px;accent-color:var(--rust);flex:none}
+.msvc-i span{flex:1}
+.msvc-i b{font-family:var(--fd);font-weight:600;color:var(--rust-d);direction:ltr}
+
+@media(max-width:880px){ .stats{grid-template-columns:1fr 1fr} .controls{flex-direction:column;align-items:stretch} .frow{grid-template-columns:1fr} }
+@media(max-width:640px){
+  .top .who{display:none}
+  .bk-card{flex-wrap:wrap;gap:12px}
+  .bk-time{min-width:0;border-inline-end:none;padding-inline-end:0;text-align:start;display:flex;align-items:baseline;gap:8px;width:100%}
+  .bk-time .dur{margin-top:0}
+  .bk-right{width:100%;flex-direction:row;align-items:center;justify-content:space-between;min-width:0}
+  .search{flex:1}
+  .cal-col{flex:1 0 132px;min-width:132px}
+}
 </style>
 </head>
 <body>
@@ -241,21 +285,25 @@ button{font-family:var(--fa);cursor:pointer}
 <div id="login">
   <div class="lg-card">
     <div class="lg-bk"><b class="lat">O<i>i</i>O</b></div>
-    <h1>لوحة الإدارة</h1>
+    <h1 data-i18n="loginTitle">لوحة الإدارة</h1>
     <div class="sub">OiO Nail Spa</div>
     <form id="lgForm">
       <div class="lg-fld" id="emailFld">
-        <label>البريد الإلكتروني</label>
-        <input id="lgEmail" type="email" autocomplete="username" placeholder="admin@oio.com">
+        <label data-i18n="email">البريد الإلكتروني</label>
+        <input id="lgEmail" type="email" autocomplete="username" placeholder="name@oio.com">
       </div>
       <div class="lg-fld">
-        <label id="passLabel">كلمة المرور</label>
+        <label id="passLabel" data-i18n="password">كلمة المرور</label>
         <input id="lgPass" type="password" autocomplete="current-password" placeholder="••••••••">
       </div>
-      <button class="lg-btn" type="submit" id="lgBtn">دخول</button>
+      <button class="lg-btn" type="submit" id="lgBtn" data-i18n="login">دخول</button>
       <div class="lg-err" id="lgErr"></div>
     </form>
     <div class="lg-note" id="lgNote"></div>
+    <div class="lg-lang">
+      <button type="button" data-setlang="ar">العربية</button>
+      <button type="button" data-setlang="en">English</button>
+    </div>
   </div>
 </div>
 
@@ -265,130 +313,193 @@ button{font-family:var(--fa);cursor:pointer}
     <div class="top-in">
       <a href="index.html" class="brand">
         <span class="bk"><b class="lat">O<i>i</i>O</b></span>
-        <span class="bn"><b>لوحة الإدارة</b><small>OiO Nail Spa · تبوك</small></span>
+        <span class="bn"><b data-i18n="adminPanel">لوحة الإدارة</b><small>OiO Nail Spa · تبوك</small></span>
       </a>
       <div class="top-r">
-        <span class="pill" id="modePill"><span class="dot"></span><span id="modeTxt">سحابي</span></span>
-        <button class="lo" id="logoutBtn">خروج</button>
+        <span class="who"><b id="whoName">—</b><small id="whoRole" class="mgr"></small></span>
+        <button class="langbtn" id="langBtn">EN</button>
+        <button class="lo" id="logoutBtn" data-i18n="logout">خروج</button>
       </div>
     </div>
   </div>
+
+  <nav class="tabnav"><div class="tabnav-in" id="tabnav">
+    <a data-tab="cal" class="on"><span class="ic">📅</span><span data-i18n="calendar">التقويم</span></a>
+    <a data-tab="list"><span class="ic">📋</span><span data-i18n="list">القائمة</span></a>
+    <a data-tab="staff" data-mgr><span class="ic">👩‍🔧</span><span data-i18n="staffMgmt">الموظتات</span></a>
+    <a data-tab="settings" data-mgr><span class="ic">⚙️</span><span data-i18n="settings">الإعدادات</span></a>
+  </div></nav>
 
   <div class="wrap">
     <div class="banner" id="localBanner" style="display:none">
       <span>⚠️</span>
-      <span><b>الوضع المحلي:</b> Firebase غير مربوط بعد، لذلك الحجوزات تُحفظ على هذا الجهاز فقط ولا تتزامن مع أجهزة العميلات. اربطي Firebase ليصلك حجز العميلة فورًا — راجعي ملف <b>SETUP.md</b>.</span>
+      <span><b data-i18n="localMode">الوضع المحلي:</b> <span data-i18n="localModeMsg">Firebase غير مربوط — البيانات على هذا الجهاز فقط. راجعي SETUP.md للتشغيل السحابي.</span></span>
     </div>
 
-    <div class="stats">
-      <div class="scard s1"><small>حجوزات اليوم</small><div class="v" id="stToday">0</div></div>
-      <div class="scard s2"><small>قيد الانتظار</small><div class="v" id="stPending">0</div></div>
-      <div class="scard s3"><small>هذا الأسبوع</small><div class="v" id="stWeek">0</div></div>
-      <div class="scard s4"><small>إيراد الشهر (منجز)</small><div class="v" id="stRev">0 <s>ر.س</s></div></div>
+    <!-- stats (shown on cal+list) -->
+    <div class="stats" id="statsRow">
+      <div class="scard s1"><small data-i18n="stToday">حجوزات اليوم</small><div class="v" id="stToday">0</div></div>
+      <div class="scard s2"><small data-i18n="stPending">قيد الانتظار</small><div class="v" id="stPending">0</div></div>
+      <div class="scard s3"><small data-i18n="stWeek">هذا الأسبوع</small><div class="v" id="stWeek">0</div></div>
+      <div class="scard s4"><small data-i18n="stRev">إيراد الشهر</small><div class="v" id="stRev">0</div></div>
     </div>
 
-    <div class="vswitch">
-      <button class="vbtn on" data-v="cal">📅 التقويم</button>
-      <button class="vbtn" data-v="list">📋 القائمة</button>
-    </div>
-
-    <!-- ===== CALENDAR VIEW ===== -->
-    <section id="calView">
+    <!-- CALENDAR -->
+    <section class="view on" id="v-cal">
       <div class="cal-bar">
         <div class="cal-nav">
-          <button class="cnav" id="calPrev" aria-label="السابق">›</button>
-          <button class="cnav today" id="calToday">اليوم</button>
-          <button class="cnav" id="calNext" aria-label="التالي">‹</button>
+          <button class="cnav" id="calPrev" aria-label="prev">›</button>
+          <button class="cnav today" id="calToday" data-i18n="today">اليوم</button>
+          <button class="cnav" id="calNext" aria-label="next">‹</button>
           <b id="calDateLbl"></b>
         </div>
-        <div class="cal-actions">
-          <button class="addblk pri" id="addManualBtn">＋ حجز يدوي</button>
-          <button class="addblk" id="addBlockBtn">＋ حظر وقت</button>
+        <div class="cal-actions" id="calActions">
+          <button class="btn-pri" id="addManualBtn">＋ <span data-i18n="walkIn">حجز يدوي</span></button>
+          <button class="btn-dk" id="addBlockBtn">＋ <span data-i18n="blockTime">حظر وقت</span></button>
         </div>
       </div>
       <div class="cal-scroll"><div class="cal-grid" id="calGrid"></div></div>
       <div class="cal-legend">
-        <span><i style="background:var(--amber)"></i> قيد الانتظار</span>
-        <span><i style="background:var(--blue)"></i> مؤكد</span>
-        <span><i style="background:var(--green)"></i> منجز</span>
-        <span><i style="background:#b9692f"></i> حظر / غير متاح</span>
-        <span>اضغطي على مساحة فارغة لحظر وقت · على الموعد لعرض التفاصيل</span>
+        <span><i style="background:var(--amber)"></i> <span data-i18n="pending">قيد الانتظار</span></span>
+        <span><i style="background:var(--blue)"></i> <span data-i18n="confirmed">مؤكد</span></span>
+        <span><i style="background:var(--green)"></i> <span data-i18n="done">منجز</span></span>
+        <span><i style="background:#b9692f"></i> <span data-i18n="blocked">حظر</span></span>
+        <span id="calHint" data-i18n="calHint">اضغطي مساحة فارغة لحظر وقت · على الموعد لعرض التفاصيل</span>
       </div>
     </section>
 
-    <!-- ===== LIST VIEW ===== -->
-    <section id="listView" hidden>
-    <div class="controls">
-      <div class="tabs" id="tabs">
-        <button class="tab on" data-st="all">الكل <span class="c" id="cAll">0</span></button>
-        <button class="tab" data-st="pending">قيد الانتظار <span class="c" id="cPending">0</span></button>
-        <button class="tab" data-st="confirmed">مؤكدة <span class="c" id="cConfirmed">0</span></button>
-        <button class="tab" data-st="done">منجزة <span class="c" id="cDone">0</span></button>
-        <button class="tab" data-st="cancelled">ملغاة <span class="c" id="cCancelled">0</span></button>
+    <!-- LIST -->
+    <section class="view" id="v-list">
+      <div class="controls">
+        <div class="tabs" id="tabs">
+          <button class="tab on" data-st="all"><span data-i18n="all">الكل</span> <span class="c" id="cAll">0</span></button>
+          <button class="tab" data-st="pending"><span data-i18n="pending">قيد الانتظار</span> <span class="c" id="cPending">0</span></button>
+          <button class="tab" data-st="confirmed"><span data-i18n="confirmed">مؤكدة</span> <span class="c" id="cConfirmed">0</span></button>
+          <button class="tab" data-st="done"><span data-i18n="done">منجزة</span> <span class="c" id="cDone">0</span></button>
+          <button class="tab" data-st="cancelled"><span data-i18n="cancelled">ملغاة</span> <span class="c" id="cCancelled">0</span></button>
+        </div>
+        <div class="ctr-r">
+          <select class="sel" id="rangeSel">
+            <option value="upcoming" data-i18n="rUpcoming">القادمة</option>
+            <option value="today" data-i18n="rToday">اليوم</option>
+            <option value="tomorrow" data-i18n="rTomorrow">غدًا</option>
+            <option value="week" data-i18n="rWeek">هذا الأسبوع</option>
+            <option value="all" data-i18n="rAll">كل التواريخ</option>
+          </select>
+          <input class="search" id="search" type="search" data-i18n-ph="searchPh" placeholder="بحث بالاسم أو الجوال أو الرقم…">
+          <button class="csv" id="csvBtn" data-i18n="exportCsv">تصدير CSV</button>
+        </div>
       </div>
-      <div class="ctr-r">
-        <select class="sel" id="rangeSel">
-          <option value="upcoming">القادمة</option>
-          <option value="today">اليوم</option>
-          <option value="tomorrow">غدًا</option>
-          <option value="week">هذا الأسبوع</option>
-          <option value="all">كل التواريخ</option>
-        </select>
-        <input class="search" id="search" type="search" placeholder="بحث بالاسم أو الجوال أو الرقم…">
-        <button class="csv" id="csvBtn">تصدير CSV</button>
-      </div>
-    </div>
+      <div id="list"></div>
+    </section>
 
-    <div id="list"></div>
+    <!-- STAFF -->
+    <section class="view" id="v-staff">
+      <div class="sec-h">
+        <div><h2 data-i18n="staffMgmt">الموظتات</h2><p data-i18n="staffSub">أضيفي الموظتات وامنحي كل واحدة صفحة دخول ترى فيها أعمالها.</p></div>
+        <button class="btn-pri" id="addStaffBtn">＋ <span data-i18n="addStaff">إضافة موظفة</span></button>
+      </div>
+      <div class="grid-cards" id="staffGrid"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="v-settings">
+      <div class="sec-h"><div><h2 data-i18n="settings">الإعدادات</h2><p data-i18n="settingsSub">تعديلات شاملة لبيانات الصالون والمواعيد.</p></div></div>
+      <div class="form-card">
+        <div class="frow">
+          <div class="fitem"><label data-i18n="salonName">اسم الصالون</label><input class="fld" id="setName"></div>
+          <div class="fitem"><label data-i18n="whatsapp">واتساب الصالون</label><input class="fld" id="setWa" inputmode="numeric"></div>
+        </div>
+        <div class="frow">
+          <div class="fitem"><label data-i18n="openHour">بداية الدوام (ساعة ٠–٢٣)</label><input class="fld" id="setOpen" type="number" min="0" max="23"></div>
+          <div class="fitem"><label data-i18n="closeHour">نهاية الدوام (ساعة ٠–٢٤)</label><input class="fld" id="setClose" type="number" min="1" max="24"></div>
+        </div>
+        <div class="frow">
+          <div class="fitem"><label data-i18n="slotMin">الفاصل بين المواعيد (دقيقة)</label>
+            <select class="fld" id="setSlot"><option>15</option><option>20</option><option>30</option><option>45</option><option>60</option></select></div>
+          <div class="fitem"><label data-i18n="leadMin">أقل مهلة قبل الموعد (دقيقة)</label><input class="fld" id="setLead" type="number" min="0"></div>
+        </div>
+        <div class="fitem"><label data-i18n="maxDays">أبعد مدى للحجز (أيام)</label><input class="fld" id="setMax" type="number" min="1"></div>
+        <div class="fitem"><label data-i18n="closedDays">أيام الإغلاق</label><div class="wkdays" id="setClosed"></div></div>
+        <div style="display:flex;align-items:center;margin-top:6px">
+          <button class="btn-dk" id="saveSettingsBtn" data-i18n="saveSettings">حفظ الإعدادات</button>
+          <span class="saved-msg" id="settingsSaved" style="display:none" data-i18n="savedOk">✓ تم الحفظ</span>
+        </div>
+      </div>
     </section>
   </div>
 </div>
 
-<!-- ===== Booking detail modal ===== -->
+<!-- ===== MODALS ===== -->
 <div class="mdl" id="bkModal"><div class="mdl-sc" data-mclose></div><div class="mdl-card" id="bkModalCard"></div></div>
 
-<!-- ===== Manual booking (walk-in) modal ===== -->
 <div class="mdl" id="manualModal">
   <div class="mdl-sc" data-mclose></div>
   <div class="mdl-card">
-    <h3>حجز يدوي · Walk-in</h3>
-    <p class="mdl-sub">أضيفي حجزًا لعميلة حضرت أو حجزت عبر الهاتف.</p>
-    <div class="mfld"><label>اسم العميلة</label><input id="mName" type="text" placeholder="الاسم"></div>
-    <div class="mfld"><label>الجوال (اختياري)</label><input id="mPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX"></div>
-    <div class="mfld"><label>الخدمات</label><div id="mServices" class="msvc"></div></div>
+    <h3 data-i18n="walkInTitle">حجز يدوي · Walk-in</h3>
+    <p class="mdl-sub" data-i18n="walkInSub">أضيفي حجزًا لعميلة حضرت أو حجزت عبر الهاتف.</p>
+    <div class="mfld"><label data-i18n="clientName">اسم العميلة</label><input id="mName" type="text"></div>
+    <div class="mfld"><label data-i18n="phoneOpt">الجوال (اختياري)</label><input id="mPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX"></div>
+    <div class="mfld"><label data-i18n="services">الخدمات</label><div id="mServices" class="msvc"></div></div>
     <div class="mrow">
-      <div class="mfld"><label>الفنية</label><select id="mStaff"></select></div>
-      <div class="mfld"><label>الوقت</label><select id="mTime"></select></div>
+      <div class="mfld"><label data-i18n="staff">الفنية</label><select id="mStaff"></select></div>
+      <div class="mfld"><label data-i18n="time">الوقت</label><select id="mTime"></select></div>
     </div>
-    <div class="mdl-row"><span class="k">الإجمالي · المدة</span><span class="v" id="mTotal">0 ر.س</span></div>
+    <div class="mdl-row"><span class="k" data-i18n="totalDur">الإجمالي · المدة</span><span class="v" id="mTotal">0</span></div>
     <div class="mdl-acts">
-      <button class="act" data-mclose>إلغاء</button>
-      <button class="act go" id="mSave">حفظ الحجز</button>
+      <button class="act" data-mclose data-i18n="cancel">إلغاء</button>
+      <button class="act go" id="mSave" data-i18n="saveBooking">حفظ الحجز</button>
     </div>
   </div>
 </div>
 
-<!-- ===== Block (unavailable) modal ===== -->
 <div class="mdl" id="blockModal">
   <div class="mdl-sc" data-mclose></div>
   <div class="mdl-card">
-    <h3>حظر وقت · غير متاح</h3>
-    <p class="mdl-sub">يمنع الحجز على الموقع في هذا الوقت (استراحة، تنظيف، مناسبة...).</p>
-    <div class="mfld"><label>الفنية</label><select id="blkStaff"></select></div>
+    <h3 data-i18n="blockTitle">حظر وقت · غير متاح</h3>
+    <p class="mdl-sub" data-i18n="blockSub">يمنع الحجز على الموقع في هذا الوقت.</p>
+    <div class="mfld"><label data-i18n="staff">الفنية</label><select id="blkStaff"></select></div>
     <div class="mrow">
-      <div class="mfld"><label>من الساعة</label><select id="blkStart"></select></div>
-      <div class="mfld"><label>المدة</label><select id="blkDur"></select></div>
+      <div class="mfld"><label data-i18n="fromTime">من الساعة</label><select id="blkStart"></select></div>
+      <div class="mfld"><label data-i18n="duration">المدة</label><select id="blkDur"></select></div>
     </div>
-    <div class="mfld"><label>السبب</label><select id="blkReason">
-      <option value="غير متاح">غير متاح</option>
-      <option value="استراحة">استراحة</option>
-      <option value="غداء">غداء</option>
-      <option value="تنظيف">تنظيف</option>
-      <option value="مناسبة">مناسبة</option>
-    </select></div>
+    <div class="mfld"><label data-i18n="reason">السبب</label><select id="blkReason"></select></div>
     <div class="mdl-acts">
-      <button class="act" data-mclose>إلغاء</button>
-      <button class="act go" id="blkSave">حفظ الحظر</button>
+      <button class="act" data-mclose data-i18n="cancel">إلغاء</button>
+      <button class="act go" id="blkSave" data-i18n="saveBlock">حفظ الحظر</button>
+    </div>
+  </div>
+</div>
+
+<div class="mdl" id="staffModal">
+  <div class="mdl-sc" data-mclose></div>
+  <div class="mdl-card">
+    <h3 id="staffModalTitle" data-i18n="addStaff">إضافة موظفة</h3>
+    <p class="mdl-sub" data-i18n="staffModalSub">الاسم واللون اللذان يظهران في التقويم.</p>
+    <div class="mfld"><label data-i18n="name">الاسم</label><input id="stName" type="text"></div>
+    <div class="mfld"><label data-i18n="color">اللون</label><div class="colorpick" id="stColors"></div></div>
+    <div class="mdl-acts">
+      <button class="act" data-mclose data-i18n="cancel">إلغاء</button>
+      <button class="act go" id="stSave" data-i18n="save">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="mdl" id="acctModal">
+  <div class="mdl-sc" data-mclose></div>
+  <div class="mdl-card">
+    <h3 data-i18n="createPage">إنشاء صفحة دخول للموظفة</h3>
+    <p class="mdl-sub" id="acctSub"></p>
+    <div id="acctFb" style="display:none">
+      <div class="mfld"><label data-i18n="email">البريد الإلكتروني</label><input id="acEmail" type="email" placeholder="name@oio.com"></div>
+      <div class="mfld"><label data-i18n="password">كلمة المرور</label><input id="acPass" type="text" placeholder="••••••"></div>
+    </div>
+    <div id="acctLocal">
+      <div class="mfld"><label data-i18n="loginCode">رمز الدخول</label><input id="acCode" type="text" placeholder="مثال: ruth123"></div>
+    </div>
+    <div class="mdl-acts">
+      <button class="act" data-mclose data-i18n="cancel">إلغاء</button>
+      <button class="act go" id="acSave" data-i18n="createAccount">إنشاء الحساب</button>
     </div>
   </div>
 </div>
@@ -401,396 +512,506 @@ button{font-family:var(--fa);cursor:pointer}
 
 <script>
 (function(){
-  const STATUS = {
-    pending:  {ar:'قيد الانتظار', cls:'st-pending'},
-    confirmed:{ar:'مؤكد',        cls:'st-confirmed'},
-    done:     {ar:'منجز',        cls:'st-done'},
-    cancelled:{ar:'ملغي',        cls:'st-cancelled'}
+  /* ================= i18n ================= */
+  const I18N = {
+    ar:{
+      loginTitle:"لوحة الإدارة", adminPanel:"لوحة الإدارة", email:"البريد الإلكتروني", password:"كلمة المرور",
+      login:"دخول", logout:"خروج", loginCode:"رمز الدخول",
+      calendar:"التقويم", list:"القائمة", staffMgmt:"الموظتات", settings:"الإعدادات",
+      stToday:"حجوزات اليوم", stPending:"قيد الانتظار", stWeek:"هذا الأسبوع", stRev:"إيراد الشهر",
+      today:"اليوم", walkIn:"حجز يدوي", blockTime:"حظر وقت",
+      pending:"قيد الانتظار", confirmed:"مؤكد", done:"منجز", cancelled:"ملغي", blocked:"حظر",
+      calHint:"اضغطي مساحة فارغة لحظر وقت · على الموعد لعرض التفاصيل",
+      all:"الكل", rUpcoming:"القادمة", rToday:"اليوم", rTomorrow:"غدًا", rWeek:"هذا الأسبوع", rAll:"كل التواريخ",
+      searchPh:"بحث بالاسم أو الجوال أو الرقم…", exportCsv:"تصدير CSV", noBookings:"لا توجد حجوزات مطابقة.",
+      staffSub:"أضيفي الموظتات وامنحي كل واحدة صفحة دخول ترى فيها أعمالها.", addStaff:"إضافة موظفة",
+      settingsSub:"تعديلات شاملة لبيانات الصالون والمواعيد.",
+      salonName:"اسم الصالون", whatsapp:"واتساب الصالون", openHour:"بداية الدوام (ساعة)", closeHour:"نهاية الدوام (ساعة)",
+      slotMin:"الفاصل بين المواعيد (دقيقة)", leadMin:"أقل مهلة قبل الموعد (دقيقة)", maxDays:"أبعد مدى للحجز (أيام)",
+      closedDays:"أيام الإغلاق", saveSettings:"حفظ الإعدادات", savedOk:"✓ تم الحفظ",
+      walkInTitle:"حجز يدوي · Walk-in", walkInSub:"أضيفي حجزًا لعميلة حضرت أو حجزت عبر الهاتف.",
+      clientName:"اسم العميلة", phoneOpt:"الجوال (اختياري)", services:"الخدمات", staff:"الفنية", time:"الوقت",
+      totalDur:"الإجمالي · المدة", cancel:"إلغاء", saveBooking:"حفظ الحجز",
+      blockTitle:"حظر وقت · غير متاح", blockSub:"يمنع الحجز على الموقع في هذا الوقت.",
+      fromTime:"من الساعة", duration:"المدة", reason:"السبب", saveBlock:"حفظ الحظر",
+      staffModalSub:"الاسم واللون اللذان يظهران في التقويم.", name:"الاسم", color:"اللون", save:"حفظ",
+      createPage:"إنشاء صفحة دخول للموظفة", createAccount:"إنشاء الحساب",
+      appointment:"الموعد", phone:"الجوال", total:"الإجمالي", assignedStaff:"الفنية المسؤولة",
+      call:"اتصال", confirm:"تأكيد", complete:"إنجاز", restore:"استعادة", delete:"حذف", close:"إغلاق", edit:"تعديل",
+      mgr:"مديرة", stf:"موظفة", unassigned:"غير معيّن", auto:"تلقائي (أول فنية متاحة)", allSalon:"الكل (الصالون)",
+      reasonUnavail:"غير متاح", reasonBreak:"استراحة", reasonLunch:"غداء", reasonClean:"تنظيف", reasonEvent:"مناسبة",
+      hasPage:"له صفحة دخول", noPage:"بدون صفحة دخول", createLoginPage:"إنشاء صفحة دخول", removePage:"حذف الصفحة",
+      myWork:"أعمالي", confirmDelBooking:"حذف هذا الحجز نهائيًا؟", confirmDelBlock:"حذف هذا الحظر؟",
+      confirmDelStaff:"حذف هذه الموظفة؟ (لن تُحذف حجوزاتها)", confirmDelAcct:"حذف صفحة دخول هذه الموظفة؟",
+      noStaff:"لا توجد موظتات بعد — أضيفي أول موظفة.", appointmentsCount:"موعد",
+      noSvcAlert:"اختاري خدمة واحدة على الأقل", noNameAlert:"أدخلي اسم العميلة",
+      saving:"جارٍ الحفظ…", noteLabel:"ملاحظات"
+    },
+    en:{
+      loginTitle:"Admin Panel", adminPanel:"Admin Panel", email:"Email", password:"Password",
+      login:"Sign in", logout:"Sign out", loginCode:"Login code",
+      calendar:"Calendar", list:"List", staffMgmt:"Staff", settings:"Settings",
+      stToday:"Today's bookings", stPending:"Pending", stWeek:"This week", stRev:"This month",
+      today:"Today", walkIn:"Walk-in", blockTime:"Block time",
+      pending:"Pending", confirmed:"Confirmed", done:"Done", cancelled:"Cancelled", blocked:"Blocked",
+      calHint:"Tap empty space to block time · tap a booking for details",
+      all:"All", rUpcoming:"Upcoming", rToday:"Today", rTomorrow:"Tomorrow", rWeek:"This week", rAll:"All dates",
+      searchPh:"Search by name, phone or ref…", exportCsv:"Export CSV", noBookings:"No matching bookings.",
+      staffSub:"Add staff and give each one a login page to see her own work.", addStaff:"Add staff",
+      settingsSub:"Full control over salon details and scheduling.",
+      salonName:"Salon name", whatsapp:"Salon WhatsApp", openHour:"Opening hour", closeHour:"Closing hour",
+      slotMin:"Slot interval (min)", leadMin:"Min lead time (min)", maxDays:"Max advance (days)",
+      closedDays:"Closed days", saveSettings:"Save settings", savedOk:"✓ Saved",
+      walkInTitle:"Walk-in booking", walkInSub:"Add a booking for a client who came or called.",
+      clientName:"Client name", phoneOpt:"Phone (optional)", services:"Services", staff:"Staff", time:"Time",
+      totalDur:"Total · Duration", cancel:"Cancel", saveBooking:"Save booking",
+      blockTitle:"Block time · Unavailable", blockSub:"Prevents online booking at this time.",
+      fromTime:"From", duration:"Duration", reason:"Reason", saveBlock:"Save block",
+      staffModalSub:"The name and colour shown in the calendar.", name:"Name", color:"Colour", save:"Save",
+      createPage:"Create staff login page", createAccount:"Create account",
+      appointment:"Appointment", phone:"Phone", total:"Total", assignedStaff:"Assigned staff",
+      call:"Call", confirm:"Confirm", complete:"Complete", restore:"Restore", delete:"Delete", close:"Close", edit:"Edit",
+      mgr:"Manager", stf:"Staff", unassigned:"Unassigned", auto:"Auto (first available)", allSalon:"All (salon)",
+      reasonUnavail:"Unavailable", reasonBreak:"Break", reasonLunch:"Lunch", reasonClean:"Cleaning", reasonEvent:"Event",
+      hasPage:"Has login page", noPage:"No login page", createLoginPage:"Create login page", removePage:"Remove page",
+      myWork:"My work", confirmDelBooking:"Delete this booking permanently?", confirmDelBlock:"Delete this block?",
+      confirmDelStaff:"Delete this staff member? (her bookings stay)", confirmDelAcct:"Delete this staff login page?",
+      noStaff:"No staff yet — add your first.", appointmentsCount:"appts",
+      noSvcAlert:"Select at least one service", noNameAlert:"Enter the client name",
+      saving:"Saving…", noteLabel:"Notes"
+    }
   };
-
-  const loginEl=document.getElementById('login'), appEl=document.getElementById('app');
-  const lgForm=document.getElementById('lgForm'), lgEmail=document.getElementById('lgEmail'),
-        lgPass=document.getElementById('lgPass'), lgBtn=document.getElementById('lgBtn'),
-        lgErr=document.getElementById('lgErr'), lgNote=document.getElementById('lgNote'),
-        emailFld=document.getElementById('emailFld'), passLabel=document.getElementById('passLabel');
-
-  // adapt login to mode
-  const isLocal = Store.mode==='local';
-  if(isLocal){
-    emailFld.style.display='none';
-    passLabel.textContent='رمز الدخول';
-    lgPass.setAttribute('placeholder','الرمز السري');
-    lgNote.innerHTML='الوضع المحلي (Firebase غير مربوط). الرمز الافتراضي قابل للتغيير من ملف <b>firebase-config.js</b>.';
-  } else {
-    lgNote.innerHTML='ادخلي ببريد المدير المسجّل في Firebase Authentication.';
+  let lang = localStorage.getItem('oio_lang') || 'ar';
+  function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.ar[k] || k; }
+  function applyLang(){
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang==='ar') ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(I18N[lang][k]!==undefined||I18N.ar[k]!==undefined) el.textContent=t(k); });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el=>el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph'))));
+    document.getElementById('langBtn').textContent = (lang==='ar') ? 'EN' : 'ع';
+    document.querySelectorAll('[data-setlang]').forEach(b=>b.classList.toggle('on', b.dataset.setlang===lang));
+    if(ROLE){ whoRoleEl.textContent = t(ROLE==='manager'?'mgr':'stf'); }
+    fillBlockReasonOptions();
+    renderCurrent();
   }
+  function setLang(l){ lang=l; localStorage.setItem('oio_lang', l); applyLang(); }
+  document.getElementById('langBtn').addEventListener('click', ()=>setLang(lang==='ar'?'en':'ar'));
+  document.querySelectorAll('[data-setlang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.setlang)));
 
-  // mode pill
-  const modePill=document.getElementById('modePill'), modeTxt=document.getElementById('modeTxt');
-  if(isLocal){ modePill.classList.add('local'); modeTxt.textContent='محلي'; document.getElementById('localBanner').style.display='flex'; }
-  else { modeTxt.textContent='سحابي · متزامن'; }
+  /* ================= date/time helpers (lang-aware) ================= */
+  const WD={ar:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat']};
+  const WDF={ar:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']};
+  const MO={ar:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']};
+  function tWd(d){return WDF[lang][d.getDay()];}
+  function tMo(d){return MO[lang][d.getMonth()];}
+  function tTime(hhmm){ if(!hhmm)return'—'; const [h,m]=hhmm.split(':').map(Number); let hh=h%12||12; const ap=lang==='ar'?(h>=12?'م':'ص'):(h>=12?'PM':'AM'); return `${hh}:${String(m).padStart(2,'0')} ${ap}`; }
+  function tApShort(hhmm){ const h=Number(hhmm.split(':')[0]); return lang==='ar'?(h>=12?'مساءً':'صباحًا'):(h>=12?'PM':'AM'); }
+  function tTimeNum(hhmm){ const [h,m]=hhmm.split(':').map(Number); let hh=h%12||12; return `${hh}:${String(m).padStart(2,'0')}`; }
+  function tDur(min){ const h=Math.floor(min/60),m=min%60; if(lang==='ar') return Utils.fmtDur(min); if(h&&m)return `${h}h ${m}m`; if(h)return `${h}h`; return `${m}m`; }
+  function hourLabel(h){ let hh=h%12||12; return lang==='ar'?(hh+(h>=12?'م':'ص')):(hh+(h>=12?'p':'a')); }
 
-  lgForm.addEventListener('submit', async (e)=>{
-    e.preventDefault(); lgErr.textContent=''; lgBtn.disabled=true; lgBtn.textContent='جارٍ الدخول…';
-    try{
-      await Store.signIn(lgEmail.value.trim(), lgPass.value);
-    }catch(err){
-      lgErr.textContent = isLocal ? 'الرمز غير صحيح.' : 'تعذّر الدخول — تأكّدي من البريد وكلمة المرور.';
-      console.error(err);
-    }finally{ lgBtn.disabled=false; lgBtn.textContent='دخول'; }
+  const STATUS={ pending:'st-pending', confirmed:'st-confirmed', done:'st-done', cancelled:'st-cancelled' };
+  function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  /* ================= elements ================= */
+  const loginEl=document.getElementById('login'), appEl=document.getElementById('app');
+  const lgForm=document.getElementById('lgForm'), lgEmail=document.getElementById('lgEmail'), lgPass=document.getElementById('lgPass'),
+        lgBtn=document.getElementById('lgBtn'), lgErr=document.getElementById('lgErr'), lgNote=document.getElementById('lgNote'),
+        emailFld=document.getElementById('emailFld');
+  const whoNameEl=document.getElementById('whoName'), whoRoleEl=document.getElementById('whoRole');
+  const isLocal = Store.mode==='local';
+
+  /* ================= state ================= */
+  let ROLE=null, MY_STAFF=null, MY_NAME='';
+  let ALL=[], BLOCKS=[], STAFF=[], ACCOUNTS=[];
+  let tab='all', range='upcoming', q='', activeTab='cal';
+  let calDateStr=Utils.todayStr();
+  let unsub=null, unsubBlocks=null, unsubStaff=null;
+
+  /* ================= login ================= */
+  function setupLogin(){
+    if(isLocal){
+      emailFld.style.display='none';
+      document.getElementById('passLabel').textContent=t('loginCode');
+      lgNote.innerHTML = (lang==='ar')
+        ? 'الوضع المحلي. رمز المديرة الافتراضي قابل للتغيير من <b>firebase-config.js</b>.'
+        : 'Local mode. Default manager code is editable in <b>firebase-config.js</b>.';
+    } else {
+      lgNote.textContent = (lang==='ar') ? 'ادخلي ببريد وكلمة المرور المسجّلة في Firebase.' : 'Sign in with your Firebase email & password.';
+    }
+  }
+  lgForm.addEventListener('submit', async e=>{
+    e.preventDefault(); lgErr.textContent=''; lgBtn.disabled=true;
+    try{ await Store.signIn(lgEmail.value.trim(), lgPass.value); }
+    catch(err){ lgErr.textContent = isLocal ? t('loginCode')+' ✗' : '✗'; console.error(err); }
+    finally{ lgBtn.disabled=false; }
   });
   document.getElementById('logoutBtn').addEventListener('click', ()=>Store.signOut());
 
-  // ---------- state ----------
-  let ALL=[]; let BLOCKS=[]; let tab='all'; let range='upcoming'; let q='';
-  let unsub=null, unsubBlocks=null;
-  let view='cal'; let calDateStr=Utils.todayStr();
-
-  function onData(list){ ALL=list; if(view==='list') render(); else renderCalendar(); updateStats(); }
-  function onBlocks(list){ BLOCKS=list; if(view==='cal') renderCalendar(); }
-
-  document.getElementById('tabs').addEventListener('click', e=>{
-    const b=e.target.closest('.tab'); if(!b) return;
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-    b.classList.add('on'); tab=b.dataset.st; render();
+  /* ================= tab nav ================= */
+  document.getElementById('tabnav').addEventListener('click', e=>{
+    const a=e.target.closest('a[data-tab]'); if(!a) return;
+    e.preventDefault(); switchTab(a.dataset.tab);
   });
-  document.getElementById('rangeSel').addEventListener('change', e=>{ range=e.target.value; render(); });
-  document.getElementById('search').addEventListener('input', e=>{ q=e.target.value.trim().toLowerCase(); render(); });
-
-  // ---------- helpers ----------
-  function inRange(b){
-    if(range==='all') return true;
-    const today=Utils.todayStr();
-    const t=new Date(); t.setHours(0,0,0,0);
-    const tom=new Date(t); tom.setDate(t.getDate()+1);
-    const wk=new Date(t); wk.setDate(t.getDate()+6);
-    const d=b.date;
-    if(range==='today')    return d===today;
-    if(range==='tomorrow') return d===Utils.dateStr(tom);
-    if(range==='week')     return d>=today && d<=Utils.dateStr(wk);
-    if(range==='upcoming') return d>=today;
-    return true;
+  function switchTab(tabName){
+    if((tabName==='staff'||tabName==='settings') && ROLE!=='manager') tabName='cal';
+    activeTab=tabName;
+    document.querySelectorAll('#tabnav a').forEach(a=>a.classList.toggle('on', a.dataset.tab===tabName));
+    ['cal','list','staff','settings'].forEach(v=>document.getElementById('v-'+v).classList.toggle('on', v===tabName));
+    document.getElementById('statsRow').style.display = (tabName==='cal'||tabName==='list') ? 'grid' : 'none';
+    renderCurrent();
   }
-  function matchTab(b){ return tab==='all' ? true : b.status===tab; }
-  function matchQ(b){
-    if(!q) return true;
-    const hay=`${b.name} ${b.phone} ${Utils.prettyPhone(b.phone)} ${b.ref}`.toLowerCase();
-    return hay.includes(q);
+  function renderCurrent(){
+    if(!ROLE) return;
+    updateStats();
+    if(activeTab==='cal') renderCalendar();
+    else if(activeTab==='list') renderList();
+    else if(activeTab==='staff') renderStaff();
+    else if(activeTab==='settings') fillSettings();
   }
 
-  // ---------- stats ----------
+  /* ================= data scope (role) ================= */
+  function visibleBookings(){ return (ROLE==='staff') ? ALL.filter(b=>b.staff===MY_STAFF) : ALL; }
+  function visibleStaff(){ return (ROLE==='staff') ? Schedule.staffList().filter(s=>s.id===MY_STAFF) : Schedule.staffList(); }
+
+  /* ================= stats ================= */
   function updateStats(){
-    const today=Utils.todayStr();
-    const t=new Date(); t.setHours(0,0,0,0);
-    const wk=new Date(t); wk.setDate(t.getDate()+6); const wkStr=Utils.dateStr(wk);
-    const mn=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}`;
-    let today_=0, pend=0, week=0, rev=0;
-    const counts={all:0,pending:0,confirmed:0,done:0,cancelled:0};
-    ALL.forEach(b=>{
+    const list=visibleBookings();
+    const today=Utils.todayStr(); const t0=new Date(); t0.setHours(0,0,0,0);
+    const wk=new Date(t0); wk.setDate(t0.getDate()+6); const wkStr=Utils.dateStr(wk);
+    const mn=`${t0.getFullYear()}-${String(t0.getMonth()+1).padStart(2,'0')}`;
+    let today_=0,pend=0,week=0,rev=0; const counts={all:0,pending:0,confirmed:0,done:0,cancelled:0};
+    list.forEach(b=>{
       counts.all++; if(counts[b.status]!==undefined) counts[b.status]++;
-      if(b.status!=='cancelled'){
-        if(b.date===today) today_++;
-        if(b.date>=today && b.date<=wkStr) week++;
-      }
+      if(b.status!=='cancelled'){ if(b.date===today) today_++; if(b.date>=today&&b.date<=wkStr) week++; }
       if(b.status==='pending') pend++;
       if(b.status==='done' && (b.date||'').startsWith(mn)) rev+=(b.totalPrice||0);
     });
     document.getElementById('stToday').textContent=today_;
     document.getElementById('stPending').textContent=pend;
     document.getElementById('stWeek').textContent=week;
-    document.getElementById('stRev').innerHTML=`${rev} <s>ر.س</s>`;
+    document.getElementById('stRev').innerHTML=`${rev} <s>${SALON.currency}</s>`;
     document.getElementById('cAll').textContent=counts.all;
     document.getElementById('cPending').textContent=counts.pending;
     document.getElementById('cConfirmed').textContent=counts.confirmed;
     document.getElementById('cDone').textContent=counts.done;
     document.getElementById('cCancelled').textContent=counts.cancelled;
-    document.title = pend>0 ? `(${pend}) لوحة إدارة · OiO` : 'لوحة إدارة · OiO Nail Spa';
+    document.title = pend>0 ? `(${pend}) ${t('adminPanel')} · OiO` : 'لوحة إدارة · OiO Nail Spa';
   }
 
-  // ---------- render ----------
-  function render(){
-    updateStats();
-    const rows=ALL.filter(b=>matchTab(b)&&inRange(b)&&matchQ(b));
-    // group by date asc, time asc
-    const groups={};
-    rows.forEach(b=>{ (groups[b.date]=groups[b.date]||[]).push(b); });
-    const dates=Object.keys(groups).sort();
-    const host=document.getElementById('list');
-    if(!rows.length){
-      host.innerHTML=`<div class="empty"><div class="ic">🗓️</div><p>لا توجد حجوزات مطابقة.</p></div>`;
-      return;
-    }
-    host.innerHTML = dates.map(ds=>{
-      const list=groups[ds].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-      return `<div class="daygrp">
-        <div class="dayhd"><b>${dayTitle(ds)}</b><span class="dn">${list.length} موعد</span><span class="ln"></span></div>
-        ${list.map(card).join('')}
-      </div>`;
-    }).join('');
-    host.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click', onAction));
-  }
+  /* ================= calendar geometry ================= */
+  function geo(){ const OPEN=SALON.openHour, CLOSE=SALON.closeHour, PXMIN=1.3; return {OPEN,CLOSE,PXMIN,ds:OPEN*60,de:CLOSE*60,tm:(CLOSE-OPEN)*60}; }
 
-  function dayTitle(ds){
-    const d=Utils.parseDate(ds); const today=Utils.todayStr();
-    const t=new Date(); t.setHours(0,0,0,0); const tom=new Date(t); tom.setDate(t.getDate()+1);
-    let prefix='';
-    if(ds===today) prefix='اليوم · '; else if(ds===Utils.dateStr(tom)) prefix='غدًا · ';
-    else if(ds<today) prefix='سابق · ';
-    return `${prefix}${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)} ${d.getFullYear()}`;
-  }
-
-  function card(b){
-    const st=STATUS[b.status]||STATUS.pending;
-    const tel='0'+(Utils.normalizePhone(b.phone)).slice(3);
-    const svcs=(b.services||[]).map(s=>`<span class="chip">${s.ar||s.name||''}</span>`).join('');
-    const acts=actionsFor(b);
-    return `<div class="bk-card ${b.status==='cancelled'?'cancelled':''}">
-      <div class="bk-time">
-        <div class="t">${time12num(b.time)}</div>
-        <div class="ap">${time12ap(b.time)}</div>
-        <div class="dur">${b.totalDur?Utils.fmtDur(b.totalDur):''}</div>
-      </div>
-      <div class="bk-main">
-        <div class="bk-name"><b>${esc(b.name)}</b><span class="bk-ref">${b.ref||''}</span></div>
-        <div class="bk-contact">
-          <span class="ph">${Utils.prettyPhone(b.phone)}</span>
-          <a class="icbtn" href="tel:${tel}" aria-label="اتصال"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.8 9.8a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
-          <a class="icbtn wa" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener" aria-label="واتساب"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.06 24l1.68-6.13A11.8 11.8 0 1 1 12.06 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.2c1.65.98 3.23 1.56 5.45 1.56a9.9 9.9 0 1 0-9.89-9.9c0 2.33.68 4.07 1.83 5.9l-.99 3.62 3.6-.95z"/></svg></a>
-        </div>
-        <div class="bk-svcs">${svcs}</div>
-        ${b.notes?`<div class="bk-notes">📝 ${esc(b.notes)}</div>`:''}
-      </div>
-      <div class="bk-right">
-        <span class="badge ${st.cls}">${st.ar}</span>
-        <div class="bk-total">${b.totalPrice||0} <s>ر.س</s></div>
-        <div class="acts">${acts}</div>
-      </div>
-    </div>`;
-  }
-
-  function actionsFor(b){
-    const del=`<button class="act danger del" data-act="delete" data-id="${b.id}" title="حذف">🗑</button>`;
-    if(b.status==='pending')
-      return `<button class="act go" data-act="confirmed" data-id="${b.id}">تأكيد</button>
-              <button class="act" data-act="cancelled" data-id="${b.id}">إلغاء</button>${del}`;
-    if(b.status==='confirmed')
-      return `<button class="act ok" data-act="done" data-id="${b.id}">إنجاز</button>
-              <button class="act" data-act="cancelled" data-id="${b.id}">إلغاء</button>${del}`;
-    if(b.status==='done')
-      return `<button class="act" data-act="confirmed" data-id="${b.id}">↩ تراجع</button>${del}`;
-    // cancelled
-    return `<button class="act" data-act="pending" data-id="${b.id}">استعادة</button>${del}`;
-  }
-
-  async function onAction(e){
-    const el=e.currentTarget; const id=el.dataset.id, act=el.dataset.act;
-    if(act==='delete'){
-      if(!confirm('حذف هذا الحجز نهائيًا؟')) return;
-      el.disabled=true; try{ await Store.deleteBooking(id); }catch(err){ alert('تعذّر الحذف'); el.disabled=false; }
-      return;
-    }
-    el.disabled=true;
-    try{ await Store.updateBooking(id,{status:act}); }
-    catch(err){ alert('تعذّر تحديث الحالة'); el.disabled=false; console.error(err); }
-  }
-
-  // ---------- time format ----------
-  function time12num(t){ if(!t) return '—'; let [h,m]=t.split(':').map(Number); let hh=h%12; if(hh===0)hh=12; return `${hh}:${String(m).padStart(2,'0')}`; }
-  function time12ap(t){ if(!t) return ''; const h=Number(t.split(':')[0]); return h>=12?'مساءً':'صباحًا'; }
-  function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-  // ========================= CALENDAR VIEW =========================
-  const OPEN=SALON.openHour, CLOSE=SALON.closeHour, PXMIN=1.3;
-  const dayStartMin=OPEN*60, dayEndMin=CLOSE*60, totalMin=dayEndMin-dayStartMin;
-  const topPx=(min)=>(min-dayStartMin)*PXMIN;
-  const calView=document.getElementById('calView'), listView=document.getElementById('listView');
-
-  function setView(v){
-    view=v;
-    document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
-    calView.hidden = v!=='cal';
-    listView.hidden = v!=='list';
-    if(v==='cal') renderCalendar(); else render();
-  }
-  document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
-
-  function calLabel(ds){
-    const d=Utils.parseDate(ds), today=Utils.todayStr();
-    const t=new Date(); t.setHours(0,0,0,0); const tom=new Date(t); tom.setDate(t.getDate()+1);
-    let p=''; if(ds===today)p='اليوم · '; else if(ds===Utils.dateStr(tom))p='غدًا · ';
-    return p+`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
-  }
-  function hourLabel(h){ const ap=h>=12?'م':'ص'; let hh=h%12; if(hh===0)hh=12; return hh+ap; }
-  function shiftDate(days){ const d=Utils.parseDate(calDateStr); d.setDate(d.getDate()+days); calDateStr=Utils.dateStr(d); renderCalendar(); }
   document.getElementById('calPrev').addEventListener('click',()=>shiftDate(-1));
   document.getElementById('calNext').addEventListener('click',()=>shiftDate(1));
   document.getElementById('calToday').addEventListener('click',()=>{ calDateStr=Utils.todayStr(); renderCalendar(); });
+  function shiftDate(n){ const d=Utils.parseDate(calDateStr); d.setDate(d.getDate()+n); calDateStr=Utils.dateStr(d); renderCalendar(); }
+  function calLabel(ds){ const d=Utils.parseDate(ds), today=Utils.todayStr(); const t1=new Date();t1.setHours(0,0,0,0); const tom=new Date(t1);tom.setDate(t1.getDate()+1);
+    let p=''; if(ds===today)p=t('today')+' · '; else if(ds===Utils.dateStr(tom))p=(lang==='ar'?'غدًا · ':'Tomorrow · '); return p+`${tWd(d)} ${d.getDate()} ${tMo(d)}`; }
 
   function renderCalendar(){
-    document.getElementById('calDateLbl').textContent = calLabel(calDateStr);
+    const g=geo(); const topPx=m=>(m-g.ds)*g.PXMIN;
+    document.getElementById('calDateLbl').textContent=calLabel(calDateStr);
     const grid=document.getElementById('calGrid');
-    const staff=Schedule.staffList();
-    const known=new Set(staff.map(s=>s.id));
-    const dayB=ALL.filter(b=>b.date===calDateStr && b.status!=='cancelled');
-    const dayBlocks=BLOCKS.filter(b=>b.date===calDateStr);
+    const staff=visibleStaff();
+    const known=new Set(Schedule.staffList().map(s=>s.id));
+    const dayB=visibleBookings().filter(b=>b.date===calDateStr && b.status!=='cancelled');
+    const dayBlocks=BLOCKS.filter(b=>b.date===calDateStr && (ROLE!=='staff'||b.staff===MY_STAFF||b.staff==='all'));
     const cols=staff.slice();
-    if(dayB.some(b=>!known.has(b.staff))) cols.push({id:'__un', name:'غير معيّن', color:'#8d8175'});
-    const H=totalMin*PXMIN;
-    let html='<div class="cal-col gutter"><div class="cal-head"></div><div class="cal-body" style="height:'+H+'px;cursor:default">';
-    for(let h=OPEN;h<=CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px">'+hourLabel(h)+'</div>'; }
+    if(ROLE!=='staff' && dayB.some(b=>!known.has(b.staff))) cols.push({id:'__un',name:t('unassigned'),color:'#8d8175'});
+    const H=g.tm*g.PXMIN;
+    let html='<div class="cal-col gutter"><div class="cal-head"></div><div class="cal-body ro" style="height:'+H+'px">';
+    for(let h=g.OPEN;h<=g.CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px">'+hourLabel(h)+'</div>'; }
     html+='</div></div>';
     cols.forEach(s=>{
-      html+='<div class="cal-col"><div class="cal-head"><span class="sd" style="background:'+s.color+'"></span>'+esc(s.name)+'</div><div class="cal-body" data-staff="'+s.id+'" style="height:'+H+'px">';
-      for(let h=OPEN;h<=CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px"></div>'; }
+      const ro = (ROLE==='staff');
+      html+='<div class="cal-col"><div class="cal-head"><span class="sd" style="background:'+s.color+'"></span>'+esc(s.name)+'</div><div class="cal-body'+(ro?' ro':'')+'" data-staff="'+s.id+'" style="height:'+H+'px">';
+      for(let h=g.OPEN;h<=g.CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px"></div>'; }
       dayBlocks.filter(bl=>bl.staff===s.id||bl.staff==='all').forEach(bl=>{
-        const t=Utils.toMin(bl.start), e=Utils.toMin(bl.end);
-        html+='<div class="ev block" data-block="'+bl.id+'" style="top:'+topPx(t)+'px;height:'+Math.max(18,(e-t)*PXMIN-2)+'px"><div class="en">⛔ '+esc(bl.reason)+'</div><div class="es">'+Utils.pretty12(bl.start)+' – '+Utils.pretty12(bl.end)+'</div></div>';
+        const t1=Utils.toMin(bl.start),e=Utils.toMin(bl.end);
+        html+='<div class="ev block" data-block="'+bl.id+'" style="top:'+topPx(t1)+'px;height:'+Math.max(18,(e-t1)*g.PXMIN-2)+'px"><div class="en">⛔ '+esc(bl.reason)+'</div><div class="es">'+tTime(bl.start)+' – '+tTime(bl.end)+'</div></div>';
       });
-      dayB.filter(b=> b.staff===s.id || (s.id==='__un' && !known.has(b.staff))).forEach(b=>{
-        const t=Utils.toMin(b.time), dur=b.totalDur||30, h2=Math.max(20,dur*PXMIN-2);
+      dayB.filter(b=> b.staff===s.id || (s.id==='__un'&&!known.has(b.staff))).forEach(b=>{
+        const t1=Utils.toMin(b.time),dur=b.totalDur||30,h2=Math.max(20,dur*g.PXMIN-2);
         const svc=(b.services||[]).map(x=>x.ar||x.name||'').join('، ');
-        html+='<div class="ev st-'+b.status+'" data-bk="'+b.id+'" style="top:'+topPx(t)+'px;height:'+h2+'px"><div class="et">'+Utils.pretty12(b.time)+'</div><div class="en">'+esc(b.name)+'</div>'+(h2>40?'<div class="es">'+esc(svc)+'</div>':'')+'</div>';
+        html+='<div class="ev st-'+b.status+'" data-bk="'+b.id+'" style="top:'+topPx(t1)+'px;height:'+h2+'px"><div class="et">'+tTimeNum(b.time)+'</div><div class="en">'+esc(b.name)+'</div>'+(h2>40?'<div class="es">'+esc(svc)+'</div>':'')+'</div>';
       });
-      if(calDateStr===Utils.todayStr()){ const nm=new Date().getHours()*60+new Date().getMinutes(); if(nm>=dayStartMin&&nm<=dayEndMin) html+='<div class="cal-now" style="top:'+topPx(nm)+'px"></div>'; }
+      if(calDateStr===Utils.todayStr()){ const nm=new Date().getHours()*60+new Date().getMinutes(); if(nm>=g.ds&&nm<=g.de) html+='<div class="cal-now" style="top:'+topPx(nm)+'px"></div>'; }
       html+='</div></div>';
     });
     grid.innerHTML=html;
-    grid.querySelectorAll('[data-bk]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation(); openBkModal(el.dataset.bk);}));
-    grid.querySelectorAll('[data-block]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation(); if(confirm('حذف هذا الحظر؟')) Store.deleteBlock(el.dataset.block);}));
-    grid.querySelectorAll('.cal-body[data-staff]').forEach(body=>body.addEventListener('click',e=>{
-      if(e.target.closest('.ev')) return;
-      const rect=body.getBoundingClientRect(), y=e.clientY-rect.top;
-      let min=dayStartMin+Math.round((y/PXMIN)/SALON.slotMinutes)*SALON.slotMinutes;
-      min=Math.max(dayStartMin, Math.min(min, dayEndMin-SALON.slotMinutes));
-      openBlockModal(body.dataset.staff, Utils.fromMin(min));
-    }));
+    grid.querySelectorAll('[data-bk]').forEach(el=>el.addEventListener('click',ev=>{ev.stopPropagation();openBkModal(el.dataset.bk);}));
+    if(ROLE==='manager'){
+      grid.querySelectorAll('[data-block]').forEach(el=>el.addEventListener('click',ev=>{ev.stopPropagation(); if(confirm(t('confirmDelBlock'))) Store.deleteBlock(el.dataset.block);}));
+      grid.querySelectorAll('.cal-body[data-staff]').forEach(body=>body.addEventListener('click',ev=>{
+        if(ev.target.closest('.ev')) return;
+        const rect=body.getBoundingClientRect(), y=ev.clientY-rect.top;
+        let min=g.ds+Math.round((y/g.PXMIN)/SALON.slotMinutes)*SALON.slotMinutes;
+        min=Math.max(g.ds,Math.min(min,g.de-SALON.slotMinutes));
+        openBlockModal(body.dataset.staff, Utils.fromMin(min));
+      }));
+    }
   }
 
-  // ---------- booking detail modal ----------
+  /* ================= list ================= */
+  document.getElementById('tabs').addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(!b)return; document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); b.classList.add('on'); tab=b.dataset.st; renderList(); });
+  document.getElementById('rangeSel').addEventListener('change',e=>{ range=e.target.value; renderList(); });
+  document.getElementById('search').addEventListener('input',e=>{ q=e.target.value.trim().toLowerCase(); renderList(); });
+  function inRange(b){ if(range==='all')return true; const today=Utils.todayStr(); const t0=new Date();t0.setHours(0,0,0,0); const tom=new Date(t0);tom.setDate(t0.getDate()+1); const wk=new Date(t0);wk.setDate(t0.getDate()+6);
+    if(range==='today')return b.date===today; if(range==='tomorrow')return b.date===Utils.dateStr(tom); if(range==='week')return b.date>=today&&b.date<=Utils.dateStr(wk); if(range==='upcoming')return b.date>=today; return true; }
+  function matchTab(b){ return tab==='all'?true:b.status===tab; }
+  function matchQ(b){ if(!q)return true; return `${b.name} ${b.phone} ${Utils.prettyPhone(b.phone)} ${b.ref}`.toLowerCase().includes(q); }
+  function renderList(){
+    const rows=visibleBookings().filter(b=>matchTab(b)&&inRange(b)&&matchQ(b));
+    const groups={}; rows.forEach(b=>{(groups[b.date]=groups[b.date]||[]).push(b);});
+    const dates=Object.keys(groups).sort(); const host=document.getElementById('list');
+    if(!rows.length){ host.innerHTML=`<div class="empty"><div class="ic">🗓️</div><p>${t('noBookings')}</p></div>`; return; }
+    host.innerHTML=dates.map(ds=>{ const l=groups[ds].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+      return `<div class="daygrp"><div class="dayhd"><b>${dayTitle(ds)}</b><span class="dn">${l.length} ${t('appointmentsCount')}</span><span class="ln"></span></div>${l.map(card).join('')}</div>`; }).join('');
+    host.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click',onAction));
+  }
+  function dayTitle(ds){ const d=Utils.parseDate(ds), today=Utils.todayStr(); const t0=new Date();t0.setHours(0,0,0,0); const tom=new Date(t0);tom.setDate(t0.getDate()+1);
+    let p=''; if(ds===today)p=t('today')+' · '; else if(ds===Utils.dateStr(tom))p=(lang==='ar'?'غدًا · ':'Tomorrow · '); else if(ds<today)p=(lang==='ar'?'سابق · ':'Past · ');
+    return `${p}${tWd(d)} ${d.getDate()} ${tMo(d)} ${d.getFullYear()}`; }
+  function card(b){
+    const cls=STATUS[b.status]||'st-pending'; const tel='0'+Utils.normalizePhone(b.phone).slice(3);
+    const svcs=(b.services||[]).map(s=>`<span class="chip">${esc(s.ar||s.name||'')}</span>`).join('');
+    const stColor=Schedule.staffColor(b.staff), stName=Schedule.staffName(b.staff);
+    return `<div class="bk-card ${b.status==='cancelled'?'cancelled':''}">
+      <div class="bk-time"><div class="t">${tTimeNum(b.time)}</div><div class="ap">${tApShort(b.time)}</div><div class="dur">${b.totalDur?tDur(b.totalDur):''}</div></div>
+      <div class="bk-main">
+        <div class="bk-name"><b>${esc(b.name)}</b><span class="bk-ref">${b.ref||''}</span>${ROLE==='manager'?`<span class="bk-staff" style="background:${stColor}">${esc(stName)}</span>`:''}</div>
+        <div class="bk-contact"><span class="ph">${Utils.prettyPhone(b.phone)||'—'}</span>
+          ${b.phone?`<a class="icbtn" href="tel:${tel}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.8 9.8a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
+          <a class="icbtn wa" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.06 24l1.68-6.13A11.8 11.8 0 1 1 12.06 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.2c1.65.98 3.23 1.56 5.45 1.56a9.9 9.9 0 1 0-9.89-9.9c0 2.33.68 4.07 1.83 5.9l-.99 3.62 3.6-.95z"/></svg></a>`:''}
+        </div>
+        <div class="bk-svcs">${svcs}</div>${b.notes?`<div class="bk-notes">📝 ${esc(b.notes)}</div>`:''}
+      </div>
+      <div class="bk-right"><span class="badge ${cls}">${t(b.status)}</span><div class="bk-total">${b.totalPrice||0} <s>${SALON.currency}</s></div><div class="acts">${actionsFor(b)}</div></div>
+    </div>`;
+  }
+  function actionsFor(b){
+    const del = ROLE==='manager' ? `<button class="act danger del" data-act="delete" data-id="${b.id}">🗑</button>` : '';
+    if(b.status==='pending') return `<button class="act go" data-act="confirmed" data-id="${b.id}">${t('confirm')}</button><button class="act" data-act="cancelled" data-id="${b.id}">${t('cancel')}</button>${del}`;
+    if(b.status==='confirmed') return `<button class="act ok" data-act="done" data-id="${b.id}">${t('complete')}</button><button class="act" data-act="cancelled" data-id="${b.id}">${t('cancel')}</button>${del}`;
+    if(b.status==='done') return `<button class="act" data-act="confirmed" data-id="${b.id}">↩</button>${del}`;
+    return `<button class="act" data-act="pending" data-id="${b.id}">${t('restore')}</button>${del}`;
+  }
+  async function onAction(e){ const el=e.currentTarget, id=el.dataset.id, act=el.dataset.act;
+    if(act==='delete'){ if(!confirm(t('confirmDelBooking')))return; el.disabled=true; try{await Store.deleteBooking(id);}catch(err){el.disabled=false;} return; }
+    el.disabled=true; try{ await Store.updateBooking(id,{status:act}); }catch(err){ el.disabled=false; console.error(err); }
+  }
+
+  /* ================= booking modal ================= */
   const bkModal=document.getElementById('bkModal'), bkCard=document.getElementById('bkModalCard');
   function openBkModal(id){
-    const b=ALL.find(x=>x.id===id); if(!b) return;
-    const st=STATUS[b.status]||STATUS.pending;
-    const d=Utils.parseDate(b.date);
-    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
-    const tel='0'+Utils.normalizePhone(b.phone).slice(3);
+    const b=ALL.find(x=>x.id===id); if(!b)return;
+    const cls=STATUS[b.status]||'st-pending'; const d=Utils.parseDate(b.date);
+    const dl=`${tWd(d)} ${d.getDate()} ${tMo(d)}`; const tel='0'+Utils.normalizePhone(b.phone).slice(3);
+    const canManage = ROLE==='manager';
     const staffOpts=Schedule.staffList().map(s=>`<option value="${s.id}" ${s.id===b.staff?'selected':''}>${esc(s.name)}</option>`).join('');
     const svcs=(b.services||[]).map(s=>`<span class="chip">${esc(s.ar||s.name||'')}</span>`).join('');
     bkCard.innerHTML=`
       <h3>${esc(b.name)} <span class="bk-ref">${b.ref||''}</span></h3>
-      <p class="mdl-sub"><span class="badge ${st.cls}">${st.ar}</span></p>
-      <div class="mdl-row"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(b.time)}</span></div>
-      <div class="mdl-row"><span class="k">المدة</span><span class="v">${Utils.fmtDur(b.totalDur||0)}</span></div>
-      <div class="mdl-row"><span class="k">الجوال</span><span class="v" style="direction:ltr">${Utils.prettyPhone(b.phone)}</span></div>
-      <div class="mdl-row"><span class="k">الإجمالي</span><span class="v">${b.totalPrice||0} ر.س</span></div>
+      <p class="mdl-sub"><span class="badge ${cls}">${t(b.status)}</span></p>
+      <div class="mdl-row"><span class="k">${t('appointment')}</span><span class="v">${dl} · ${tTime(b.time)}</span></div>
+      <div class="mdl-row"><span class="k">${t('duration')}</span><span class="v">${tDur(b.totalDur||0)}</span></div>
+      <div class="mdl-row"><span class="k">${t('phone')}</span><span class="v" style="direction:ltr">${Utils.prettyPhone(b.phone)||'—'}</span></div>
+      <div class="mdl-row"><span class="k">${t('total')}</span><span class="v">${b.totalPrice||0} ${SALON.currency}</span></div>
       <div class="mdl-chips">${svcs}</div>
       ${b.notes?`<div class="bk-notes" style="margin-top:8px">📝 ${esc(b.notes)}</div>`:''}
-      <div class="mfld" style="margin-top:14px"><label>الفنية المسؤولة</label><select id="bkStaffSel">${staffOpts}</select></div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <a class="act" href="tel:${tel}">📞 اتصال</a>
-        <a class="act" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener">واتساب</a>
-      </div>
+      ${canManage?`<div class="mfld" style="margin-top:14px"><label>${t('assignedStaff')}</label><select id="bkStaffSel">${staffOpts}</select></div>`:''}
+      ${b.phone?`<div style="display:flex;gap:8px;margin-top:8px"><a class="act" href="tel:${tel}">📞 ${t('call')}</a><a class="act" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener">واتساب</a></div>`:''}
       <div class="mdl-acts">
-        ${b.status==='pending'?'<button class="act go" data-s="confirmed">تأكيد</button>':''}
-        ${b.status==='confirmed'?'<button class="act ok" data-s="done">إنجاز</button>':''}
-        ${b.status!=='cancelled'?'<button class="act" data-s="cancelled">إلغاء</button>':'<button class="act" data-s="pending">استعادة</button>'}
-        <button class="act danger" id="bkDel">حذف</button>
-        <button class="act" data-mclose>إغلاق</button>
+        ${b.status==='pending'?`<button class="act go" data-s="confirmed">${t('confirm')}</button>`:''}
+        ${b.status==='confirmed'?`<button class="act ok" data-s="done">${t('complete')}</button>`:''}
+        ${canManage&&b.status!=='cancelled'?`<button class="act" data-s="cancelled">${t('cancel')}</button>`:''}
+        ${canManage&&b.status==='cancelled'?`<button class="act" data-s="pending">${t('restore')}</button>`:''}
+        ${canManage?`<button class="act danger" id="bkDel">${t('delete')}</button>`:''}
+        <button class="act" data-mclose>${t('close')}</button>
       </div>`;
     bkModal.classList.add('on');
-    document.getElementById('bkStaffSel').addEventListener('change',e=>Store.updateBooking(id,{staff:e.target.value}));
+    const sel=document.getElementById('bkStaffSel'); if(sel) sel.addEventListener('change',ev=>Store.updateBooking(id,{staff:ev.target.value}));
     bkCard.querySelectorAll('[data-s]').forEach(btn=>btn.addEventListener('click',async()=>{ await Store.updateBooking(id,{status:btn.dataset.s}); closeModals(); }));
-    document.getElementById('bkDel').addEventListener('click',async()=>{ if(confirm('حذف هذا الحجز نهائيًا؟')){ await Store.deleteBooking(id); closeModals(); } });
+    const del=document.getElementById('bkDel'); if(del) del.addEventListener('click',async()=>{ if(confirm(t('confirmDelBooking'))){ await Store.deleteBooking(id); closeModals(); } });
   }
 
-  // ---------- block (unavailable) modal ----------
-  const blockModal=document.getElementById('blockModal');
-  const blkStaff=document.getElementById('blkStaff'), blkStart=document.getElementById('blkStart'), blkDur=document.getElementById('blkDur');
+  /* ================= block modal ================= */
+  const blockModal=document.getElementById('blockModal'), blkStaff=document.getElementById('blkStaff'), blkStart=document.getElementById('blkStart'), blkDur=document.getElementById('blkDur'), blkReason=document.getElementById('blkReason');
+  function fillBlockReasonOptions(){ if(!blkReason)return; blkReason.innerHTML=['reasonUnavail','reasonBreak','reasonLunch','reasonClean','reasonEvent'].map(k=>`<option value="${t(k)}">${t(k)}</option>`).join(''); }
   function fillBlockSelects(){
-    blkStaff.innerHTML='<option value="all">الكل (الصالون)</option>'+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
-    let st=''; for(let m=dayStartMin;m<dayEndMin;m+=SALON.slotMinutes){ const t=Utils.fromMin(m); st+=`<option value="${t}">${Utils.pretty12(t)}</option>`; } blkStart.innerHTML=st;
-    blkDur.innerHTML=[15,30,45,60,90,120,180].map(x=>`<option value="${x}">${Utils.fmtDur(x)}</option>`).join('');
-    blkDur.value='30';
+    const g=geo();
+    blkStaff.innerHTML=`<option value="all">${t('allSalon')}</option>`+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    let st=''; for(let m=g.ds;m<g.de;m+=SALON.slotMinutes){ const x=Utils.fromMin(m); st+=`<option value="${x}">${tTime(x)}</option>`; } blkStart.innerHTML=st;
+    blkDur.innerHTML=[15,30,45,60,90,120,180].map(x=>`<option value="${x}">${tDur(x)}</option>`).join(''); blkDur.value='30';
+    fillBlockReasonOptions();
   }
-  function openBlockModal(staffId, startHHMM){
-    fillBlockSelects();
-    blkStaff.value=(staffId && staffId!=='__un') ? staffId : 'all';
-    if(startHHMM) blkStart.value=startHHMM;
-    blockModal.classList.add('on');
-  }
-  document.getElementById('addBlockBtn').addEventListener('click',()=>openBlockModal('all', Utils.fromMin(dayStartMin)));
-  document.getElementById('blkSave').addEventListener('click',async()=>{
-    const start=blkStart.value, end=Utils.fromMin(Utils.toMin(start)+Number(blkDur.value));
-    await Store.createBlock({date:calDateStr, start, end, staff:blkStaff.value, reason:document.getElementById('blkReason').value});
-    closeModals();
-  });
+  function openBlockModal(staffId,start){ fillBlockSelects(); blkStaff.value=(staffId&&staffId!=='__un')?staffId:'all'; if(start)blkStart.value=start; blockModal.classList.add('on'); }
+  document.getElementById('addBlockBtn').addEventListener('click',()=>openBlockModal('all',Utils.fromMin(geo().ds)));
+  document.getElementById('blkSave').addEventListener('click',async()=>{ const start=blkStart.value,end=Utils.fromMin(Utils.toMin(start)+Number(blkDur.value)); await Store.createBlock({date:calDateStr,start,end,staff:blkStaff.value,reason:blkReason.value}); closeModals(); });
 
-  // ---------- manual booking (walk-in) ----------
-  const manualModal=document.getElementById('manualModal');
-  const mName=document.getElementById('mName'), mPhone=document.getElementById('mPhone'),
-        mServices=document.getElementById('mServices'), mStaff=document.getElementById('mStaff'),
-        mTime=document.getElementById('mTime'), mTotal=document.getElementById('mTotal'), mSave=document.getElementById('mSave');
+  /* ================= manual booking ================= */
+  const manualModal=document.getElementById('manualModal'), mName=document.getElementById('mName'), mPhone=document.getElementById('mPhone'),
+        mServices=document.getElementById('mServices'), mStaff=document.getElementById('mStaff'), mTime=document.getElementById('mTime'), mTotal=document.getElementById('mTotal'), mSave=document.getElementById('mSave');
   const mSel=new Set();
-  function mTotals(){ let p=0,d=0; mSel.forEach(id=>{const s=SERVICE_MAP[id]; if(s){p+=s.price;d+=s.dur;}}); return {p,d}; }
-  function updateMTotal(){ const {p,d}=mTotals(); mTotal.textContent = `${p} ر.س · ${Utils.fmtDur(d||0)}`; }
+  function mTot(){ let p=0,d=0; mSel.forEach(id=>{const s=SERVICE_MAP[id];if(s){p+=s.price;d+=s.dur;}}); return {p,d}; }
+  function updMTotal(){ const {p,d}=mTot(); mTotal.textContent=`${p} ${SALON.currency} · ${tDur(d||0)}`; }
   function fillManual(){
-    mServices.innerHTML = SERVICE_GROUPS.map(g=>`<div class="msvc-g">${g.title}</div>`+
-      g.items.map(it=>`<label class="msvc-i"><input type="checkbox" value="${it.id}"><span>${esc(it.ar)}</span><b>${it.price}</b></label>`).join('')).join('');
-    mSel.clear();
-    mServices.querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>{ c.checked?mSel.add(c.value):mSel.delete(c.value); updateMTotal(); }));
-    mStaff.innerHTML='<option value="">تلقائي (أول فنية متاحة)</option>'+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
-    let t=''; for(let m=dayStartMin;m<dayEndMin;m+=SALON.slotMinutes){ const x=Utils.fromMin(m); t+=`<option value="${x}">${Utils.pretty12(x)}</option>`; } mTime.innerHTML=t;
-    mName.value=''; mPhone.value=''; updateMTotal();
+    const g=geo();
+    mServices.innerHTML=SERVICE_GROUPS.map(grp=>`<div class="msvc-g">${grp.title}</div>`+grp.items.map(it=>`<label class="msvc-i"><input type="checkbox" value="${it.id}"><span>${esc(it.ar)}</span><b>${it.price}</b></label>`).join('')).join('');
+    mSel.clear(); mServices.querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>{c.checked?mSel.add(c.value):mSel.delete(c.value);updMTotal();}));
+    mStaff.innerHTML=`<option value="">${t('auto')}</option>`+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    let tm=''; for(let m=g.ds;m<g.de;m+=SALON.slotMinutes){const x=Utils.fromMin(m);tm+=`<option value="${x}">${tTime(x)}</option>`;} mTime.innerHTML=tm;
+    mName.value=''; mPhone.value=''; updMTotal();
   }
   document.getElementById('addManualBtn').addEventListener('click',()=>{ fillManual(); manualModal.classList.add('on'); });
   mSave.addEventListener('click',async()=>{
-    if(mName.value.trim().length<2){ alert('أدخلي اسم العميلة'); return; }
-    if(!mSel.size){ alert('اختاري خدمة واحدة على الأقل'); return; }
-    const {p,d}=mTotals();
-    const services=[...mSel].map(id=>{const s=SERVICE_MAP[id]; return {id,ar:s.ar,en:s.en,price:s.price,dur:s.dur};});
-    mSave.disabled=true; mSave.textContent='جارٍ الحفظ…';
-    try{
-      await Store.createBooking({ name:mName.value, phone:mPhone.value||'', services, totalPrice:p, totalDur:d,
-        date:calDateStr, time:mTime.value, staff:mStaff.value||undefined, status:'confirmed', source:'admin', notes:'' });
-      closeModals();
-    }catch(e){ alert('تعذّر حفظ الحجز'); console.error(e); }
-    finally{ mSave.disabled=false; mSave.textContent='حفظ الحجز'; }
+    if(mName.value.trim().length<2){ alert(t('noNameAlert')); return; }
+    if(!mSel.size){ alert(t('noSvcAlert')); return; }
+    const {p,d}=mTot(); const services=[...mSel].map(id=>{const s=SERVICE_MAP[id];return {id,ar:s.ar,en:s.en,price:s.price,dur:s.dur};});
+    mSave.disabled=true; mSave.textContent=t('saving');
+    try{ await Store.createBooking({name:mName.value,phone:mPhone.value||'',services,totalPrice:p,totalDur:d,date:calDateStr,time:mTime.value,staff:mStaff.value||undefined,status:'confirmed',source:'admin',notes:''}); closeModals(); }
+    catch(e){ alert('✗'); console.error(e); } finally{ mSave.disabled=false; mSave.textContent=t('saveBooking'); }
   });
 
-  function closeModals(){ [bkModal,blockModal,manualModal].forEach(m=>m.classList.remove('on')); }
-  [bkModal, blockModal, manualModal].forEach(m=>m.addEventListener('click',e=>{ if(e.target.classList.contains('mdl-sc')||e.target.closest('[data-mclose]')) closeModals(); }));
+  /* ================= STAFF management ================= */
+  const COLORS=['#5aa9d6','#52c7b8','#e29ec4','#a96a4a','#c4a47b','#8e7cc3','#e0a458','#7bbf6a'];
+  function renderStaff(){
+    const host=document.getElementById('staffGrid'); const staff=Schedule.staffList();
+    if(!staff.length){ host.innerHTML=`<div class="empty"><div class="ic">👩‍🔧</div><p>${t('noStaff')}</p></div>`; return; }
+    host.innerHTML=staff.map(s=>{
+      const acc=ACCOUNTS.find(a=>a.staffId===s.id);
+      return `<div class="stcard">
+        <div class="row1"><span class="dot" style="background:${s.color}"></span><span class="nm">${esc(s.name)}</span></div>
+        <div class="stbtns">
+          <button class="act" data-edit="${s.id}">${t('edit')}</button>
+          <button class="act danger" data-delstaff="${s.id}">${t('delete')}</button>
+        </div>
+        <div class="acct">
+          <span class="${acc?'has':''}">${acc?('✓ '+t('hasPage')):t('noPage')}</span>
+          ${acc?`<button class="act danger" data-delacct="${acc.id}">${t('removePage')}</button>`:`<button class="act go" data-addacct="${s.id}">${t('createLoginPage')}</button>`}
+        </div>
+      </div>`;
+    }).join('');
+    host.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openStaffModal(b.dataset.edit)));
+    host.querySelectorAll('[data-delstaff]').forEach(b=>b.addEventListener('click',async()=>{ if(confirm(t('confirmDelStaff'))) await Store.deleteStaff(b.dataset.delstaff); }));
+    host.querySelectorAll('[data-addacct]').forEach(b=>b.addEventListener('click',()=>openAcctModal(b.dataset.addacct)));
+    host.querySelectorAll('[data-delacct]').forEach(b=>b.addEventListener('click',async()=>{ if(confirm(t('confirmDelAcct'))){ await Store.deleteAccount(b.dataset.delacct); await reloadAccounts(); } }));
+  }
+  const staffModal=document.getElementById('staffModal'), stName=document.getElementById('stName'), stColors=document.getElementById('stColors');
+  let editStaffId=null, pickedColor=COLORS[0];
+  function openStaffModal(id){
+    editStaffId=id||null;
+    const s = id ? Schedule.staffList().find(x=>x.id===id) : null;
+    document.getElementById('staffModalTitle').textContent = id ? t('edit') : t('addStaff');
+    stName.value = s?s.name:''; pickedColor = s?s.color:COLORS[0];
+    stColors.innerHTML=COLORS.map(c=>`<span class="c ${c===pickedColor?'on':''}" data-c="${c}" style="background:${c}"></span>`).join('');
+    stColors.querySelectorAll('[data-c]').forEach(el=>el.addEventListener('click',()=>{ pickedColor=el.dataset.c; stColors.querySelectorAll('.c').forEach(x=>x.classList.toggle('on',x.dataset.c===pickedColor)); }));
+    staffModal.classList.add('on');
+  }
+  document.getElementById('addStaffBtn').addEventListener('click',()=>openStaffModal(null));
+  document.getElementById('stSave').addEventListener('click',async()=>{
+    if(stName.value.trim().length<2){ alert(t('noNameAlert')); return; }
+    if(editStaffId) await Store.updateStaff(editStaffId,{name:stName.value.trim(),color:pickedColor});
+    else await Store.createStaff({name:stName.value.trim(),color:pickedColor});
+    closeModals();
+  });
+
+  /* ================= account (staff login page) ================= */
+  const acctModal=document.getElementById('acctModal');
+  let acctStaffId=null;
+  function openAcctModal(staffId){
+    acctStaffId=staffId; const s=Schedule.staffList().find(x=>x.id===staffId);
+    document.getElementById('acctSub').textContent=(lang==='ar'?'لـ ':'For ')+(s?s.name:'');
+    document.getElementById('acctFb').style.display = isLocal?'none':'block';
+    document.getElementById('acctLocal').style.display = isLocal?'block':'none';
+    document.getElementById('acEmail').value=''; document.getElementById('acPass').value=''; document.getElementById('acCode').value='';
+    acctModal.classList.add('on');
+  }
+  document.getElementById('acSave').addEventListener('click',async()=>{
+    const s=Schedule.staffList().find(x=>x.id===acctStaffId); const name=s?s.name:'';
+    try{
+      if(isLocal){ const code=document.getElementById('acCode').value.trim(); if(code.length<3){alert('✗');return;} await Store.createAccount({name,role:'staff',staffId:acctStaffId,code}); }
+      else { const email=document.getElementById('acEmail').value.trim(), pass=document.getElementById('acPass').value; if(!email||pass.length<6){alert('✗');return;} await Store.createAccount({name,role:'staff',staffId:acctStaffId,email,pass}); }
+      await reloadAccounts(); closeModals();
+    }catch(e){ alert(e.message||'✗'); console.error(e); }
+  });
+  async function reloadAccounts(){ try{ ACCOUNTS=await Store.listAccounts(); }catch(e){ ACCOUNTS=[]; } if(activeTab==='staff') renderStaff(); }
+
+  /* ================= settings ================= */
+  function fillSettings(){
+    document.getElementById('setName').value=SALON.nameAr||SALON.name||'';
+    document.getElementById('setWa').value=SALON.whatsapp||'';
+    document.getElementById('setOpen').value=SALON.openHour;
+    document.getElementById('setClose').value=SALON.closeHour;
+    document.getElementById('setSlot').value=SALON.slotMinutes;
+    document.getElementById('setLead').value=SALON.bookingLeadMin;
+    document.getElementById('setMax').value=SALON.maxAdvanceDays;
+    const wrap=document.getElementById('setClosed'); const closed=SALON.closedWeekdays||[];
+    wrap.innerHTML=WD[lang].map((n,i)=>`<span class="wkchip ${closed.includes(i)?'on':''}" data-wd="${i}">${n}</span>`).join('');
+    wrap.querySelectorAll('[data-wd]').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('on')));
+  }
+  document.getElementById('saveSettingsBtn').addEventListener('click',async()=>{
+    const closed=[...document.querySelectorAll('#setClosed .wkchip.on')].map(el=>Number(el.dataset.wd));
+    const patch={ nameAr:document.getElementById('setName').value.trim(), whatsapp:document.getElementById('setWa').value.replace(/[^\d]/g,''),
+      openHour:Number(document.getElementById('setOpen').value), closeHour:Number(document.getElementById('setClose').value),
+      slotMinutes:Number(document.getElementById('setSlot').value), bookingLeadMin:Number(document.getElementById('setLead').value),
+      maxAdvanceDays:Number(document.getElementById('setMax').value), closedWeekdays:closed };
+    await Store.saveSettings(patch);
+    const m=document.getElementById('settingsSaved'); m.style.display='inline'; setTimeout(()=>m.style.display='none',2000);
+    renderCurrent();
+  });
+
+  /* ================= CSV ================= */
+  document.getElementById('csvBtn').addEventListener('click',()=>{
+    const rows=visibleBookings().filter(b=>matchTab(b)&&inRange(b)&&matchQ(b)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+    const head=['ref','name','phone','date','time','staff','services','total','status','notes'];
+    const lines=[head.join(',')].concat(rows.map(b=>[b.ref||'',b.name||'',"'"+Utils.normalizePhone(b.phone),b.date||'',b.time||'',Schedule.staffName(b.staff),(b.services||[]).map(s=>s.ar||s.name).join(' / '),b.totalPrice||0,b.status,(b.notes||'').replace(/\s+/g,' ')].map(csv).join(',')));
+    const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='oio-bookings-'+Utils.todayStr()+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+  });
+  function csv(v){ v=String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+
+  /* ================= modal close ================= */
+  function closeModals(){ [bkModal,blockModal,manualModal,staffModal,acctModal].forEach(m=>m.classList.remove('on')); }
+  [bkModal,blockModal,manualModal,staffModal,acctModal].forEach(m=>m.addEventListener('click',e=>{ if(e.target.classList.contains('mdl-sc')||e.target.closest('[data-mclose]')) closeModals(); }));
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModals(); });
 
-  // ---------- CSV ----------
-  document.getElementById('csvBtn').addEventListener('click', ()=>{
-    const rows=ALL.filter(b=>matchTab(b)&&inRange(b)&&matchQ(b))
-      .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-    const head=['رقم الحجز','الاسم','الجوال','التاريخ','الوقت','الخدمات','الإجمالي','الحالة','ملاحظات'];
-    const lines=[head.join(',')].concat(rows.map(b=>[
-      b.ref||'', b.name||'', "'"+Utils.normalizePhone(b.phone), b.date||'', b.time||'',
-      (b.services||[]).map(s=>s.ar||s.name).join(' / '),
-      b.totalPrice||0, (STATUS[b.status]||{}).ar||b.status, (b.notes||'').replace(/\s+/g,' ')
-    ].map(csvCell).join(',')));
-    const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-    a.download='oio-bookings-'+Utils.todayStr()+'.csv'; a.click(); URL.revokeObjectURL(a.href);
-  });
-  function csvCell(v){ v=String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
-
-  // ---------- auth wiring (last, so all state/functions are initialized) ----------
-  Store.onAuth(user=>{
+  /* ================= auth wiring ================= */
+  function applyRoleUI(){
+    const mgr = ROLE==='manager';
+    document.querySelectorAll('[data-mgr]').forEach(el=>el.style.display = mgr?'':'none');
+    document.getElementById('calActions').style.display = mgr?'flex':'none';
+    document.getElementById('calHint').style.display = mgr?'':'none';
+    whoNameEl.textContent = MY_NAME || (mgr?t('mgr'):t('stf'));
+    whoRoleEl.textContent = t(mgr?'mgr':'stf'); whoRoleEl.className = mgr?'mgr':'stf';
+    if(!mgr && (activeTab==='staff'||activeTab==='settings')) activeTab='cal';
+  }
+  Store.onAuth(async user=>{
+    if(user && user.role==='none'){
+      lgErr.textContent = (lang==='ar') ? 'لا تملك صلاحية الدخول — تواصلي مع المديرة.' : 'No access — contact the manager.';
+      Store.signOut(); return;
+    }
     if(user){
+      ROLE=user.role; MY_STAFF=user.staffId||null; MY_NAME=user.name||'';
       loginEl.classList.add('hide'); appEl.classList.add('show');
-      if(!unsub) unsub=Store.subscribeBookings(onData);
-      if(!unsubBlocks) unsubBlocks=Store.subscribeBlocks(onBlocks);
-      setView(view);
-    }else{
+      try{ await Store.ensureSettings(); }catch(e){}
+      if(!unsubStaff) unsubStaff=Store.subscribeStaff(list=>{ STAFF=list; renderCurrent(); });
+      if(!unsub) unsub=Store.subscribeBookings(list=>{ ALL=list; renderCurrent(); });
+      if(!unsubBlocks) unsubBlocks=Store.subscribeBlocks(list=>{ BLOCKS=list; if(activeTab==='cal') renderCalendar(); });
+      await reloadAccounts();
+      applyRoleUI(); switchTab(mgrDefaultTab());
+    } else {
+      ROLE=null; MY_STAFF=null;
       appEl.classList.remove('show'); loginEl.classList.remove('hide');
-      if(unsub){ unsub(); unsub=null; }
-      if(unsubBlocks){ unsubBlocks(); unsubBlocks=null; }
+      if(unsub){unsub();unsub=null;} if(unsubBlocks){unsubBlocks();unsubBlocks=null;} if(unsubStaff){unsubStaff();unsubStaff=null;}
       lgPass.value='';
     }
   });
+  function mgrDefaultTab(){ return 'cal'; }
+
+  /* ================= init ================= */
+  setupLogin();
+  applyLang();
 })();
 </script>
 </body>

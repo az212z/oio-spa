@@ -28,6 +28,7 @@ const SALON = {
   name:        "OiO Nail Spa",
   nameAr:      "أويو نيل سبا",
   whatsapp:    "966567109942",   // رقم واتساب الصالون (بدون + أو أصفار)
+  managerEmail:"",               // (وضع Firebase) بريد المديرة — يُمنح صلاحية كاملة تلقائيًا
   currency:    "ر.س",
   vatNote:     "شاملة ضريبة القيمة المضافة ١٥٪",
 
@@ -164,12 +165,15 @@ const Utils = {
   overlap(a1,a2,b1,b2){ return a1 < b2 && b1 < a2; }
 };
 
+/* ذاكرة مؤقتة للموظتات والإعدادات (تُحمَّل من التخزين وتُحدَّث ديناميكيًا) */
+let _staffCache = null;
+let _settingsLoaded = false;
+
 /* ── جدولة التوفّر (يراعي الفنيات + الحجوزات + الحظر + مدة الخدمة) ───────────── */
 const Schedule = {
   staffList(){
-    return (SALON.staff && SALON.staff.length)
-      ? SALON.staff
-      : Array.from({length:SALON.slotCapacity||1}, (_,i)=>({ id:"st"+(i+1), name:"كرسي "+(i+1), color:"#a96a4a" }));
+    const arr = (_staffCache && _staffCache.length) ? _staffCache : (SALON.staff || []);
+    return arr.length ? arr : [{ id:"main", name:SALON.nameAr||"الصالون", color:"#a96a4a" }];
   },
   _prep(slots, blocks){
     const S = (slots||[]).filter(x=>x.status!=="cancelled").map(x=>{
@@ -237,6 +241,7 @@ const Store = {
     const durMin = data.totalDur || SALON.slotMinutes;
     let staff = data.staff;
     if (!staff){
+      await this.ensureStaff();
       const [slots, blocks] = await Promise.all([ this.getDaySlots(data.date), this.getDayBlocks(data.date) ]);
       staff = Schedule.assignStaff(Utils.toMin(data.time), durMin, slots, blocks);
     }
@@ -378,36 +383,149 @@ const Store = {
     else { this._localSaveBlocks(this._localBlocks().filter(b=>b.id!==id)); }
   },
 
-  /* ---------- المصادقة (صفحة الإدارة) ---------- */
-  onAuth(cb){
+  /* ---------- الموظتات (إدارة ديناميكية) ---------- */
+  async ensureStaff(){
+    if (_staffCache) return _staffCache;
     if (this.mode === "firebase"){
-      return _auth.onAuthStateChanged(u => cb(u ? { email:u.email, uid:u.uid } : null));
+      try {
+        const snap = await _db.collection("staff").get();
+        const out=[]; snap.forEach(d=>out.push({ id:d.id, ...d.data() }));
+        out.sort((a,b)=>(a.order||0)-(b.order||0));
+        _staffCache = out.length ? out : (SALON.staff||[]).slice();
+      } catch(e){ _staffCache = (SALON.staff||[]).slice(); }
     } else {
-      const emit = () => {
-        const ok = sessionStorage.getItem("oio_admin")==="1";
-        cb(ok ? { email:"admin (محلي)", uid:"local" } : null);
-      };
-      window.addEventListener("oio-local-change", emit);
-      emit();
-      return () => window.removeEventListener("oio-local-change", emit);
+      const raw = localStorage.getItem("oio_staff");
+      _staffCache = raw ? JSON.parse(raw) : (SALON.staff||[]).slice();
+      if (!raw) localStorage.setItem("oio_staff", JSON.stringify(_staffCache));
+    }
+    return _staffCache;
+  },
+  subscribeStaff(cb){
+    if (this.mode === "firebase"){
+      return _db.collection("staff").onSnapshot(snap=>{
+        const out=[]; snap.forEach(d=>out.push({ id:d.id, ...d.data() }));
+        out.sort((a,b)=>(a.order||0)-(b.order||0));
+        _staffCache = out.length ? out : (SALON.staff||[]).slice();
+        cb(_staffCache);
+      });
+    }
+    const emit=()=>{ const raw=localStorage.getItem("oio_staff"); _staffCache = raw?JSON.parse(raw):(SALON.staff||[]).slice(); cb(_staffCache); };
+    window.addEventListener("oio-local-change", emit); emit();
+    return ()=>window.removeEventListener("oio-local-change", emit);
+  },
+  async createStaff({name, color}){
+    if (this.mode === "firebase"){
+      await _db.collection("staff").add({ name, color: color||"#a96a4a", order: Date.now() });
+    } else {
+      const arr = await this.ensureStaff();
+      arr.push({ id:"stf_"+Date.now(), name, color: color||"#a96a4a" });
+      _staffCache = arr; localStorage.setItem("oio_staff", JSON.stringify(arr));
+      window.dispatchEvent(new Event("oio-local-change"));
     }
   },
-  async signIn(email, pass){
+  async updateStaff(id, patch){
+    if (this.mode === "firebase"){ await _db.collection("staff").doc(id).update(patch); }
+    else {
+      const arr = await this.ensureStaff(); const i=arr.findIndex(s=>s.id===id);
+      if (i>=0){ arr[i]={...arr[i], ...patch}; _staffCache=arr; localStorage.setItem("oio_staff", JSON.stringify(arr)); window.dispatchEvent(new Event("oio-local-change")); }
+    }
+  },
+  async deleteStaff(id){
+    if (this.mode === "firebase"){ await _db.collection("staff").doc(id).delete(); }
+    else {
+      const arr=(await this.ensureStaff()).filter(s=>s.id!==id);
+      _staffCache=arr; localStorage.setItem("oio_staff", JSON.stringify(arr));
+      window.dispatchEvent(new Event("oio-local-change"));
+    }
+  },
+
+  /* ---------- الإعدادات (قابلة للتعديل من اللوحة) ---------- */
+  async ensureSettings(){
+    if (_settingsLoaded) return SALON;
+    let s=null;
     if (this.mode === "firebase"){
-      await _auth.signInWithEmailAndPassword(email, pass);
+      try { const d=await _db.collection("config").doc("main").get(); if (d.exists) s=d.data(); } catch(e){}
     } else {
-      if (pass !== LOCAL_ADMIN_PASSCODE) throw new Error("الرمز غير صحيح");
-      sessionStorage.setItem("oio_admin","1");
+      const raw=localStorage.getItem("oio_settings"); if (raw) s=JSON.parse(raw);
+    }
+    if (s) this._applySettings(s);
+    _settingsLoaded=true; return SALON;
+  },
+  _applySettings(s){
+    ["name","nameAr","whatsapp","openHour","closeHour","slotMinutes","bookingLeadMin","maxAdvanceDays"]
+      .forEach(k=>{ if (s[k]!==undefined && s[k]!=="") SALON[k]= (typeof SALON[k]==="number") ? Number(s[k]) : s[k]; });
+    if (Array.isArray(s.closedWeekdays)) SALON.closedWeekdays=s.closedWeekdays;
+  },
+  async saveSettings(patch){
+    this._applySettings(patch);
+    if (this.mode === "firebase"){ await _db.collection("config").doc("main").set(patch, {merge:true}); }
+    else { const cur=JSON.parse(localStorage.getItem("oio_settings")||"{}"); localStorage.setItem("oio_settings", JSON.stringify({...cur, ...patch})); window.dispatchEvent(new Event("oio-local-change")); }
+  },
+
+  /* ---------- المصادقة والأدوار (مديرة / موظفة) ---------- */
+  onAuth(cb){
+    if (this.mode === "firebase"){
+      return _auth.onAuthStateChanged(async u=>{
+        if (!u){ cb(null); return; }
+        let role="none", staffId=null, name=u.email;
+        if (SALON.managerEmail && u.email && u.email.toLowerCase()===SALON.managerEmail.toLowerCase()){
+          role="manager"; name="المديرة";
+        } else {
+          try {
+            const d=await _db.collection("users").doc(u.uid).get();
+            if (d.exists){ const x=d.data(); role=x.role||"staff"; staffId=x.staffId||null; name=x.name||u.email; }
+            // مستخدم بلا سجل صلاحية = لا صلاحية (أمان: يمنع التسجيل المفتوح من الوصول)
+          } catch(e){ role="none"; }
+        }
+        cb({ uid:u.uid, email:u.email, role, staffId, name });
+      });
+    }
+    const emit=()=>{ const raw=sessionStorage.getItem("oio_session"); cb(raw?JSON.parse(raw):null); };
+    window.addEventListener("oio-local-change", emit); emit();
+    return ()=>window.removeEventListener("oio-local-change", emit);
+  },
+  async signIn(email, code){
+    if (this.mode === "firebase"){
+      await _auth.signInWithEmailAndPassword(email, code);
+    } else {
+      const acc = this._accounts().find(a=>a.code===code);
+      if (!acc) throw new Error("رمز الدخول غير صحيح");
+      sessionStorage.setItem("oio_session", JSON.stringify({ uid:acc.id, name:acc.name, role:acc.role, staffId:acc.staffId||null }));
       window.dispatchEvent(new Event("oio-local-change"));
     }
   },
   async signOut(){
+    if (this.mode === "firebase"){ await _auth.signOut(); }
+    else { sessionStorage.removeItem("oio_session"); window.dispatchEvent(new Event("oio-local-change")); }
+  },
+  async listAccounts(){
     if (this.mode === "firebase"){
-      await _auth.signOut();
-    } else {
-      sessionStorage.removeItem("oio_admin");
-      window.dispatchEvent(new Event("oio-local-change"));
+      const snap=await _db.collection("users").get(); const out=[]; snap.forEach(d=>out.push({ id:d.id, ...d.data() })); return out;
     }
+    return this._accounts().filter(a=>a.role==="staff");
+  },
+  async createAccount({name, role, staffId, email, code, pass}){
+    if (this.mode === "firebase"){
+      let sec;
+      try { sec = firebase.app("sec"); } catch(e){ sec = firebase.initializeApp(FIREBASE_CONFIG, "sec"); }
+      const cred = await sec.auth().createUserWithEmailAndPassword(email, pass);
+      await _db.collection("users").doc(cred.user.uid).set({ role:role||"staff", staffId:staffId||null, name, email });
+      await sec.auth().signOut();
+    } else {
+      const arr=this._accounts();
+      if (arr.some(a=>a.code===code)) throw new Error("رمز الدخول مستخدم مسبقًا");
+      arr.push({ id:"acc_"+Date.now(), name, role:role||"staff", staffId:staffId||null, code });
+      localStorage.setItem("oio_accounts", JSON.stringify(arr)); window.dispatchEvent(new Event("oio-local-change"));
+    }
+  },
+  async deleteAccount(id){
+    if (this.mode === "firebase"){ await _db.collection("users").doc(id).delete(); }
+    else { localStorage.setItem("oio_accounts", JSON.stringify(this._accounts().filter(a=>a.id!==id))); window.dispatchEvent(new Event("oio-local-change")); }
+  },
+  _accounts(){
+    let arr=null; try { arr=JSON.parse(localStorage.getItem("oio_accounts")||"null"); } catch(e){}
+    if (!arr){ arr=[{ id:"mgr", name:"المديرة", role:"manager", code:LOCAL_ADMIN_PASSCODE }]; localStorage.setItem("oio_accounts", JSON.stringify(arr)); }
+    return arr;
   },
 
   /* ---------- مساعدات الوضع المحلي ---------- */

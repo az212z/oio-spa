@@ -855,6 +855,7 @@ section{position:relative}
 
   async function loadSlots(dateStr){
     const host=document.getElementById('bwSlots'), msg=document.getElementById('bwSlotsMsg');
+    try{ await Promise.all([Store.ensureSettings(), Store.ensureStaff()]); }catch(e){}
     const dur = totals().dur || SALON.slotMinutes;
     const cands = candidateSlots(dateStr, dur);
     if(!cands.length){
