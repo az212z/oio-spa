@@ -15,12 +15,12 @@
    انسخي القيم من: Firebase Console ← Project settings ← Your apps ← Web app
    هذه القيم عامة وآمنة للوضع في كود الواجهة (الحماية تتم عبر قواعد Firestore). */
 const FIREBASE_CONFIG = {
-  apiKey:            "",
-  authDomain:        "",
-  projectId:         "",
-  storageBucket:     "",
-  messagingSenderId: "",
-  appId:             ""
+  apiKey:            "AIzaSyDfPHqtLhmdi7ZN1TloElNrwtVJxjPmQic",
+  authDomain:        "oio-spa.firebaseapp.com",
+  projectId:         "oio-spa",
+  storageBucket:     "oio-spa.firebasestorage.app",
+  messagingSenderId: "977181388313",
+  appId:             "1:977181388313:web:7b5bfe294c354287880488"
 };
 
 /* ── ٢) إعدادات الصالون والمواعيد ─────────────────────────────────────────── */
@@ -28,7 +28,7 @@ const SALON = {
   name:        "OiO Nail Spa",
   nameAr:      "أويو نيل سبا",
   whatsapp:    "966567109942",   // رقم واتساب الصالون (بدون + أو أصفار)
-  managerEmail:"",               // (وضع Firebase) بريد المديرة — يُمنح صلاحية كاملة تلقائيًا
+  managerEmail:"manager@oio.sa", // (وضع Firebase) بريد المديرة — يُمنح صلاحية كاملة تلقائيًا
   currency:    "ر.س",
   vatNote:     "شاملة ضريبة القيمة المضافة ١٥٪",
 
