@@ -302,6 +302,10 @@ section{position:relative}
 @keyframes bwin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .bw-ph{font-family:var(--fa-d);font-size:19px;color:var(--ink);margin-bottom:2px}
 .bw-psub{font-size:13.5px;color:var(--ink3);margin-bottom:16px}
+.bw-giftsel{display:flex;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:4px;margin-bottom:18px}
+.bw-gopt{flex:1;border:none;background:none;border-radius:100px;padding:10px;font-family:var(--fa);font-size:14px;color:var(--ink2);cursor:pointer;transition:.25s var(--ease);display:flex;align-items:center;justify-content:center;gap:7px}
+.bw-gopt.on{background:var(--char);color:var(--bg)}
+.bw-gopt .gico{font-size:15px}
 .bw-grp{margin-bottom:17px}
 .bw-grp .gh{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
 .bw-grp .gh b{font-family:var(--fa-d);font-size:14px;color:var(--rust-d)}
@@ -681,17 +685,16 @@ section{position:relative}
         </div>
         <button class="bw-x" type="button" data-bw-close aria-label="إغلاق">✕</button>
       </div>
-      <div class="bw-steps">
-        <div class="s" data-st="0"><div class="bar"></div><span>الخدمات</span></div>
-        <div class="s" data-st="1"><div class="bar"></div><span>الموعد</span></div>
-        <div class="s" data-st="2"><div class="bar"></div><span>بياناتكِ</span></div>
-        <div class="s" data-st="3"><div class="bar"></div><span>تأكيد</span></div>
-      </div>
+      <div class="bw-steps" id="bwSteps"></div>
     </div>
     <div class="bw-body">
       <section class="bw-pane" data-pane="0">
+        <div class="bw-giftsel">
+          <button type="button" class="bw-gopt on" data-gift="0">حجز لي</button>
+          <button type="button" class="bw-gopt" data-gift="1">إهداء لشخص <span class="gico">🎁</span></button>
+        </div>
         <div class="bw-ph">اختاري خدماتكِ</div>
-        <div class="bw-psub">يمكنكِ اختيار أكثر من خدمة — الأسعار شاملة الضريبة.</div>
+        <div class="bw-psub" id="bwSvcSub">يمكنكِ اختيار أكثر من خدمة — الأسعار شاملة الضريبة.</div>
         <div id="bwServices"></div>
       </section>
       <section class="bw-pane" data-pane="1">
@@ -702,18 +705,33 @@ section{position:relative}
         <div id="bwSlotsMsg" class="bw-empty" style="display:none"></div>
       </section>
       <section class="bw-pane" data-pane="2">
-        <div class="bw-ph">بياناتكِ</div>
-        <div class="bw-psub">لنتمكّن من تأكيد حجزكِ والتواصل معكِ.</div>
+        <div class="bw-ph" id="bwDetailsTitle">بياناتكِ</div>
+        <div class="bw-psub" id="bwDetailsSub">لنتمكّن من تأكيد حجزكِ والتواصل معكِ.</div>
         <div class="bw-fld">
-          <label>الاسم</label>
+          <label id="bwNameLbl">الاسم</label>
           <input id="bwName" type="text" placeholder="الاسم الكريم" autocomplete="name">
         </div>
         <div class="bw-fld">
-          <label>رقم الجوال</label>
+          <label id="bwPhoneLbl">رقم الجوال</label>
           <input id="bwPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX" autocomplete="tel">
           <div class="hint" id="bwPhoneHint">نستخدمه لتأكيد الحجز فقط.</div>
         </div>
-        <div class="bw-fld">
+        <div id="bwGiftFields" style="display:none">
+          <div class="bw-fld">
+            <label>اسمكِ (المُهدية)</label>
+            <input id="bwGifterName" type="text" placeholder="اسمكِ">
+          </div>
+          <div class="bw-fld">
+            <label>جوالكِ</label>
+            <input id="bwGifterPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX">
+            <div class="hint" id="bwGifterHint">لنتواصل معكِ بخصوص الهدية.</div>
+          </div>
+          <div class="bw-fld">
+            <label>رسالة الإهداء (اختياري)</label>
+            <textarea id="bwGiftMsg" placeholder="كلمة جميلة تُرفق مع هديتكِ..."></textarea>
+          </div>
+        </div>
+        <div class="bw-fld" id="bwNotesWrap">
           <label>ملاحظات (اختياري)</label>
           <textarea id="bwNotes" placeholder="أي تفاصيل تساعدنا في خدمتكِ — تصميم معيّن، حساسية، ..."></textarea>
         </div>
@@ -798,11 +816,37 @@ section{position:relative}
   const notesEl = document.getElementById('bwNotes');
   const phoneHint = document.getElementById('bwPhoneHint');
 
-  let step=0, selDate=null, selTime=null, dayToken=0;
+  const gifterNameEl = document.getElementById('bwGifterName');
+  const gifterPhoneEl= document.getElementById('bwGifterPhone');
+  const giftMsgEl    = document.getElementById('bwGiftMsg');
+  const gifterHint   = document.getElementById('bwGifterHint');
+  const stepsHost    = document.getElementById('bwSteps');
+
+  let step=0, selDate=null, selTime=null, dayToken=0, isGift=false;
   const sel = new Set();
 
   function totals(){ let price=0,dur=0; sel.forEach(id=>{const s=SERVICE_MAP[id];if(s){price+=s.price;dur+=s.dur;}}); return {price,dur}; }
   function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  /* تسلسل الخطوات: الإهداء يتخطّى خطوة الموعد */
+  function flowPanes(){ return isGift ? [0,2,3] : [0,1,2,3]; }
+  function stepLabels(){ return isGift ? ['الخدمات','تفاصيل الإهداء','تأكيد'] : ['الخدمات','الموعد','بياناتكِ','تأكيد']; }
+  function renderSteps(){
+    const fp=flowPanes(), labels=stepLabels(), cur=fp.indexOf(step);
+    stepsHost.innerHTML = labels.map((lbl,i)=>`<div class="s${i===cur?' on':''}${i<cur?' done':''}"><div class="bar"></div><span>${lbl}</span></div>`).join('');
+  }
+  function setGift(g){
+    isGift=g;
+    document.querySelectorAll('.bw-gopt').forEach(b=>b.classList.toggle('on', b.dataset.gift===(g?'1':'0')));
+    document.getElementById('bwGiftFields').style.display = g?'block':'none';
+    document.getElementById('bwNotesWrap').style.display  = g?'none':'block';
+    document.getElementById('bwNameLbl').textContent  = g?'اسم المُهدى إليه':'الاسم';
+    document.getElementById('bwPhoneLbl').textContent = g?'جوال المُهدى إليه':'رقم الجوال';
+    document.getElementById('bwDetailsTitle').textContent = g?'تفاصيل الإهداء':'بياناتكِ';
+    document.getElementById('bwDetailsSub').textContent   = g?'بيانات من ستصلها الهدية، وبياناتكِ كمُهدية.':'لنتمكّن من تأكيد حجزكِ والتواصل معكِ.';
+    document.getElementById('bwSvcSub').textContent = g?'اختاري الخدمة (الخدمات) التي تودّين إهداءها.':'يمكنكِ اختيار أكثر من خدمة — الأسعار شاملة الضريبة.';
+    renderSteps(); updateFoot();
+  }
 
   function buildServices(){
     const host=document.getElementById('bwServices');
@@ -895,50 +939,64 @@ section{position:relative}
 
   function buildReview(){
     const host=document.getElementById('bwReview'); const t=totals();
-    const d=Utils.parseDate(selDate);
-    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
     const svc=[...sel].map(id=>SERVICE_MAP[id]);
+    let rows;
+    if(isGift){
+      rows=`
+        <div class="rr"><span class="k">المُهدى إليه</span><span class="v">${escapeHtml(nameEl.value.trim())}</span></div>
+        <div class="rr"><span class="k">جواله</span><span class="v" style="direction:ltr">${Utils.prettyPhone(phoneEl.value)}</span></div>
+        <div class="rr"><span class="k">من</span><span class="v">${escapeHtml(gifterNameEl.value.trim())}</span></div>
+        ${giftMsgEl.value.trim()?`<div class="rr"><span class="k">رسالتكِ</span><span class="v">${escapeHtml(giftMsgEl.value.trim())}</span></div>`:''}`;
+    }else{
+      const d=Utils.parseDate(selDate); const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+      rows=`
+        <div class="rr"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
+        <div class="rr"><span class="k">المدة التقديرية</span><span class="v">${Utils.fmtDur(t.dur)}</span></div>
+        <div class="rr"><span class="k">الاسم</span><span class="v">${escapeHtml(nameEl.value.trim())}</span></div>
+        <div class="rr"><span class="k">الجوال</span><span class="v" style="direction:ltr">${Utils.prettyPhone(phoneEl.value)}</span></div>
+        ${notesEl.value.trim()?`<div class="rr"><span class="k">ملاحظات</span><span class="v">${escapeHtml(notesEl.value.trim())}</span></div>`:''}`;
+    }
     host.innerHTML=`
       <div class="bw-rev">
         <div class="bw-svc-list">
           ${svc.map(s=>`<div class="sv"><span>${s.ar}</span><span class="p">${s.price} ${SALON.currency}</span></div>`).join('')}
         </div>
-        <div class="rr"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
-        <div class="rr"><span class="k">المدة التقديرية</span><span class="v">${Utils.fmtDur(t.dur)}</span></div>
-        <div class="rr"><span class="k">الاسم</span><span class="v">${escapeHtml(nameEl.value.trim())}</span></div>
-        <div class="rr"><span class="k">الجوال</span><span class="v" style="direction:ltr">${Utils.prettyPhone(phoneEl.value)}</span></div>
-        ${notesEl.value.trim()?`<div class="rr"><span class="k">ملاحظات</span><span class="v">${escapeHtml(notesEl.value.trim())}</span></div>`:''}
+        ${rows}
         <div class="bw-tot"><small>الإجمالي</small><b>${t.price} <s>${SALON.currency}</s></b></div>
       </div>
-      <div class="bw-mode">سيتم حفظ الحجز فورًا ويصلكِ رقم تأكيد.</div>`;
+      <div class="bw-mode">${isGift?'ستصل الهدية للمُهدى إليه عبر واتساب عند تأكيد الصالون.':'سيتم حفظ الحجز فورًا ويصلكِ رقم تأكيد.'}</div>`;
   }
 
   function showSuccess(ref, svc, t){
     const host=document.getElementById('bwSuccess');
-    const d=Utils.parseDate(selDate);
-    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
-    const lines=[
-      `مرحبًا، لديّ حجز في ${SALON.name} 🌸`,
-      `رقم الحجز: ${ref}`,
-      `الاسم: ${nameEl.value.trim()}`,
-      `الخدمات: ${svc.map(s=>s.ar).join('، ')}`,
-      `التاريخ: ${dateLabel}`,
-      `الوقت: ${Utils.pretty12(selTime)}`,
-      `الإجمالي: ${t.price} ${SALON.currency}`
-    ];
-    const wa=`https://wa.me/${SALON.whatsapp}?text=${encodeURIComponent(lines.join('\n'))}`;
+    let titleHtml, cardRows, waMsg, waLabel;
+    if(isGift){
+      const rec=nameEl.value.trim();
+      titleHtml=`<h3>تم تجهيز هديتكِ 🎁</h3><p>سنرسل الهدية إلى ${escapeHtml(rec)} عبر واتساب فور تأكيد الصالون. تواصلي معنا لإتمام التفاصيل.</p>`;
+      cardRows=`
+        <div class="l"><span class="k">المُهدى إليه</span><span class="v">${escapeHtml(rec)}</span></div>
+        <div class="l"><span class="k">الخدمات</span><span class="v">${svc.map(s=>s.ar).join('، ')}</span></div>
+        <div class="l"><span class="k">الإجمالي</span><span class="v">${t.price} ${SALON.currency}</span></div>`;
+      waMsg=[`مرحبًا، جهّزت هدية في ${SALON.name} 🎁`,`رقم الهدية: ${ref}`,`للمُهدى إليه: ${rec} (${Utils.prettyPhone(phoneEl.value)})`,`الخدمات: ${svc.map(s=>s.ar).join('، ')}`,`من: ${gifterNameEl.value.trim()}`,`الإجمالي: ${t.price} ${SALON.currency}`].join('\n');
+      waLabel='تأكيد الهدية عبر واتساب';
+    }else{
+      const d=Utils.parseDate(selDate); const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+      titleHtml=`<h3>تم استلام حجزكِ 🤍</h3><p>سعدنا بحجزكِ في ${SALON.nameAr}. احتفظي برقم الحجز، وسنؤكّده قريبًا.</p>`;
+      cardRows=`
+        <div class="l"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
+        <div class="l"><span class="k">الخدمات</span><span class="v">${svc.map(s=>s.ar).join('، ')}</span></div>
+        <div class="l"><span class="k">الإجمالي</span><span class="v">${t.price} ${SALON.currency}</span></div>`;
+      waMsg=[`مرحبًا، لديّ حجز في ${SALON.name} 🌸`,`رقم الحجز: ${ref}`,`الاسم: ${nameEl.value.trim()}`,`الخدمات: ${svc.map(s=>s.ar).join('، ')}`,`التاريخ: ${dateLabel}`,`الوقت: ${Utils.pretty12(selTime)}`,`الإجمالي: ${t.price} ${SALON.currency}`].join('\n');
+      waLabel='إرسال نسخة عبر واتساب (اختياري)';
+    }
+    const wa=`https://wa.me/${SALON.whatsapp}?text=${encodeURIComponent(waMsg)}`;
     host.innerHTML=`
       <div class="bw-ok">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
-        <h3>تم استلام حجزكِ 🤍</h3>
-        <p>سعدنا بحجزكِ في ${SALON.nameAr}. احتفظي برقم الحجز، وسنؤكّده قريبًا.</p>
+        ${titleHtml}
         <div class="bw-ref">${ref}</div>
-        <div class="bw-okcard">
-          <div class="l"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
-          <div class="l"><span class="k">الخدمات</span><span class="v">${svc.map(s=>s.ar).join('، ')}</span></div>
-          <div class="l"><span class="k">الإجمالي</span><span class="v">${t.price} ${SALON.currency}</span></div>
-        </div>
-        <a class="bw-btn wa" href="${wa}" target="_blank" rel="noopener" style="margin-bottom:10px">إرسال نسخة عبر واتساب (اختياري)</a>
+        <div class="bw-okcard">${cardRows}</div>
+        <a class="bw-btn wa" href="${wa}" target="_blank" rel="noopener" style="margin-bottom:10px">${waLabel}</a>
         <button type="button" class="bw-btn gho" id="bwDone" style="width:100%;justify-content:center">تم</button>
       </div>`;
     document.getElementById('bwDone').addEventListener('click', close);
@@ -947,9 +1005,9 @@ section{position:relative}
 
   function goto(n){
     step=n;
-    panes.forEach((p,i)=>p.classList.toggle('on', i===n));
+    panes.forEach(p=>p.classList.toggle('on', Number(p.dataset.pane)===n));
     body.scrollTop=0;
-    stepEls.forEach((s,i)=>{ s.classList.toggle('on', i===n); s.classList.toggle('done', i<n); });
+    renderSteps();
     foot.style.display = n>=4 ? 'none' : 'flex';
     if(n===1 && selDate) loadSlots(selDate);   // أعِد الحساب لو تغيّرت الخدمات/المدة
     if(n===3) buildReview();
@@ -959,7 +1017,11 @@ section{position:relative}
   function canNext(){
     if(step===0) return sel.size>0;
     if(step===1) return !!(selDate&&selTime);
-    if(step===2) return validName() && Utils.validPhone(phoneEl.value);
+    if(step===2){
+      const base = validName() && Utils.validPhone(phoneEl.value);
+      if(isGift) return base && gifterNameEl.value.trim().length>=2 && Utils.validPhone(gifterPhoneEl.value);
+      return base;
+    }
     return true;
   }
   function updateFoot(){
@@ -967,44 +1029,54 @@ section{position:relative}
     fsum.innerHTML = sel.size
       ? `<small>الإجمالي · ${Utils.fmtDur(t.dur)}</small><b>${t.price} <s>${SALON.currency}</s></b>`
       : `<small>لم تُحدّد خدمة بعد</small><b>—</b>`;
-    backBtn.style.visibility = step===0 ? 'hidden' : 'visible';
-    nextBtn.textContent = step===3 ? 'تأكيد الحجز' : 'التالي';
+    backBtn.style.visibility = (flowPanes().indexOf(step)===0) ? 'hidden' : 'visible';
+    nextBtn.textContent = step===3 ? (isGift?'تأكيد الإهداء':'تأكيد الحجز') : 'التالي';
     nextBtn.disabled = !canNext();
   }
 
-  backBtn.addEventListener('click',()=>{ if(step>0) goto(step-1); });
+  backBtn.addEventListener('click',()=>{ const fp=flowPanes(), cur=fp.indexOf(step); if(cur>0) goto(fp[cur-1]); });
   nextBtn.addEventListener('click', async ()=>{
     if(!canNext()) return;
-    if(step<3){ goto(step+1); return; }
+    const fp=flowPanes(), cur=fp.indexOf(step);
+    if(cur < fp.length-1){ goto(fp[cur+1]); return; }
     await submit();
   });
 
   async function submit(){
-    nextBtn.disabled=true; const old=nextBtn.textContent; nextBtn.textContent='جارٍ الحجز…';
+    nextBtn.disabled=true; const old=nextBtn.textContent; nextBtn.textContent='جارٍ الحفظ…';
     const t=totals();
     const svc=[...sel].map(id=>{const s=SERVICE_MAP[id];return {id,ar:s.ar,en:s.en,price:s.price,dur:s.dur};});
+    const data = isGift
+      ? { name:nameEl.value, phone:phoneEl.value, services:svc, totalPrice:t.price, totalDur:t.dur,
+          isGift:true, gifterName:gifterNameEl.value, gifterPhone:gifterPhoneEl.value, giftMessage:giftMsgEl.value, date:Utils.todayStr() }
+      : { name:nameEl.value, phone:phoneEl.value, notes:notesEl.value, services:svc, totalPrice:t.price, totalDur:t.dur, date:selDate, time:selTime };
     try{
-      const res=await Store.createBooking({ name:nameEl.value, phone:phoneEl.value, notes:notesEl.value, services:svc, totalPrice:t.price, totalDur:t.dur, date:selDate, time:selTime });
+      const res=await Store.createBooking(data);
       showSuccess(res.ref, svc, t);
-    }catch(e){ console.error(e); nextBtn.disabled=false; nextBtn.textContent=old; alert('تعذّر إتمام الحجز، تأكّدي من الاتصال وحاولي مرة أخرى.'); }
+    }catch(e){ console.error(e); nextBtn.disabled=false; nextBtn.textContent=old; alert('تعذّر الإتمام، تأكّدي من الاتصال وحاولي مرة أخرى.'); }
   }
 
-  [nameEl,phoneEl].forEach(el=>el.addEventListener('input',()=>{
-    if(el===phoneEl){
-      const v=phoneEl.value.trim();
-      if(!v){ phoneHint.textContent='نستخدمه لتأكيد الحجز فقط.'; phoneHint.classList.remove('e'); }
-      else if(Utils.validPhone(v)){ phoneHint.textContent='✓ '+Utils.prettyPhone(v); phoneHint.classList.remove('e'); }
-      else { phoneHint.textContent='رقم جوال سعودي غير صحيح (مثال: 0512345678).'; phoneHint.classList.add('e'); }
-    }
+  function phoneFeedback(el, hint, defText){
+    const v=el.value.trim();
+    if(!v){ hint.textContent=defText; hint.classList.remove('e'); }
+    else if(Utils.validPhone(v)){ hint.textContent='✓ '+Utils.prettyPhone(v); hint.classList.remove('e'); }
+    else { hint.textContent='رقم جوال سعودي غير صحيح (مثال: 0512345678).'; hint.classList.add('e'); }
+  }
+  [nameEl,phoneEl,gifterNameEl,gifterPhoneEl].forEach(el=>el.addEventListener('input',()=>{
+    if(el===phoneEl) phoneFeedback(phoneEl, phoneHint, isGift?'جوال من ستصله الهدية.':'نستخدمه لتأكيد الحجز فقط.');
+    if(el===gifterPhoneEl) phoneFeedback(gifterPhoneEl, gifterHint, 'لنتواصل معكِ بخصوص الهدية.');
     if(step===2) updateFoot();
   }));
 
   function reset(){
     sel.clear(); selDate=null; selTime=null;
     nameEl.value=''; phoneEl.value=''; notesEl.value='';
+    gifterNameEl.value=''; gifterPhoneEl.value=''; giftMsgEl.value='';
     phoneHint.textContent='نستخدمه لتأكيد الحجز فقط.'; phoneHint.classList.remove('e');
+    gifterHint.textContent='لنتواصل معكِ بخصوص الهدية.'; gifterHint.classList.remove('e');
     document.getElementById('bwSlots').innerHTML='';
     document.getElementById('bwSlotsMsg').style.display='none';
+    setGift(false);
   }
   function open(presetId){
     reset();
@@ -1012,6 +1084,7 @@ section{position:relative}
     buildServices(); buildDates(); goto(0);
     bw.classList.add('on'); bw.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
   }
+  document.querySelectorAll('.bw-gopt').forEach(b=>b.addEventListener('click',()=>setGift(b.dataset.gift==='1')));
   function close(){ bw.classList.remove('on'); bw.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
 
   document.querySelectorAll('[data-book]').forEach(el=>el.addEventListener('click',e=>{ e.preventDefault(); open(el.getAttribute('data-book')||null); }));

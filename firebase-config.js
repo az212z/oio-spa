@@ -238,9 +238,10 @@ const Store = {
      خالية من البيانات الشخصية ليقرأها الموقع لحساب التوفّر.        */
   async createBooking(data){
     const ref = Utils.makeRef();
+    const isGift = !!data.isGift;
     const durMin = data.totalDur || SALON.slotMinutes;
-    let staff = data.staff;
-    if (!staff){
+    let staff = data.staff || null;
+    if (!isGift && !staff){                 // الهدية بلا موعد محدّد ⇒ بلا إسناد فنية
       await this.ensureStaff();
       const [slots, blocks] = await Promise.all([ this.getDaySlots(data.date), this.getDayBlocks(data.date) ]);
       staff = Schedule.assignStaff(Utils.toMin(data.time), durMin, slots, blocks);
@@ -253,19 +254,26 @@ const Store = {
       totalPrice: data.totalPrice || 0,
       totalDur:   durMin,
       date: data.date,
-      time: data.time,
+      time: isGift ? "" : (data.time||""),
       notes: (data.notes||"").trim(),
       status: data.status || "pending",
       source: data.source || "web",
-      staff
+      staff: staff || "",
+      isGift,
+      gifterName:  (data.gifterName||"").trim(),
+      gifterPhone: data.gifterPhone ? Utils.normalizePhone(data.gifterPhone) : "",
+      giftMessage: (data.giftMessage||"").trim()
     };
 
     if (this.mode === "firebase"){
       const bRef = _db.collection("bookings").doc();
-      const sRef = _db.collection("slots").doc();
       const batch = _db.batch();
-      batch.set(bRef, { ...rec, slotId:sRef.id, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-      batch.set(sRef, { date:rec.date, time:rec.time, durMin, staff, status:rec.status, bookingId:bRef.id });
+      let slotId = "";
+      if (!isGift && rec.time){            // أنشئ نسخة جدولة فقط للحجوزات المجدولة
+        const sRef = _db.collection("slots").doc(); slotId = sRef.id;
+        batch.set(sRef, { date:rec.date, time:rec.time, durMin, staff, status:rec.status, bookingId:bRef.id });
+      }
+      batch.set(bRef, { ...rec, slotId, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
       await batch.commit();
       return { id: bRef.id, ref, staff };
     } else {
@@ -294,7 +302,7 @@ const Store = {
       return out.filter(s => s.status !== "cancelled");
     }
     return this._localAll()
-      .filter(b => b.date===dateStr && b.status!=="cancelled")
+      .filter(b => b.date===dateStr && b.status!=="cancelled" && b.time && !b.isGift)
       .map(b => ({ id:b.id, date:b.date, time:b.time, durMin:b.totalDur, staff:b.staff, status:b.status, bookingId:b.id }));
   },
 

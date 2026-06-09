@@ -48,9 +48,9 @@ service cloud.firestore {
 
     // الحجوزات: تحوي بيانات العميلة — للمنتسبات فقط
     match /bookings/{id} {
-      allow create: if request.resource.data.status == 'pending'
+      allow create: if isManager() || (request.resource.data.status == 'pending'
                     && request.resource.data.name is string && request.resource.data.phone is string
-                    && request.resource.data.date is string && request.resource.data.time is string;
+                    && request.resource.data.date is string && request.resource.data.time is string);
       allow read, update: if signedIn();
       allow delete: if isManager();
     }
