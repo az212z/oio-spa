@@ -48,7 +48,12 @@ const SALON = {
 
   closedWeekdays:  [],   // أيام الإغلاق (0=الأحد .. 6=السبت). مثال للجمعة: [5]
   bookingLeadMin:  60,   // لا يمكن الحجز خلال آخر (٦٠) دقيقة قبل الموعد
-  maxAdvanceDays:  30    // أقصى مدى للحجز المسبق بالأيام
+  maxAdvanceDays:  30,   // أقصى مدى للحجز المسبق بالأيام
+
+  /* الاحتفاظ بالعميلات */
+  loyaltyEvery:    6,    // كل (٦) زيارات منجزة = مكافأة ولاء
+  rebookDays:      30,   // عميلة لم تعد منذ (٣٠) يومًا تظهر «للمتابعة»
+  reviewUrl:       "https://search.google.com/local/writereview?placeid=" // ← الصقي placeid أو رابط تقييم Google
 };
 
 /* رمز سري لصفحة الإدارة في حال عدم ربط Firebase (الوضع المحلي فقط) */

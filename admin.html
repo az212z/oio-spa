@@ -194,6 +194,32 @@ button{font-family:inherit;cursor:pointer}
 .st-confirmed{background:rgba(58,124,165,.14);color:#2c6280}
 .st-done{background:rgba(31,170,85,.14);color:#178045}
 .st-cancelled{background:rgba(192,57,43,.12);color:#a4321f}
+.st-noshow{background:rgba(140,129,117,.18);color:#6b6256}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.segb{font-size:13px;padding:7px 14px;border-radius:100px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer}
+.segb.on{background:var(--char);color:#fff;border-color:var(--char)}
+.segb .c{font-family:var(--fd);font-size:11px;color:var(--ink3);margin-inline-start:4px}
+.segb.on .c{color:var(--sand)}
+.cust-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.cust-card .chk{width:18px;height:18px;accent-color:var(--rust);flex:none;margin-top:3px}
+.cust-card .ci{flex:1;min-width:160px}
+.cust-card .ci .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cust-card .ci .nm b{font-family:var(--fa-d);font-size:16px}
+[dir=ltr] .cust-card .ci .nm b{font-family:var(--fu);font-weight:600}
+.cust-card .ci .ph{font-family:var(--fd);font-size:13px;color:var(--ink3);direction:ltr;display:block;margin-top:2px}
+.cust-card .ci .svcs{font-size:11.5px;color:var(--ink3);margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:340px}
+.cust-stats{display:flex;gap:16px;flex:none;text-align:center}
+.cust-stats .s small{font-family:var(--fu);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);display:block}
+.cust-stats .s b{font-family:var(--fd);font-size:18px;color:var(--ink)}
+.cust-card .cacts{display:flex;gap:6px;flex-wrap:wrap;flex:none;width:100%;border-top:1px dashed var(--line2);padding-top:10px}
+.tagb{font-family:var(--fu);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:100px}
+.tag-vip{background:rgba(196,164,123,.22);color:#8a6a32}
+.tag-due{background:rgba(58,124,165,.16);color:#2c6280}
+.tag-reward{background:rgba(31,170,85,.16);color:#178045}
+.cbtn{font-size:12px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
+.cbtn:hover{border-color:var(--ink);color:var(--ink)}
+.cbtn.wa{border-color:#25d366;color:#1a9e4b}.cbtn.wa:hover{background:#25d366;color:#fff}
+.cbtn svg{width:13px;height:13px;fill:currentColor}
 .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .act{font-size:12.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.22s}
 .act:hover{border-color:var(--ink);color:var(--ink)}
@@ -468,13 +494,20 @@ button{font-family:inherit;cursor:pointer}
         <textarea id="bcastMsg" data-i18n-ph="broadcastPh" placeholder="مثال: عروض هذا الأسبوع في OiO 🌸 خصم ٢٠٪ على البياب! احجزي الآن."></textarea>
         <div class="bcast-acts">
           <button class="btn-wa" id="bcastSend"><svg viewBox="0 0 24 24"><path d="M.06 24l1.68-6.13A11.8 11.8 0 1 1 12.06 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.2c1.65.98 3.23 1.56 5.45 1.56a9.9 9.9 0 1 0-9.89-9.9c0 2.33.68 4.07 1.83 5.9l-.99 3.62 3.6-.95z"/></svg> <span data-i18n="broadcastSend">إرسال للمحدّدين</span></button>
+          <button class="csv" id="bcastAll" data-i18n="selectAll">تحديد الكل</button>
           <button class="csv" id="bcastCopy" data-i18n="copyNumbers">نسخ الأرقام</button>
           <span class="bcast-count" id="bcastCount"></span>
         </div>
       </div>
 
       <div style="margin-bottom:12px"><input class="search" id="custSearch" type="search" data-i18n-ph="custSearchPh" placeholder="بحث بالاسم أو الجوال…" style="width:100%"></div>
-      <div class="cust-table" id="custTable"></div>
+      <div class="seg" id="custSeg">
+        <button class="segb on" data-seg="all"><span data-i18n="segAll">الكل</span> <span class="c" id="segcAll">0</span></button>
+        <button class="segb" data-seg="due"><span data-i18n="segDue">للمتابعة</span> <span class="c" id="segcDue">0</span></button>
+        <button class="segb" data-seg="reward"><span data-i18n="segReward">ولاء جاهز</span> <span class="c" id="segcReward">0</span></button>
+        <button class="segb" data-seg="vip"><span data-i18n="segVip">مميزات</span> <span class="c" id="segcVip">0</span></button>
+      </div>
+      <div id="custTable"></div>
     </section>
   </div>
 </div>
@@ -602,7 +635,12 @@ button{font-family:inherit;cursor:pointer}
       visits:"زيارات", spent:"الإجمالي", lastVisit:"آخر زيارة", selectAll:"تحديد الكل",
       gift:"هدية", recipient:"المُهدى إليه", gifter:"المُهدي", giftMsg:"رسالة الإهداء",
       confirmSendGift:"تأكيد الهدية وإرسال رسالة واتساب للمُهدى إليه؟", noCustomers:"لا يوجد عملاء بعد.",
-      noMsgAlert:"اكتبي نص الرسالة أولًا", noSelAlert:"اختاري عميلة واحدة على الأقل", copied:"تم نسخ الأرقام"
+      noMsgAlert:"اكتبي نص الرسالة أولًا", noSelAlert:"اختاري عميلة واحدة على الأقل", copied:"تم نسخ الأرقام",
+      noShow:"لم تحضر", markNoShow:"لم تحضر", remind:"تذكير", reminder:"تذكير واتساب",
+      segAll:"الكل", segDue:"للمتابعة", segReward:"ولاء جاهز", segVip:"مميزات",
+      tagVip:"مميزة", tagDue:"للمتابعة", tagReward:"مكافأة جاهزة",
+      winBack:"دعوة للعودة", sendReward:"إرسال مكافأة", askReview:"طلب تقييم",
+      lastSeen:"آخر زيارة", daysAgo:"يومًا", today2:"اليوم", noRetention:"لا يوجد عملاء في هذه الفئة."
     },
     en:{
       loginTitle:"Admin Panel", adminPanel:"Admin Panel", email:"Email", password:"Password",
@@ -643,7 +681,12 @@ button{font-family:inherit;cursor:pointer}
       visits:"Visits", spent:"Total", lastVisit:"Last visit", selectAll:"Select all",
       gift:"Gift", recipient:"Recipient", gifter:"From", giftMsg:"Gift message",
       confirmSendGift:"Confirm gift and send a WhatsApp to the recipient?", noCustomers:"No customers yet.",
-      noMsgAlert:"Write the message first", noSelAlert:"Select at least one customer", copied:"Numbers copied"
+      noMsgAlert:"Write the message first", noSelAlert:"Select at least one customer", copied:"Numbers copied",
+      noShow:"No-show", markNoShow:"No-show", remind:"Remind", reminder:"WhatsApp reminder",
+      segAll:"All", segDue:"Follow-up", segReward:"Reward ready", segVip:"VIP",
+      tagVip:"VIP", tagDue:"Follow-up", tagReward:"Reward ready",
+      winBack:"Win-back", sendReward:"Send reward", askReview:"Ask review",
+      lastSeen:"Last visit", daysAgo:"days ago", today2:"today", noRetention:"No customers in this segment."
     }
   };
   let lang = localStorage.getItem('oio_lang') || 'ar';
@@ -675,7 +718,7 @@ button{font-family:inherit;cursor:pointer}
   function tDur(min){ const h=Math.floor(min/60),m=min%60; if(lang==='ar') return Utils.fmtDur(min); if(h&&m)return `${h}h ${m}m`; if(h)return `${h}h`; return `${m}m`; }
   function hourLabel(h){ let hh=h%12||12; return lang==='ar'?(hh+(h>=12?'م':'ص')):(hh+(h>=12?'p':'a')); }
 
-  const STATUS={ pending:'st-pending', confirmed:'st-confirmed', done:'st-done', cancelled:'st-cancelled' };
+  const STATUS={ pending:'st-pending', confirmed:'st-confirmed', done:'st-done', cancelled:'st-cancelled', noShow:'st-noshow' };
   function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
   /* ================= elements ================= */
@@ -851,6 +894,18 @@ button{font-family:inherit;cursor:pointer}
     ].filter(Boolean);
     return `https://wa.me/${Utils.normalizePhone(b.phone)}?text=${encodeURIComponent(lines.join('\n'))}`;
   }
+  function reminderWaUrl(b){
+    const d=Utils.parseDate(b.date); const dl=`${tWd(d)} ${d.getDate()} ${tMo(d)}`;
+    const svc=(b.services||[]).map(s=>s.ar||s.name).join('، ');
+    const lines=[
+      `تذكير بموعدكِ في ${SALON.nameAr||SALON.name} 🌸`,
+      `${b.name}،`,
+      `الموعد: ${dl} الساعة ${tTime(b.time)}`,
+      svc?`الخدمات: ${svc}`:'',
+      `بانتظاركِ! للتعديل أو الإلغاء تواصلي معنا.`
+    ].filter(Boolean);
+    return `https://wa.me/${Utils.normalizePhone(b.phone)}?text=${encodeURIComponent(lines.join('\n'))}`;
+  }
   function card(b){
     const cls=STATUS[b.status]||'st-pending'; const tel='0'+Utils.normalizePhone(b.phone).slice(3);
     const svcs=(b.services||[]).map(s=>`<span class="chip">${esc(s.ar||s.name||'')}</span>`).join('');
@@ -876,8 +931,9 @@ button{font-family:inherit;cursor:pointer}
   const TRASH_SVG='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>';
   function actionsFor(b){
     const del = ROLE==='manager' ? `<button class="act danger del" data-act="delete" data-id="${b.id}" title="${t('delete')}">${TRASH_SVG}</button>` : '';
-    if(b.status==='pending') return `<button class="act go" data-act="confirmed" data-id="${b.id}">${t('confirm')}</button><button class="act" data-act="cancelled" data-id="${b.id}">${t('cancel')}</button>${del}`;
-    if(b.status==='confirmed') return `<button class="act ok" data-act="done" data-id="${b.id}">${t('complete')}</button><button class="act" data-act="cancelled" data-id="${b.id}">${t('cancel')}</button>${del}`;
+    const remind = (b.phone && !b.isGift && (b.status==='pending'||b.status==='confirmed')) ? `<a class="act" href="${reminderWaUrl(b)}" target="_blank" rel="noopener">${t('remind')}</a>` : '';
+    if(b.status==='pending') return `<button class="act go" data-act="confirmed" data-id="${b.id}">${t('confirm')}</button>${remind}<button class="act" data-act="cancelled" data-id="${b.id}">${t('cancel')}</button>${del}`;
+    if(b.status==='confirmed') return `<button class="act ok" data-act="done" data-id="${b.id}">${t('complete')}</button>${remind}<button class="act" data-act="noShow" data-id="${b.id}">${t('markNoShow')}</button>${del}`;
     if(b.status==='done') return `<button class="act" data-act="confirmed" data-id="${b.id}">${t('restore')}</button>${del}`;
     return `<button class="act" data-act="pending" data-id="${b.id}">${t('restore')}</button>${del}`;
   }
@@ -912,12 +968,13 @@ button{font-family:inherit;cursor:pointer}
       <div class="mdl-chips">${svcs}</div>
       ${b.notes?`<div class="bk-notes" style="margin-top:8px">${esc(b.notes)}</div>`:''}
       ${(canManage&&!b.isGift)?`<div class="mfld" style="margin-top:14px"><label>${t('assignedStaff')}</label><select id="bkStaffSel">${staffOpts}</select></div>`:''}
-      ${b.phone?`<div style="display:flex;gap:8px;margin-top:10px"><a class="act" href="tel:${tel}">${t('call')}</a><a class="act" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener">واتساب</a></div>`:''}
+      ${b.phone?`<div style="display:flex;gap:8px;margin-top:10px"><a class="act" href="tel:${tel}">${t('call')}</a><a class="act" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener">واتساب</a>${(!b.isGift&&(b.status==='pending'||b.status==='confirmed'))?`<a class="act" href="${reminderWaUrl(b)}" target="_blank" rel="noopener">${t('reminder')}</a>`:''}</div>`:''}
       <div class="mdl-acts">
-        ${b.status==='pending'?`<button class="act go" data-s="confirmed">${b.isGift?t('confirm'):t('confirm')}</button>`:''}
+        ${b.status==='pending'?`<button class="act go" data-s="confirmed">${t('confirm')}</button>`:''}
         ${b.status==='confirmed'?`<button class="act ok" data-s="done">${t('complete')}</button>`:''}
-        ${canManage&&b.status!=='cancelled'?`<button class="act" data-s="cancelled">${t('cancel')}</button>`:''}
-        ${canManage&&b.status==='cancelled'?`<button class="act" data-s="pending">${t('restore')}</button>`:''}
+        ${b.status==='confirmed'?`<button class="act" data-s="noShow">${t('markNoShow')}</button>`:''}
+        ${canManage&&b.status!=='cancelled'&&b.status!=='noShow'?`<button class="act" data-s="cancelled">${t('cancel')}</button>`:''}
+        ${canManage&&(b.status==='cancelled'||b.status==='noShow')?`<button class="act" data-s="pending">${t('restore')}</button>`:''}
         ${canManage?`<button class="act danger" id="bkDel">${t('delete')}</button>`:''}
         <button class="act" data-mclose>${t('close')}</button>
       </div>`;
@@ -1056,45 +1113,84 @@ button{font-family:inherit;cursor:pointer}
     renderCurrent();
   });
 
-  /* ================= CUSTOMERS + BROADCAST ================= */
+  /* ================= CUSTOMERS + RETENTION + BROADCAST ================= */
   const custSelected = new Set();
+  let custSeg='all', _custVisible=[];
   function buildCustomers(){
-    const map={};
+    const map={}, todayD=new Date(); todayD.setHours(0,0,0,0);
     ALL.forEach(b=>{
       const ph=Utils.normalizePhone(b.phone); if(!ph) return;
-      if(!map[ph]) map[ph]={ phone:ph, name:b.name||'', visits:0, spent:0, services:new Set(), lastKey:'' };
+      if(!map[ph]) map[ph]={ phone:ph, name:b.name||'', visits:0, done:0, spent:0, services:new Set(), lastKey:'', lastDate:'' };
       const c=map[ph];
-      if(b.status!=='cancelled'){ c.visits++; if(b.status==='done') c.spent+=(b.totalPrice||0); }
+      if(b.status!=='cancelled'){ c.visits++; if(b.status==='done'){ c.done++; c.spent+=(b.totalPrice||0); } }
       (b.services||[]).forEach(s=>c.services.add(s.ar||s.name||''));
       const key=(b.createdAt&&b.createdAt.seconds?b.createdAt.seconds:0)+'_'+(b.date||'')+(b.time||'');
       if(key>c.lastKey){ c.lastKey=key; if(b.name) c.name=b.name; }
+      if(b.date && b.date>c.lastDate && b.status!=='cancelled') c.lastDate=b.date;
     });
-    return Object.values(map).sort((a,b)=>b.lastKey.localeCompare(a.lastKey));
+    return Object.values(map).map(c=>{
+      c.daysAgo = c.lastDate ? Math.max(0, Math.round((todayD - Utils.parseDate(c.lastDate))/86400000)) : null;
+      c.vip = c.done>=SALON.loyaltyEvery;
+      c.rewardReady = c.done>0 && (c.done % SALON.loyaltyEvery)===0;
+      c.due = c.daysAgo!=null && c.daysAgo>=SALON.rebookDays;
+      return c;
+    }).sort((a,b)=>b.lastKey.localeCompare(a.lastKey));
   }
   function updateBcastCount(){ const el=document.getElementById('bcastCount'); if(el) el.textContent = custSelected.size?`${custSelected.size} ${lang==='ar'?'محدّد':'selected'}`:''; }
+  function custCard(c){
+    const ph=c.phone, salon=SALON.nameAr||SALON.name;
+    const tags=[
+      c.vip?`<span class="tagb tag-vip">${t('tagVip')}</span>`:'',
+      c.rewardReady?`<span class="tagb tag-reward">${t('tagReward')}</span>`:'',
+      c.due?`<span class="tagb tag-due">${t('tagDue')}</span>`:''
+    ].join('');
+    const last = c.daysAgo==null?'—':(c.daysAgo===0?t('today2'):`${c.daysAgo} ${t('daysAgo')}`);
+    const bc=encodeURIComponent((document.getElementById('bcastMsg').value||'').trim());
+    const winMsg=encodeURIComponent(`مرحبًا ${c.name||''} 🌸 اشتقنا لكِ في ${salon}! احجزي موعدكِ القادم ودلّلي نفسكِ. 💕`);
+    const rewardMsg=encodeURIComponent(`مبروك ${c.name||''}! 🎉 أكملتِ ${c.done} زيارة في ${salon}، ولكِ مكافأة ولاء في زيارتكِ القادمة. 🤍`);
+    const reviewMsg=encodeURIComponent(`سعدنا بزيارتكِ ${c.name||''} 🌸 يسعدنا تقييمكِ على Google (يأخذ ثوانٍ ويعني لنا الكثير): ${SALON.reviewUrl}`);
+    return `<div class="cust-card">
+      <input type="checkbox" class="chk cust-chk" data-ph="${ph}" ${custSelected.has(ph)?'checked':''}>
+      <div class="ci">
+        <div class="nm"><b>${esc(c.name||'—')}</b>${tags}</div>
+        <span class="ph">${Utils.prettyPhone(ph)}</span>
+        <div class="svcs">${esc([...c.services].filter(Boolean).join('، '))}</div>
+      </div>
+      <div class="cust-stats">
+        <div class="s"><small>${t('visits')}</small><b>${c.visits}</b></div>
+        <div class="s"><small>${t('spent')}</small><b>${c.spent}</b></div>
+        <div class="s"><small>${t('lastSeen')}</small><b style="font-size:13px">${last}</b></div>
+      </div>
+      <div class="cacts">
+        <a class="cbtn wa" href="https://wa.me/${ph}${bc?`?text=${bc}`:''}" target="_blank" rel="noopener">${WA_SVG} واتساب</a>
+        ${c.due?`<a class="cbtn" href="https://wa.me/${ph}?text=${winMsg}" target="_blank" rel="noopener">${t('winBack')}</a>`:''}
+        ${c.rewardReady?`<a class="cbtn" href="https://wa.me/${ph}?text=${rewardMsg}" target="_blank" rel="noopener">${t('sendReward')}</a>`:''}
+        <a class="cbtn" href="https://wa.me/${ph}?text=${reviewMsg}" target="_blank" rel="noopener">${t('askReview')}</a>
+      </div>
+    </div>`;
+  }
   function renderCustomers(){
     const q=(document.getElementById('custSearch').value||'').trim().toLowerCase();
-    let custs=buildCustomers();
+    const all=buildCustomers();
+    document.getElementById('segcAll').textContent=all.length;
+    document.getElementById('segcDue').textContent=all.filter(c=>c.due).length;
+    document.getElementById('segcReward').textContent=all.filter(c=>c.rewardReady).length;
+    document.getElementById('segcVip').textContent=all.filter(c=>c.vip).length;
+    let custs=all;
+    if(custSeg==='due') custs=custs.filter(c=>c.due);
+    else if(custSeg==='reward') custs=custs.filter(c=>c.rewardReady);
+    else if(custSeg==='vip') custs=custs.filter(c=>c.vip);
     if(q) custs=custs.filter(c=>`${c.name} ${c.phone} ${Utils.prettyPhone(c.phone)}`.toLowerCase().includes(q));
+    _custVisible=custs;
     const host=document.getElementById('custTable');
-    if(!custs.length){ host.innerHTML=`<div class="empty"><p>${t('noCustomers')}</p></div>`; updateBcastCount(); return; }
-    host.innerHTML = `<div class="cust-head"><input type="checkbox" class="chk" id="custAll"><span style="flex:1">${t('selectAll')}</span><span>${t('visits')}</span><span style="width:60px">${t('spent')}</span></div>`+
-      custs.map(c=>`<div class="cust-row">
-        <input type="checkbox" class="chk cust-chk" data-ph="${c.phone}" ${custSelected.has(c.phone)?'checked':''}>
-        <div class="ci"><b>${esc(c.name||'—')}</b><span class="ph">${Utils.prettyPhone(c.phone)}</span><div class="svcs">${esc([...c.services].filter(Boolean).join('، '))}</div></div>
-        <div class="meta">
-          <span><b>${c.visits}</b>${t('visits')}</span>
-          <span><b>${c.spent}</b>${SALON.currency}</span>
-          <a class="icbtn wa" href="https://wa.me/${c.phone}?text=${encodeURIComponent(document.getElementById('bcastMsg').value.trim())}" target="_blank" rel="noopener">${WA_SVG}</a>
-        </div>
-      </div>`).join('');
-    host.querySelectorAll('.cust-chk').forEach(cb=>cb.addEventListener('change',()=>{ cb.checked?custSelected.add(cb.dataset.ph):custSelected.delete(cb.dataset.ph); document.getElementById('custAll').checked=custs.every(c=>custSelected.has(c.phone)); updateBcastCount(); }));
-    const all=document.getElementById('custAll');
-    all.checked = custs.length>0 && custs.every(c=>custSelected.has(c.phone));
-    all.addEventListener('change',()=>{ custs.forEach(c=>{ all.checked?custSelected.add(c.phone):custSelected.delete(c.phone); }); renderCustomers(); });
+    if(!custs.length){ host.innerHTML=`<div class="empty"><p>${custSeg==='all'&&!q?t('noCustomers'):t('noRetention')}</p></div>`; updateBcastCount(); return; }
+    host.innerHTML = custs.map(custCard).join('');
+    host.querySelectorAll('.cust-chk').forEach(cb=>cb.addEventListener('change',()=>{ cb.checked?custSelected.add(cb.dataset.ph):custSelected.delete(cb.dataset.ph); updateBcastCount(); }));
     updateBcastCount();
   }
   document.getElementById('custSearch').addEventListener('input',renderCustomers);
+  document.getElementById('custSeg').addEventListener('click',e=>{ const b=e.target.closest('.segb'); if(!b)return; document.querySelectorAll('#custSeg .segb').forEach(x=>x.classList.remove('on')); b.classList.add('on'); custSeg=b.dataset.seg; renderCustomers(); });
+  document.getElementById('bcastAll').addEventListener('click',()=>{ const allSel=_custVisible.every(c=>custSelected.has(c.phone)); _custVisible.forEach(c=>{ allSel?custSelected.delete(c.phone):custSelected.add(c.phone); }); renderCustomers(); });
   document.getElementById('bcastSend').addEventListener('click',()=>{
     const msg=document.getElementById('bcastMsg').value.trim();
     if(!msg){ alert(t('noMsgAlert')); return; }
