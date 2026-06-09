@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة إدارة · OiO Nail Spa</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1d1a16">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OiO إدارة">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@200;300;400;500;700&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3eee6; --bg2:#eae0d3; --paper:#fffdf8;
+  --ink:#221d17; --ink2:#5f554a; --ink3:#8d8175;
+  --rust:#a96a4a; --rust-d:#864f33; --sand:#c4a47b; --sand-d:#a8855a;
+  --char:#1d1a16; --char2:#272119;
+  --line:rgba(34,29,23,.13); --line2:rgba(34,29,23,.07);
+  --green:#1faa55; --amber:#c8901f; --blue:#3a7ca5; --red:#c0392b;
+  --fa-d:'El Messiri',serif; --fa:'Tajawal',sans-serif; --fd:'Cormorant Garamond',serif; --fu:'Jost',sans-serif;
+  --ease:cubic-bezier(.32,.72,0,1); --maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--fa);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100dvh}
+::selection{background:var(--rust);color:#fff}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fa);cursor:pointer}
+.num{font-family:var(--fd);direction:ltr;unicode-bidi:isolate}
+.lat{font-family:var(--fd)}
+
+/* ---------- LOGIN ---------- */
+#login{position:fixed;inset:0;z-index:100;background:var(--char);display:flex;align-items:center;justify-content:center;padding:24px}
+#login.hide{display:none}
+.lg-card{width:100%;max-width:380px;background:var(--paper);border-radius:26px;padding:38px 32px;box-shadow:0 50px 100px -40px rgba(0,0,0,.6);animation:up .6s var(--ease)}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.lg-bk{width:54px;height:54px;border-radius:50%;border:1.6px solid var(--rust);display:grid;place-items:center;margin:0 auto 16px}
+.lg-bk b{font-family:var(--fd);font-size:21px}.lg-bk b i{color:var(--rust);font-style:normal}
+.lg-card h1{font-family:var(--fa-d);font-size:23px;text-align:center}
+.lg-card .sub{text-align:center;font-family:var(--fu);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);margin-top:3px}
+.lg-card form{margin-top:26px}
+.lg-fld{margin-bottom:14px}
+.lg-fld label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.lg-fld input{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-family:var(--fa);font-size:15px;background:#fff;transition:.25s}
+.lg-fld input:focus{outline:none;border-color:var(--rust);box-shadow:0 0 0 3px rgba(169,106,74,.1)}
+.lg-btn{width:100%;background:var(--char);color:var(--bg);border:none;border-radius:100px;padding:14px;font-size:15px;margin-top:8px;transition:.3s var(--ease)}
+.lg-btn:hover{background:var(--rust-d)}
+.lg-btn:disabled{opacity:.5}
+.lg-err{color:var(--red);font-size:13px;text-align:center;margin-top:14px;min-height:18px}
+.lg-note{font-family:var(--fu);font-size:10px;letter-spacing:.04em;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.7}
+
+/* ---------- APP ---------- */
+#app{display:none;min-height:100dvh;flex-direction:column}
+#app.show{display:flex}
+.top{position:sticky;top:0;z-index:40;background:rgba(255,253,248,.85);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--line)}
+.top-in{max-width:var(--maxw);margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .bk{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rust);display:grid;place-items:center;flex:none}
+.brand .bk b{font-family:var(--fd);font-size:15px}.brand .bk b i{color:var(--rust);font-style:normal}
+.brand .bn b{font-family:var(--fa-d);font-size:17px;display:block;line-height:1.1}
+.brand .bn small{font-family:var(--fu);font-size:8px;letter-spacing:.26em;color:var(--ink3);text-transform:uppercase}
+.top-r{display:flex;align-items:center;gap:10px}
+.pill{font-family:var(--fu);font-size:10px;letter-spacing:.08em;padding:6px 12px;border-radius:100px;border:1px solid var(--line);color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.pill.local .dot{background:var(--amber)}
+.lo{background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:9px 16px;font-size:13.5px;color:var(--ink2);transition:.25s}
+.lo:hover{background:var(--bg2);color:var(--ink)}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:24px 22px 60px;width:100%}
+.banner{background:#fff7ec;border:1px solid #e8d4ad;border-radius:14px;padding:12px 16px;font-size:13px;color:#7a5a1a;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start}
+.banner b{font-weight:700}
+.banner a{color:var(--rust-d);border-bottom:1px solid var(--rust)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.scard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
+.scard::before{content:"";position:absolute;top:0;right:0;width:4px;height:100%;background:var(--rust)}
+.scard.s2::before{background:var(--amber)} .scard.s3::before{background:var(--blue)} .scard.s4::before{background:var(--green)}
+.scard small{font-family:var(--fu);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.scard .v{font-family:var(--fd);font-size:38px;font-weight:600;line-height:1;margin-top:8px;color:var(--ink)}
+.scard .v s{font-size:.42em;color:var(--ink3);text-decoration:none;margin-right:3px}
+
+/* controls */
+.controls{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font-size:13.5px;padding:8px 15px;border-radius:100px;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.25s}
+.tab .c{font-family:var(--fd);font-size:12px;color:var(--ink3);margin-right:4px}
+.tab:hover{border-color:var(--sand)}
+.tab.on{background:var(--char);color:#fff;border-color:var(--char)}
+.tab.on .c{color:var(--sand)}
+.ctr-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sel,.search{border:1px solid var(--line);border-radius:11px;padding:10px 13px;font-family:var(--fa);font-size:14px;background:#fff;color:var(--ink)}
+.search{min-width:180px}
+.sel:focus,.search:focus{outline:none;border-color:var(--rust)}
+.csv{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:10px 14px;font-size:13.5px;color:var(--ink2);transition:.25s}
+.csv:hover{background:var(--bg2);color:var(--ink)}
+
+/* day group */
+.daygrp{margin-bottom:26px}
+.dayhd{display:flex;align-items:center;gap:12px;margin:0 2px 12px}
+.dayhd b{font-family:var(--fa-d);font-size:16px;color:var(--ink)}
+.dayhd .dn{font-family:var(--fu);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);background:var(--bg2);padding:3px 10px;border-radius:100px}
+.dayhd .ln{flex:1;height:1px;background:var(--line)}
+
+/* booking card */
+.bk-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:11px;display:flex;gap:18px;align-items:flex-start;transition:.3s var(--ease);animation:fadein .4s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bk-card:hover{box-shadow:0 22px 44px -34px rgba(34,29,23,.45);border-color:rgba(169,106,74,.3)}
+.bk-card.cancelled{opacity:.62}
+.bk-time{flex:none;text-align:center;min-width:74px;padding-left:18px;border-left:1px solid var(--line2)}
+.bk-time .t{font-family:var(--fd);font-size:25px;font-weight:600;color:var(--ink);direction:ltr;line-height:1}
+.bk-time .ap{font-family:var(--fu);font-size:10px;letter-spacing:.1em;color:var(--rust-d);text-transform:uppercase;margin-top:2px}
+.bk-time .dur{font-family:var(--fu);font-size:9.5px;color:var(--ink3);margin-top:7px}
+.bk-main{flex:1;min-width:0}
+.bk-name{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.bk-name b{font-family:var(--fa-d);font-size:17px;color:var(--ink)}
+.bk-ref{font-family:var(--fd);font-size:12px;color:var(--ink3);direction:ltr;border:1px solid var(--line);padding:1px 8px;border-radius:100px}
+.bk-contact{display:flex;gap:8px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.bk-contact .ph{font-family:var(--fd);font-size:14px;color:var(--ink2);direction:ltr}
+.icbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink2);background:#fff;transition:.25s}
+.icbtn:hover{background:var(--rust);border-color:var(--rust);color:#fff}
+.icbtn svg{width:14px;height:14px}
+.icbtn.wa:hover{background:#25d366;border-color:#25d366}
+.bk-svcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;background:var(--bg);border:1px solid var(--line2);color:var(--ink2);padding:4px 11px;border-radius:100px}
+.bk-notes{font-size:12.5px;color:var(--ink3);margin-top:8px;background:var(--bg);border-radius:10px;padding:8px 12px;border:1px dashed var(--line)}
+.bk-right{flex:none;text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:130px}
+.bk-total{font-family:var(--fd);font-size:21px;font-weight:600;color:var(--rust-d);direction:ltr}
+.bk-total s{font-size:.55em;color:var(--ink3);text-decoration:none}
+.badge{font-family:var(--fu);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:100px;font-weight:500}
+.st-pending{background:rgba(200,144,31,.14);color:#946716}
+.st-confirmed{background:rgba(58,124,165,.14);color:#2c6280}
+.st-done{background:rgba(31,170,85,.14);color:#178045}
+.st-cancelled{background:rgba(192,57,43,.12);color:#a4321f}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.act{font-size:12.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.22s}
+.act:hover{border-color:var(--ink);color:var(--ink)}
+.act.go{background:var(--char);color:#fff;border-color:var(--char)}
+.act.go:hover{background:var(--rust-d)}
+.act.ok{border-color:var(--green);color:var(--green)}.act.ok:hover{background:var(--green);color:#fff}
+.act.danger{color:var(--red);border-color:rgba(192,57,43,.3)}.act.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.act.del{width:32px;padding:7px 0;text-align:center}
+
+.empty{text-align:center;padding:70px 20px;color:var(--ink3)}
+.empty .ic{font-size:40px;opacity:.4}
+.empty p{margin-top:12px;font-size:15px}
+
+@media(max-width:880px){
+  .stats{grid-template-columns:1fr 1fr}
+  .controls{flex-direction:column;align-items:stretch}
+  .ctr-r{justify-content:space-between}
+}
+@media(max-width:640px){
+  .bk-card{flex-wrap:wrap;gap:12px}
+  .bk-time{min-width:0;border-left:none;padding-left:0;text-align:right;display:flex;align-items:baseline;gap:8px;width:100%}
+  .bk-time .dur{margin-top:0}
+  .bk-right{width:100%;flex-direction:row;align-items:center;justify-content:space-between;min-width:0}
+  .search{flex:1}
+}
+
+/* ---------- VIEW SWITCH ---------- */
+.vswitch{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:4px;margin-bottom:18px;gap:4px}
+.vbtn{border:none;background:none;padding:9px 22px;border-radius:100px;font-size:14px;color:var(--ink2);display:flex;align-items:center;gap:7px;transition:.25s}
+.vbtn.on{background:var(--char);color:#fff}
+
+/* ---------- CALENDAR ---------- */
+.cal-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.cal-nav{display:flex;align-items:center;gap:8px}
+.cnav{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-size:18px;color:var(--ink);display:grid;place-items:center;transition:.25s}
+.cnav:hover{background:var(--bg2)}
+.cnav.today{width:auto;border-radius:100px;padding:0 16px;font-size:13.5px;height:38px}
+.cal-nav b{font-family:var(--fa-d);font-size:16px;margin-inline-start:6px}
+.cal-actions{display:flex;gap:8px;flex-wrap:wrap}
+.addblk{background:var(--char);color:#fff;border:none;border-radius:100px;padding:10px 18px;font-size:13.5px;transition:.25s}
+.addblk:hover{background:var(--rust-d)}
+.addblk.pri{background:var(--rust)}
+.addblk.pri:hover{background:var(--rust-d)}
+.msvc{max-height:190px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:6px 8px;background:#fff}
+.msvc-g{font-family:var(--fa-d);font-size:12px;color:var(--rust-d);margin:8px 2px 4px}
+.msvc-g:first-child{margin-top:2px}
+.msvc-i{display:flex;align-items:center;gap:9px;padding:6px 6px;border-radius:8px;cursor:pointer;font-size:13.5px}
+.msvc-i:hover{background:var(--bg)}
+.msvc-i input{width:17px;height:17px;accent-color:var(--rust);flex:none}
+.msvc-i span{flex:1}
+.msvc-i b{font-family:var(--fd);font-weight:600;color:var(--rust-d);direction:ltr}
+.cal-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:16px;background:var(--paper);-webkit-overflow-scrolling:touch}
+.cal-grid{display:flex;min-width:max-content;position:relative}
+.cal-col{flex:1 0 150px;min-width:150px;border-inline-start:1px solid var(--line2)}
+.cal-col.gutter{flex:0 0 54px;min-width:54px;border-inline-start:none;position:sticky;inset-inline-start:0;background:var(--paper);z-index:5}
+.cal-head{height:46px;display:flex;align-items:center;justify-content:center;gap:7px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:6;font-family:var(--fa-d);font-size:14px;color:var(--ink)}
+.cal-head .sd{width:9px;height:9px;border-radius:50%;flex:none}
+.cal-body{position:relative;cursor:copy}
+.cal-hour{position:absolute;inset-inline:0;border-top:1px solid var(--line2);pointer-events:none}
+.gutter .cal-hour{font-family:var(--fd);font-size:11.5px;color:var(--ink3);text-align:center;transform:translateY(-8px);direction:ltr}
+.cal-now{position:absolute;inset-inline:0;height:2px;background:var(--red);z-index:4;pointer-events:none}
+.cal-now::before{content:"";position:absolute;inset-inline-start:0;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+.ev{position:absolute;inset-inline:3px;border-radius:8px;padding:4px 7px;overflow:hidden;cursor:pointer;font-size:11px;line-height:1.25;border-inline-start:3px solid;background:#eaf4fb;border-color:#5aa9d6;color:#1d3a4a;transition:filter .2s;z-index:2}
+.ev:hover{filter:brightness(.97)}
+.ev .et{font-family:var(--fd);font-weight:600;direction:ltr;font-size:12px}
+.ev .en{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .es{opacity:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.st-pending{background:#fdf4e3;border-color:var(--amber);color:#6b4e12}
+.ev.st-confirmed{background:#eaf4fb;border-color:var(--blue);color:#214b63}
+.ev.st-done{background:#e9f7ee;border-color:var(--green);color:#15663a}
+.ev.block{background:repeating-linear-gradient(45deg,#efe7da,#efe7da 6px,#e6dccb 6px,#e6dccb 12px);border-color:#b9692f;color:#7a4a22;cursor:pointer}
+.cal-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink3)}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.cal-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+/* ---------- MODALS ---------- */
+.mdl{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:20px}
+.mdl.on{display:flex}
+.mdl-sc{position:absolute;inset:0;background:rgba(20,17,13,.6);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.mdl-card{position:relative;z-index:2;width:100%;max-width:430px;background:var(--paper);border-radius:22px;padding:22px 22px 20px;box-shadow:0 40px 90px -36px rgba(0,0,0,.6);max-height:90vh;overflow:auto;animation:up .4s var(--ease)}
+.mdl-card h3{font-family:var(--fa-d);font-size:19px;margin-bottom:2px}
+.mdl-sub{font-size:13px;color:var(--ink3);margin-bottom:16px}
+.mfld{margin-bottom:13px}
+.mfld label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.mfld select,.mfld input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-family:var(--fa);font-size:14.5px;background:#fff;color:var(--ink)}
+.mfld select:focus,.mfld input:focus{outline:none;border-color:var(--rust)}
+.mrow{display:flex;gap:11px}.mrow .mfld{flex:1}
+.mdl-acts{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.mdl-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line2);font-size:14px}
+.mdl-row:last-of-type{border-bottom:none}
+.mdl-row .k{color:var(--ink3);font-family:var(--fu);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.mdl-row .v{font-weight:500;text-align:left}
+.mdl-chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+@media(max-width:600px){ .cal-col{flex:1 0 132px;min-width:132px} }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login">
+  <div class="lg-card">
+    <div class="lg-bk"><b class="lat">O<i>i</i>O</b></div>
+    <h1>لوحة الإدارة</h1>
+    <div class="sub">OiO Nail Spa</div>
+    <form id="lgForm">
+      <div class="lg-fld" id="emailFld">
+        <label>البريد الإلكتروني</label>
+        <input id="lgEmail" type="email" autocomplete="username" placeholder="admin@oio.com">
+      </div>
+      <div class="lg-fld">
+        <label id="passLabel">كلمة المرور</label>
+        <input id="lgPass" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button class="lg-btn" type="submit" id="lgBtn">دخول</button>
+      <div class="lg-err" id="lgErr"></div>
+    </form>
+    <div class="lg-note" id="lgNote"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="top">
+    <div class="top-in">
+      <a href="index.html" class="brand">
+        <span class="bk"><b class="lat">O<i>i</i>O</b></span>
+        <span class="bn"><b>لوحة الإدارة</b><small>OiO Nail Spa · تبوك</small></span>
+      </a>
+      <div class="top-r">
+        <span class="pill" id="modePill"><span class="dot"></span><span id="modeTxt">سحابي</span></span>
+        <button class="lo" id="logoutBtn">خروج</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="banner" id="localBanner" style="display:none">
+      <span>⚠️</span>
+      <span><b>الوضع المحلي:</b> Firebase غير مربوط بعد، لذلك الحجوزات تُحفظ على هذا الجهاز فقط ولا تتزامن مع أجهزة العميلات. اربطي Firebase ليصلك حجز العميلة فورًا — راجعي ملف <b>SETUP.md</b>.</span>
+    </div>
+
+    <div class="stats">
+      <div class="scard s1"><small>حجوزات اليوم</small><div class="v" id="stToday">0</div></div>
+      <div class="scard s2"><small>قيد الانتظار</small><div class="v" id="stPending">0</div></div>
+      <div class="scard s3"><small>هذا الأسبوع</small><div class="v" id="stWeek">0</div></div>
+      <div class="scard s4"><small>إيراد الشهر (منجز)</small><div class="v" id="stRev">0 <s>ر.س</s></div></div>
+    </div>
+
+    <div class="vswitch">
+      <button class="vbtn on" data-v="cal">📅 التقويم</button>
+      <button class="vbtn" data-v="list">📋 القائمة</button>
+    </div>
+
+    <!-- ===== CALENDAR VIEW ===== -->
+    <section id="calView">
+      <div class="cal-bar">
+        <div class="cal-nav">
+          <button class="cnav" id="calPrev" aria-label="السابق">›</button>
+          <button class="cnav today" id="calToday">اليوم</button>
+          <button class="cnav" id="calNext" aria-label="التالي">‹</button>
+          <b id="calDateLbl"></b>
+        </div>
+        <div class="cal-actions">
+          <button class="addblk pri" id="addManualBtn">＋ حجز يدوي</button>
+          <button class="addblk" id="addBlockBtn">＋ حظر وقت</button>
+        </div>
+      </div>
+      <div class="cal-scroll"><div class="cal-grid" id="calGrid"></div></div>
+      <div class="cal-legend">
+        <span><i style="background:var(--amber)"></i> قيد الانتظار</span>
+        <span><i style="background:var(--blue)"></i> مؤكد</span>
+        <span><i style="background:var(--green)"></i> منجز</span>
+        <span><i style="background:#b9692f"></i> حظر / غير متاح</span>
+        <span>اضغطي على مساحة فارغة لحظر وقت · على الموعد لعرض التفاصيل</span>
+      </div>
+    </section>
+
+    <!-- ===== LIST VIEW ===== -->
+    <section id="listView" hidden>
+    <div class="controls">
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-st="all">الكل <span class="c" id="cAll">0</span></button>
+        <button class="tab" data-st="pending">قيد الانتظار <span class="c" id="cPending">0</span></button>
+        <button class="tab" data-st="confirmed">مؤكدة <span class="c" id="cConfirmed">0</span></button>
+        <button class="tab" data-st="done">منجزة <span class="c" id="cDone">0</span></button>
+        <button class="tab" data-st="cancelled">ملغاة <span class="c" id="cCancelled">0</span></button>
+      </div>
+      <div class="ctr-r">
+        <select class="sel" id="rangeSel">
+          <option value="upcoming">القادمة</option>
+          <option value="today">اليوم</option>
+          <option value="tomorrow">غدًا</option>
+          <option value="week">هذا الأسبوع</option>
+          <option value="all">كل التواريخ</option>
+        </select>
+        <input class="search" id="search" type="search" placeholder="بحث بالاسم أو الجوال أو الرقم…">
+        <button class="csv" id="csvBtn">تصدير CSV</button>
+      </div>
+    </div>
+
+    <div id="list"></div>
+    </section>
+  </div>
+</div>
+
+<!-- ===== Booking detail modal ===== -->
+<div class="mdl" id="bkModal"><div class="mdl-sc" data-mclose></div><div class="mdl-card" id="bkModalCard"></div></div>
+
+<!-- ===== Manual booking (walk-in) modal ===== -->
+<div class="mdl" id="manualModal">
+  <div class="mdl-sc" data-mclose></div>
+  <div class="mdl-card">
+    <h3>حجز يدوي · Walk-in</h3>
+    <p class="mdl-sub">أضيفي حجزًا لعميلة حضرت أو حجزت عبر الهاتف.</p>
+    <div class="mfld"><label>اسم العميلة</label><input id="mName" type="text" placeholder="الاسم"></div>
+    <div class="mfld"><label>الجوال (اختياري)</label><input id="mPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX"></div>
+    <div class="mfld"><label>الخدمات</label><div id="mServices" class="msvc"></div></div>
+    <div class="mrow">
+      <div class="mfld"><label>الفنية</label><select id="mStaff"></select></div>
+      <div class="mfld"><label>الوقت</label><select id="mTime"></select></div>
+    </div>
+    <div class="mdl-row"><span class="k">الإجمالي · المدة</span><span class="v" id="mTotal">0 ر.س</span></div>
+    <div class="mdl-acts">
+      <button class="act" data-mclose>إلغاء</button>
+      <button class="act go" id="mSave">حفظ الحجز</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Block (unavailable) modal ===== -->
+<div class="mdl" id="blockModal">
+  <div class="mdl-sc" data-mclose></div>
+  <div class="mdl-card">
+    <h3>حظر وقت · غير متاح</h3>
+    <p class="mdl-sub">يمنع الحجز على الموقع في هذا الوقت (استراحة، تنظيف، مناسبة...).</p>
+    <div class="mfld"><label>الفنية</label><select id="blkStaff"></select></div>
+    <div class="mrow">
+      <div class="mfld"><label>من الساعة</label><select id="blkStart"></select></div>
+      <div class="mfld"><label>المدة</label><select id="blkDur"></select></div>
+    </div>
+    <div class="mfld"><label>السبب</label><select id="blkReason">
+      <option value="غير متاح">غير متاح</option>
+      <option value="استراحة">استراحة</option>
+      <option value="غداء">غداء</option>
+      <option value="تنظيف">تنظيف</option>
+      <option value="مناسبة">مناسبة</option>
+    </select></div>
+    <div class="mdl-acts">
+      <button class="act" data-mclose>إلغاء</button>
+      <button class="act go" id="blkSave">حفظ الحظر</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Firebase SDK ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+(function(){
+  const STATUS = {
+    pending:  {ar:'قيد الانتظار', cls:'st-pending'},
+    confirmed:{ar:'مؤكد',        cls:'st-confirmed'},
+    done:     {ar:'منجز',        cls:'st-done'},
+    cancelled:{ar:'ملغي',        cls:'st-cancelled'}
+  };
+
+  const loginEl=document.getElementById('login'), appEl=document.getElementById('app');
+  const lgForm=document.getElementById('lgForm'), lgEmail=document.getElementById('lgEmail'),
+        lgPass=document.getElementById('lgPass'), lgBtn=document.getElementById('lgBtn'),
+        lgErr=document.getElementById('lgErr'), lgNote=document.getElementById('lgNote'),
+        emailFld=document.getElementById('emailFld'), passLabel=document.getElementById('passLabel');
+
+  // adapt login to mode
+  const isLocal = Store.mode==='local';
+  if(isLocal){
+    emailFld.style.display='none';
+    passLabel.textContent='رمز الدخول';
+    lgPass.setAttribute('placeholder','الرمز السري');
+    lgNote.innerHTML='الوضع المحلي (Firebase غير مربوط). الرمز الافتراضي قابل للتغيير من ملف <b>firebase-config.js</b>.';
+  } else {
+    lgNote.innerHTML='ادخلي ببريد المدير المسجّل في Firebase Authentication.';
+  }
+
+  // mode pill
+  const modePill=document.getElementById('modePill'), modeTxt=document.getElementById('modeTxt');
+  if(isLocal){ modePill.classList.add('local'); modeTxt.textContent='محلي'; document.getElementById('localBanner').style.display='flex'; }
+  else { modeTxt.textContent='سحابي · متزامن'; }
+
+  lgForm.addEventListener('submit', async (e)=>{
+    e.preventDefault(); lgErr.textContent=''; lgBtn.disabled=true; lgBtn.textContent='جارٍ الدخول…';
+    try{
+      await Store.signIn(lgEmail.value.trim(), lgPass.value);
+    }catch(err){
+      lgErr.textContent = isLocal ? 'الرمز غير صحيح.' : 'تعذّر الدخول — تأكّدي من البريد وكلمة المرور.';
+      console.error(err);
+    }finally{ lgBtn.disabled=false; lgBtn.textContent='دخول'; }
+  });
+  document.getElementById('logoutBtn').addEventListener('click', ()=>Store.signOut());
+
+  // ---------- state ----------
+  let ALL=[]; let BLOCKS=[]; let tab='all'; let range='upcoming'; let q='';
+  let unsub=null, unsubBlocks=null;
+  let view='cal'; let calDateStr=Utils.todayStr();
+
+  function onData(list){ ALL=list; if(view==='list') render(); else renderCalendar(); updateStats(); }
+  function onBlocks(list){ BLOCKS=list; if(view==='cal') renderCalendar(); }
+
+  document.getElementById('tabs').addEventListener('click', e=>{
+    const b=e.target.closest('.tab'); if(!b) return;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    b.classList.add('on'); tab=b.dataset.st; render();
+  });
+  document.getElementById('rangeSel').addEventListener('change', e=>{ range=e.target.value; render(); });
+  document.getElementById('search').addEventListener('input', e=>{ q=e.target.value.trim().toLowerCase(); render(); });
+
+  // ---------- helpers ----------
+  function inRange(b){
+    if(range==='all') return true;
+    const today=Utils.todayStr();
+    const t=new Date(); t.setHours(0,0,0,0);
+    const tom=new Date(t); tom.setDate(t.getDate()+1);
+    const wk=new Date(t); wk.setDate(t.getDate()+6);
+    const d=b.date;
+    if(range==='today')    return d===today;
+    if(range==='tomorrow') return d===Utils.dateStr(tom);
+    if(range==='week')     return d>=today && d<=Utils.dateStr(wk);
+    if(range==='upcoming') return d>=today;
+    return true;
+  }
+  function matchTab(b){ return tab==='all' ? true : b.status===tab; }
+  function matchQ(b){
+    if(!q) return true;
+    const hay=`${b.name} ${b.phone} ${Utils.prettyPhone(b.phone)} ${b.ref}`.toLowerCase();
+    return hay.includes(q);
+  }
+
+  // ---------- stats ----------
+  function updateStats(){
+    const today=Utils.todayStr();
+    const t=new Date(); t.setHours(0,0,0,0);
+    const wk=new Date(t); wk.setDate(t.getDate()+6); const wkStr=Utils.dateStr(wk);
+    const mn=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}`;
+    let today_=0, pend=0, week=0, rev=0;
+    const counts={all:0,pending:0,confirmed:0,done:0,cancelled:0};
+    ALL.forEach(b=>{
+      counts.all++; if(counts[b.status]!==undefined) counts[b.status]++;
+      if(b.status!=='cancelled'){
+        if(b.date===today) today_++;
+        if(b.date>=today && b.date<=wkStr) week++;
+      }
+      if(b.status==='pending') pend++;
+      if(b.status==='done' && (b.date||'').startsWith(mn)) rev+=(b.totalPrice||0);
+    });
+    document.getElementById('stToday').textContent=today_;
+    document.getElementById('stPending').textContent=pend;
+    document.getElementById('stWeek').textContent=week;
+    document.getElementById('stRev').innerHTML=`${rev} <s>ر.س</s>`;
+    document.getElementById('cAll').textContent=counts.all;
+    document.getElementById('cPending').textContent=counts.pending;
+    document.getElementById('cConfirmed').textContent=counts.confirmed;
+    document.getElementById('cDone').textContent=counts.done;
+    document.getElementById('cCancelled').textContent=counts.cancelled;
+    document.title = pend>0 ? `(${pend}) لوحة إدارة · OiO` : 'لوحة إدارة · OiO Nail Spa';
+  }
+
+  // ---------- render ----------
+  function render(){
+    updateStats();
+    const rows=ALL.filter(b=>matchTab(b)&&inRange(b)&&matchQ(b));
+    // group by date asc, time asc
+    const groups={};
+    rows.forEach(b=>{ (groups[b.date]=groups[b.date]||[]).push(b); });
+    const dates=Object.keys(groups).sort();
+    const host=document.getElementById('list');
+    if(!rows.length){
+      host.innerHTML=`<div class="empty"><div class="ic">🗓️</div><p>لا توجد حجوزات مطابقة.</p></div>`;
+      return;
+    }
+    host.innerHTML = dates.map(ds=>{
+      const list=groups[ds].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+      return `<div class="daygrp">
+        <div class="dayhd"><b>${dayTitle(ds)}</b><span class="dn">${list.length} موعد</span><span class="ln"></span></div>
+        ${list.map(card).join('')}
+      </div>`;
+    }).join('');
+    host.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click', onAction));
+  }
+
+  function dayTitle(ds){
+    const d=Utils.parseDate(ds); const today=Utils.todayStr();
+    const t=new Date(); t.setHours(0,0,0,0); const tom=new Date(t); tom.setDate(t.getDate()+1);
+    let prefix='';
+    if(ds===today) prefix='اليوم · '; else if(ds===Utils.dateStr(tom)) prefix='غدًا · ';
+    else if(ds<today) prefix='سابق · ';
+    return `${prefix}${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)} ${d.getFullYear()}`;
+  }
+
+  function card(b){
+    const st=STATUS[b.status]||STATUS.pending;
+    const tel='0'+(Utils.normalizePhone(b.phone)).slice(3);
+    const svcs=(b.services||[]).map(s=>`<span class="chip">${s.ar||s.name||''}</span>`).join('');
+    const acts=actionsFor(b);
+    return `<div class="bk-card ${b.status==='cancelled'?'cancelled':''}">
+      <div class="bk-time">
+        <div class="t">${time12num(b.time)}</div>
+        <div class="ap">${time12ap(b.time)}</div>
+        <div class="dur">${b.totalDur?Utils.fmtDur(b.totalDur):''}</div>
+      </div>
+      <div class="bk-main">
+        <div class="bk-name"><b>${esc(b.name)}</b><span class="bk-ref">${b.ref||''}</span></div>
+        <div class="bk-contact">
+          <span class="ph">${Utils.prettyPhone(b.phone)}</span>
+          <a class="icbtn" href="tel:${tel}" aria-label="اتصال"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.8 9.8a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
+          <a class="icbtn wa" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener" aria-label="واتساب"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.06 24l1.68-6.13A11.8 11.8 0 1 1 12.06 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.2c1.65.98 3.23 1.56 5.45 1.56a9.9 9.9 0 1 0-9.89-9.9c0 2.33.68 4.07 1.83 5.9l-.99 3.62 3.6-.95z"/></svg></a>
+        </div>
+        <div class="bk-svcs">${svcs}</div>
+        ${b.notes?`<div class="bk-notes">📝 ${esc(b.notes)}</div>`:''}
+      </div>
+      <div class="bk-right">
+        <span class="badge ${st.cls}">${st.ar}</span>
+        <div class="bk-total">${b.totalPrice||0} <s>ر.س</s></div>
+        <div class="acts">${acts}</div>
+      </div>
+    </div>`;
+  }
+
+  function actionsFor(b){
+    const del=`<button class="act danger del" data-act="delete" data-id="${b.id}" title="حذف">🗑</button>`;
+    if(b.status==='pending')
+      return `<button class="act go" data-act="confirmed" data-id="${b.id}">تأكيد</button>
+              <button class="act" data-act="cancelled" data-id="${b.id}">إلغاء</button>${del}`;
+    if(b.status==='confirmed')
+      return `<button class="act ok" data-act="done" data-id="${b.id}">إنجاز</button>
+              <button class="act" data-act="cancelled" data-id="${b.id}">إلغاء</button>${del}`;
+    if(b.status==='done')
+      return `<button class="act" data-act="confirmed" data-id="${b.id}">↩ تراجع</button>${del}`;
+    // cancelled
+    return `<button class="act" data-act="pending" data-id="${b.id}">استعادة</button>${del}`;
+  }
+
+  async function onAction(e){
+    const el=e.currentTarget; const id=el.dataset.id, act=el.dataset.act;
+    if(act==='delete'){
+      if(!confirm('حذف هذا الحجز نهائيًا؟')) return;
+      el.disabled=true; try{ await Store.deleteBooking(id); }catch(err){ alert('تعذّر الحذف'); el.disabled=false; }
+      return;
+    }
+    el.disabled=true;
+    try{ await Store.updateBooking(id,{status:act}); }
+    catch(err){ alert('تعذّر تحديث الحالة'); el.disabled=false; console.error(err); }
+  }
+
+  // ---------- time format ----------
+  function time12num(t){ if(!t) return '—'; let [h,m]=t.split(':').map(Number); let hh=h%12; if(hh===0)hh=12; return `${hh}:${String(m).padStart(2,'0')}`; }
+  function time12ap(t){ if(!t) return ''; const h=Number(t.split(':')[0]); return h>=12?'مساءً':'صباحًا'; }
+  function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // ========================= CALENDAR VIEW =========================
+  const OPEN=SALON.openHour, CLOSE=SALON.closeHour, PXMIN=1.3;
+  const dayStartMin=OPEN*60, dayEndMin=CLOSE*60, totalMin=dayEndMin-dayStartMin;
+  const topPx=(min)=>(min-dayStartMin)*PXMIN;
+  const calView=document.getElementById('calView'), listView=document.getElementById('listView');
+
+  function setView(v){
+    view=v;
+    document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
+    calView.hidden = v!=='cal';
+    listView.hidden = v!=='list';
+    if(v==='cal') renderCalendar(); else render();
+  }
+  document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
+
+  function calLabel(ds){
+    const d=Utils.parseDate(ds), today=Utils.todayStr();
+    const t=new Date(); t.setHours(0,0,0,0); const tom=new Date(t); tom.setDate(t.getDate()+1);
+    let p=''; if(ds===today)p='اليوم · '; else if(ds===Utils.dateStr(tom))p='غدًا · ';
+    return p+`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+  }
+  function hourLabel(h){ const ap=h>=12?'م':'ص'; let hh=h%12; if(hh===0)hh=12; return hh+ap; }
+  function shiftDate(days){ const d=Utils.parseDate(calDateStr); d.setDate(d.getDate()+days); calDateStr=Utils.dateStr(d); renderCalendar(); }
+  document.getElementById('calPrev').addEventListener('click',()=>shiftDate(-1));
+  document.getElementById('calNext').addEventListener('click',()=>shiftDate(1));
+  document.getElementById('calToday').addEventListener('click',()=>{ calDateStr=Utils.todayStr(); renderCalendar(); });
+
+  function renderCalendar(){
+    document.getElementById('calDateLbl').textContent = calLabel(calDateStr);
+    const grid=document.getElementById('calGrid');
+    const staff=Schedule.staffList();
+    const known=new Set(staff.map(s=>s.id));
+    const dayB=ALL.filter(b=>b.date===calDateStr && b.status!=='cancelled');
+    const dayBlocks=BLOCKS.filter(b=>b.date===calDateStr);
+    const cols=staff.slice();
+    if(dayB.some(b=>!known.has(b.staff))) cols.push({id:'__un', name:'غير معيّن', color:'#8d8175'});
+    const H=totalMin*PXMIN;
+    let html='<div class="cal-col gutter"><div class="cal-head"></div><div class="cal-body" style="height:'+H+'px;cursor:default">';
+    for(let h=OPEN;h<=CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px">'+hourLabel(h)+'</div>'; }
+    html+='</div></div>';
+    cols.forEach(s=>{
+      html+='<div class="cal-col"><div class="cal-head"><span class="sd" style="background:'+s.color+'"></span>'+esc(s.name)+'</div><div class="cal-body" data-staff="'+s.id+'" style="height:'+H+'px">';
+      for(let h=OPEN;h<=CLOSE;h++){ html+='<div class="cal-hour" style="top:'+topPx(h*60)+'px"></div>'; }
+      dayBlocks.filter(bl=>bl.staff===s.id||bl.staff==='all').forEach(bl=>{
+        const t=Utils.toMin(bl.start), e=Utils.toMin(bl.end);
+        html+='<div class="ev block" data-block="'+bl.id+'" style="top:'+topPx(t)+'px;height:'+Math.max(18,(e-t)*PXMIN-2)+'px"><div class="en">⛔ '+esc(bl.reason)+'</div><div class="es">'+Utils.pretty12(bl.start)+' – '+Utils.pretty12(bl.end)+'</div></div>';
+      });
+      dayB.filter(b=> b.staff===s.id || (s.id==='__un' && !known.has(b.staff))).forEach(b=>{
+        const t=Utils.toMin(b.time), dur=b.totalDur||30, h2=Math.max(20,dur*PXMIN-2);
+        const svc=(b.services||[]).map(x=>x.ar||x.name||'').join('، ');
+        html+='<div class="ev st-'+b.status+'" data-bk="'+b.id+'" style="top:'+topPx(t)+'px;height:'+h2+'px"><div class="et">'+Utils.pretty12(b.time)+'</div><div class="en">'+esc(b.name)+'</div>'+(h2>40?'<div class="es">'+esc(svc)+'</div>':'')+'</div>';
+      });
+      if(calDateStr===Utils.todayStr()){ const nm=new Date().getHours()*60+new Date().getMinutes(); if(nm>=dayStartMin&&nm<=dayEndMin) html+='<div class="cal-now" style="top:'+topPx(nm)+'px"></div>'; }
+      html+='</div></div>';
+    });
+    grid.innerHTML=html;
+    grid.querySelectorAll('[data-bk]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation(); openBkModal(el.dataset.bk);}));
+    grid.querySelectorAll('[data-block]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation(); if(confirm('حذف هذا الحظر؟')) Store.deleteBlock(el.dataset.block);}));
+    grid.querySelectorAll('.cal-body[data-staff]').forEach(body=>body.addEventListener('click',e=>{
+      if(e.target.closest('.ev')) return;
+      const rect=body.getBoundingClientRect(), y=e.clientY-rect.top;
+      let min=dayStartMin+Math.round((y/PXMIN)/SALON.slotMinutes)*SALON.slotMinutes;
+      min=Math.max(dayStartMin, Math.min(min, dayEndMin-SALON.slotMinutes));
+      openBlockModal(body.dataset.staff, Utils.fromMin(min));
+    }));
+  }
+
+  // ---------- booking detail modal ----------
+  const bkModal=document.getElementById('bkModal'), bkCard=document.getElementById('bkModalCard');
+  function openBkModal(id){
+    const b=ALL.find(x=>x.id===id); if(!b) return;
+    const st=STATUS[b.status]||STATUS.pending;
+    const d=Utils.parseDate(b.date);
+    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+    const tel='0'+Utils.normalizePhone(b.phone).slice(3);
+    const staffOpts=Schedule.staffList().map(s=>`<option value="${s.id}" ${s.id===b.staff?'selected':''}>${esc(s.name)}</option>`).join('');
+    const svcs=(b.services||[]).map(s=>`<span class="chip">${esc(s.ar||s.name||'')}</span>`).join('');
+    bkCard.innerHTML=`
+      <h3>${esc(b.name)} <span class="bk-ref">${b.ref||''}</span></h3>
+      <p class="mdl-sub"><span class="badge ${st.cls}">${st.ar}</span></p>
+      <div class="mdl-row"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(b.time)}</span></div>
+      <div class="mdl-row"><span class="k">المدة</span><span class="v">${Utils.fmtDur(b.totalDur||0)}</span></div>
+      <div class="mdl-row"><span class="k">الجوال</span><span class="v" style="direction:ltr">${Utils.prettyPhone(b.phone)}</span></div>
+      <div class="mdl-row"><span class="k">الإجمالي</span><span class="v">${b.totalPrice||0} ر.س</span></div>
+      <div class="mdl-chips">${svcs}</div>
+      ${b.notes?`<div class="bk-notes" style="margin-top:8px">📝 ${esc(b.notes)}</div>`:''}
+      <div class="mfld" style="margin-top:14px"><label>الفنية المسؤولة</label><select id="bkStaffSel">${staffOpts}</select></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <a class="act" href="tel:${tel}">📞 اتصال</a>
+        <a class="act" href="https://wa.me/${Utils.normalizePhone(b.phone)}" target="_blank" rel="noopener">واتساب</a>
+      </div>
+      <div class="mdl-acts">
+        ${b.status==='pending'?'<button class="act go" data-s="confirmed">تأكيد</button>':''}
+        ${b.status==='confirmed'?'<button class="act ok" data-s="done">إنجاز</button>':''}
+        ${b.status!=='cancelled'?'<button class="act" data-s="cancelled">إلغاء</button>':'<button class="act" data-s="pending">استعادة</button>'}
+        <button class="act danger" id="bkDel">حذف</button>
+        <button class="act" data-mclose>إغلاق</button>
+      </div>`;
+    bkModal.classList.add('on');
+    document.getElementById('bkStaffSel').addEventListener('change',e=>Store.updateBooking(id,{staff:e.target.value}));
+    bkCard.querySelectorAll('[data-s]').forEach(btn=>btn.addEventListener('click',async()=>{ await Store.updateBooking(id,{status:btn.dataset.s}); closeModals(); }));
+    document.getElementById('bkDel').addEventListener('click',async()=>{ if(confirm('حذف هذا الحجز نهائيًا؟')){ await Store.deleteBooking(id); closeModals(); } });
+  }
+
+  // ---------- block (unavailable) modal ----------
+  const blockModal=document.getElementById('blockModal');
+  const blkStaff=document.getElementById('blkStaff'), blkStart=document.getElementById('blkStart'), blkDur=document.getElementById('blkDur');
+  function fillBlockSelects(){
+    blkStaff.innerHTML='<option value="all">الكل (الصالون)</option>'+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    let st=''; for(let m=dayStartMin;m<dayEndMin;m+=SALON.slotMinutes){ const t=Utils.fromMin(m); st+=`<option value="${t}">${Utils.pretty12(t)}</option>`; } blkStart.innerHTML=st;
+    blkDur.innerHTML=[15,30,45,60,90,120,180].map(x=>`<option value="${x}">${Utils.fmtDur(x)}</option>`).join('');
+    blkDur.value='30';
+  }
+  function openBlockModal(staffId, startHHMM){
+    fillBlockSelects();
+    blkStaff.value=(staffId && staffId!=='__un') ? staffId : 'all';
+    if(startHHMM) blkStart.value=startHHMM;
+    blockModal.classList.add('on');
+  }
+  document.getElementById('addBlockBtn').addEventListener('click',()=>openBlockModal('all', Utils.fromMin(dayStartMin)));
+  document.getElementById('blkSave').addEventListener('click',async()=>{
+    const start=blkStart.value, end=Utils.fromMin(Utils.toMin(start)+Number(blkDur.value));
+    await Store.createBlock({date:calDateStr, start, end, staff:blkStaff.value, reason:document.getElementById('blkReason').value});
+    closeModals();
+  });
+
+  // ---------- manual booking (walk-in) ----------
+  const manualModal=document.getElementById('manualModal');
+  const mName=document.getElementById('mName'), mPhone=document.getElementById('mPhone'),
+        mServices=document.getElementById('mServices'), mStaff=document.getElementById('mStaff'),
+        mTime=document.getElementById('mTime'), mTotal=document.getElementById('mTotal'), mSave=document.getElementById('mSave');
+  const mSel=new Set();
+  function mTotals(){ let p=0,d=0; mSel.forEach(id=>{const s=SERVICE_MAP[id]; if(s){p+=s.price;d+=s.dur;}}); return {p,d}; }
+  function updateMTotal(){ const {p,d}=mTotals(); mTotal.textContent = `${p} ر.س · ${Utils.fmtDur(d||0)}`; }
+  function fillManual(){
+    mServices.innerHTML = SERVICE_GROUPS.map(g=>`<div class="msvc-g">${g.title}</div>`+
+      g.items.map(it=>`<label class="msvc-i"><input type="checkbox" value="${it.id}"><span>${esc(it.ar)}</span><b>${it.price}</b></label>`).join('')).join('');
+    mSel.clear();
+    mServices.querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>{ c.checked?mSel.add(c.value):mSel.delete(c.value); updateMTotal(); }));
+    mStaff.innerHTML='<option value="">تلقائي (أول فنية متاحة)</option>'+Schedule.staffList().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    let t=''; for(let m=dayStartMin;m<dayEndMin;m+=SALON.slotMinutes){ const x=Utils.fromMin(m); t+=`<option value="${x}">${Utils.pretty12(x)}</option>`; } mTime.innerHTML=t;
+    mName.value=''; mPhone.value=''; updateMTotal();
+  }
+  document.getElementById('addManualBtn').addEventListener('click',()=>{ fillManual(); manualModal.classList.add('on'); });
+  mSave.addEventListener('click',async()=>{
+    if(mName.value.trim().length<2){ alert('أدخلي اسم العميلة'); return; }
+    if(!mSel.size){ alert('اختاري خدمة واحدة على الأقل'); return; }
+    const {p,d}=mTotals();
+    const services=[...mSel].map(id=>{const s=SERVICE_MAP[id]; return {id,ar:s.ar,en:s.en,price:s.price,dur:s.dur};});
+    mSave.disabled=true; mSave.textContent='جارٍ الحفظ…';
+    try{
+      await Store.createBooking({ name:mName.value, phone:mPhone.value||'', services, totalPrice:p, totalDur:d,
+        date:calDateStr, time:mTime.value, staff:mStaff.value||undefined, status:'confirmed', source:'admin', notes:'' });
+      closeModals();
+    }catch(e){ alert('تعذّر حفظ الحجز'); console.error(e); }
+    finally{ mSave.disabled=false; mSave.textContent='حفظ الحجز'; }
+  });
+
+  function closeModals(){ [bkModal,blockModal,manualModal].forEach(m=>m.classList.remove('on')); }
+  [bkModal, blockModal, manualModal].forEach(m=>m.addEventListener('click',e=>{ if(e.target.classList.contains('mdl-sc')||e.target.closest('[data-mclose]')) closeModals(); }));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModals(); });
+
+  // ---------- CSV ----------
+  document.getElementById('csvBtn').addEventListener('click', ()=>{
+    const rows=ALL.filter(b=>matchTab(b)&&inRange(b)&&matchQ(b))
+      .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+    const head=['رقم الحجز','الاسم','الجوال','التاريخ','الوقت','الخدمات','الإجمالي','الحالة','ملاحظات'];
+    const lines=[head.join(',')].concat(rows.map(b=>[
+      b.ref||'', b.name||'', "'"+Utils.normalizePhone(b.phone), b.date||'', b.time||'',
+      (b.services||[]).map(s=>s.ar||s.name).join(' / '),
+      b.totalPrice||0, (STATUS[b.status]||{}).ar||b.status, (b.notes||'').replace(/\s+/g,' ')
+    ].map(csvCell).join(',')));
+    const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='oio-bookings-'+Utils.todayStr()+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+  });
+  function csvCell(v){ v=String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+
+  // ---------- auth wiring (last, so all state/functions are initialized) ----------
+  Store.onAuth(user=>{
+    if(user){
+      loginEl.classList.add('hide'); appEl.classList.add('show');
+      if(!unsub) unsub=Store.subscribeBookings(onData);
+      if(!unsubBlocks) unsubBlocks=Store.subscribeBlocks(onBlocks);
+      setView(view);
+    }else{
+      appEl.classList.remove('show'); loginEl.classList.remove('hide');
+      if(unsub){ unsub(); unsub=null; }
+      if(unsubBlocks){ unsubBlocks(); unsubBlocks=null; }
+      lgPass.value='';
+    }
+  });
+})();
+</script>
+</body>
+</html>

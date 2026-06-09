@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>OiO Nail Spa · أويو نيل سبا — تبوك</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<meta name="theme-color" content="#1d1a16">
 <meta name="description" content="OiO Nail Spa أويو نيل سبا في تبوك — صالون أظافر نسائي بأجواء هادئة وخدمة راقية. مانيكير، باديكير، جل، بياب وفن الأظافر بأيدٍ مختصة. الحجز بموعد مسبق عبر واتساب.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -270,6 +272,120 @@ section{position:relative}
   .hero{flex-direction:column;align-items:stretch;justify-content:flex-end}
   .hero-meta{position:static;left:auto;right:auto;bottom:auto;top:auto;flex-direction:row;align-items:center;gap:11px;margin-top:22px}
 }
+
+/* ===================== BOOKING WIZARD ===================== */
+.bw{position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;padding:24px}
+.bw.on{display:flex}
+.bw-scrim{position:absolute;inset:0;background:rgba(20,17,13,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);animation:bwf .4s var(--ease)}
+@keyframes bwf{from{opacity:0}to{opacity:1}}
+.bw-sheet{position:relative;z-index:2;width:100%;max-width:560px;max-height:92vh;background:var(--paper);border:1px solid var(--line);border-radius:28px;box-shadow:0 50px 110px -42px rgba(34,29,23,.75);display:flex;flex-direction:column;overflow:hidden;animation:bwup .55s var(--ease)}
+@keyframes bwup{from{opacity:0;transform:translateY(26px) scale(.98)}to{opacity:1;transform:none}}
+.bw-head{padding:17px 22px 0;flex:none}
+.bw-htop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bw-htop .t{display:flex;align-items:center;gap:10px}
+.bw-htop .bk{width:34px;height:34px;border-radius:50%;border:1.4px solid var(--rust);display:grid;place-items:center;flex:none}
+.bw-htop .bk b{font-family:var(--fd);font-size:13px;color:var(--ink)}
+.bw-htop .bk b i{color:var(--rust);font-style:normal}
+.bw-htop .tt b{font-family:var(--fa-d);font-size:16px;display:block;line-height:1.1}
+.bw-htop .tt small{display:block;font-family:var(--fu);font-size:8px;letter-spacing:.28em;color:var(--ink3);text-transform:uppercase;margin-top:1px}
+.bw-x{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:14px;color:var(--ink2);flex:none;transition:.25s}
+.bw-x:hover{background:var(--bg2);color:var(--ink)}
+.bw-steps{display:flex;gap:7px;margin-top:16px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.bw-steps .s{flex:1}
+.bw-steps .s .bar{height:3px;border-radius:3px;background:var(--line);transition:.45s var(--ease)}
+.bw-steps .s.on .bar,.bw-steps .s.done .bar{background:var(--rust)}
+.bw-steps .s span{display:block;font-family:var(--fu);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);margin-top:7px;text-align:center}
+.bw-steps .s.on span{color:var(--rust-d)}
+.bw-body{flex:1;overflow-y:auto;padding:20px 22px;-webkit-overflow-scrolling:touch}
+.bw-pane{display:none}
+.bw-pane.on{display:block;animation:bwin .4s var(--ease)}
+@keyframes bwin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.bw-ph{font-family:var(--fa-d);font-size:19px;color:var(--ink);margin-bottom:2px}
+.bw-psub{font-size:13.5px;color:var(--ink3);margin-bottom:16px}
+.bw-grp{margin-bottom:17px}
+.bw-grp .gh{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.bw-grp .gh b{font-family:var(--fa-d);font-size:14px;color:var(--rust-d)}
+.bw-grp .gh small{font-family:var(--fu);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+.bw-it{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer;transition:.25s var(--ease);background:#fff}
+.bw-it:hover{border-color:var(--sand)}
+.bw-it.sel{border-color:var(--rust);background:rgba(169,106,74,.06)}
+.bw-it .ck{width:22px;height:22px;border-radius:7px;border:1.6px solid var(--line);flex:none;display:grid;place-items:center;color:#fff;transition:.25s var(--ease)}
+.bw-it.sel .ck{background:var(--rust);border-color:var(--rust)}
+.bw-it .ck svg{width:12px;height:12px;opacity:0;transition:.2s}
+.bw-it.sel .ck svg{opacity:1}
+.bw-it .nm{flex:1;min-width:0}
+.bw-it .nm b{font-weight:500;font-size:14.5px;color:var(--ink);display:block}
+.bw-it .nm small{font-family:var(--fd);font-style:italic;font-size:12px;color:var(--ink3);direction:ltr;display:block;margin-top:-2px}
+.bw-it .px{flex:none;text-align:left}
+.bw-it .px b{font-family:var(--fd);font-weight:600;font-size:15.5px;color:var(--rust-d);direction:ltr;display:block}
+.bw-it .px small{font-family:var(--fu);font-size:8.5px;color:var(--ink3);letter-spacing:.04em}
+.bw-dates{display:flex;gap:9px;overflow-x:auto;padding:2px 2px 12px;-webkit-overflow-scrolling:touch}
+.bw-day{flex:none;width:62px;padding:11px 0 9px;border:1px solid var(--line);border-radius:14px;text-align:center;cursor:pointer;background:#fff;transition:.25s var(--ease)}
+.bw-day:hover{border-color:var(--sand)}
+.bw-day.sel{border-color:var(--char);background:var(--char)}
+.bw-day small{display:block;font-family:var(--fu);font-size:9px;letter-spacing:.04em;color:var(--ink3)}
+.bw-day.sel small{color:var(--sand)}
+.bw-day b{display:block;font-family:var(--fd);font-size:22px;font-weight:600;margin:1px 0;color:var(--ink)}
+.bw-day.sel b{color:#fff}
+.bw-day i{font-style:normal;font-size:10px;color:var(--ink2)}
+.bw-day.sel i{color:rgba(255,255,255,.72)}
+.bw-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;margin-top:4px}
+.bw-slot{padding:10px 4px;border:1px solid var(--line);border-radius:11px;text-align:center;cursor:pointer;background:#fff;font-family:var(--fd);font-weight:500;font-size:15px;color:var(--ink);direction:ltr;transition:.2s var(--ease)}
+.bw-slot:hover{border-color:var(--sand)}
+.bw-slot.sel{border-color:var(--rust);background:var(--rust);color:#fff}
+.bw-slot.full{opacity:.38;cursor:not-allowed;text-decoration:line-through;background:var(--bg2)}
+.bw-empty{text-align:center;color:var(--ink3);font-size:13.5px;padding:26px 0}
+.bw-fld{margin-bottom:15px}
+.bw-fld label{display:block;font-family:var(--fu);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.bw-fld input,.bw-fld textarea{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-family:var(--fa);font-size:15px;color:var(--ink);background:#fff;transition:.25s}
+.bw-fld input:focus,.bw-fld textarea:focus{outline:none;border-color:var(--rust);box-shadow:0 0 0 3px rgba(169,106,74,.1)}
+.bw-fld textarea{resize:vertical;min-height:72px}
+.bw-fld .hint{font-size:11px;color:var(--ink3);margin-top:5px}
+.bw-fld .hint.e{color:#c0392b}
+.bw-rev{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:4px}
+.bw-rev .rr{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line2);font-size:14px}
+.bw-rev .rr .k{color:var(--ink3);font-family:var(--fu);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.bw-rev .rr .v{color:var(--ink);font-weight:500;text-align:left}
+.bw-svc-list{padding:8px 16px 12px;border-bottom:1px solid var(--line2)}
+.bw-svc-list .sv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line2);font-size:13.5px}
+.bw-svc-list .sv:last-child{border-bottom:none}
+.bw-svc-list .sv .p{font-family:var(--fd);font-weight:600;color:var(--rust-d);direction:ltr}
+.bw-tot{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--char)}
+.bw-tot small{font-family:var(--fu);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sand)}
+.bw-tot b{font-family:var(--fd);font-size:23px;color:#fff;direction:ltr}
+.bw-tot b s{font-size:.6em;color:rgba(255,255,255,.55);text-decoration:none}
+.bw-ok{text-align:center;padding:10px 6px 4px}
+.bw-ok .ico{width:72px;height:72px;border-radius:50%;background:rgba(37,211,102,.12);display:grid;place-items:center;margin:4px auto 14px;color:#1faa55;animation:bwpop .5s var(--ease)}
+@keyframes bwpop{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
+.bw-ok .ico svg{width:32px;height:32px}
+.bw-ok h3{font-family:var(--fa-d);font-size:23px;color:var(--ink)}
+.bw-ok p{color:var(--ink2);font-size:14px;margin-top:7px;max-width:38ch;margin-inline:auto}
+.bw-ref{display:inline-block;margin:15px 0 6px;padding:8px 22px;border:1px dashed var(--rust);border-radius:100px;font-family:var(--fd);font-weight:600;font-size:18px;color:var(--rust-d);letter-spacing:.08em;direction:ltr}
+.bw-okcard{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:8px 16px;text-align:right;margin:14px 0 16px}
+.bw-okcard .l{display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px dashed var(--line2)}
+.bw-okcard .l:last-child{border-bottom:none}
+.bw-okcard .l .k{color:var(--ink3)}
+.bw-okcard .l .v{font-weight:500;text-align:left}
+.bw-foot{flex:none;border-top:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper)}
+.bw-fsum{line-height:1.25}
+.bw-fsum small{display:block;font-family:var(--fu);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.bw-fsum b{font-family:var(--fd);font-size:19px;color:var(--rust-d);direction:ltr}
+.bw-fsum b s{font-size:.62em;color:var(--ink3);text-decoration:none;margin-right:2px}
+.bw-acts{display:flex;gap:9px;flex:none}
+.bw-btn{display:inline-flex;align-items:center;gap:8px;border-radius:100px;font-family:var(--fa);font-size:14.5px;padding:12px 22px;cursor:pointer;border:none;transition:.3s var(--ease);white-space:nowrap}
+.bw-btn.gho{background:var(--bg);color:var(--ink2);border:1px solid var(--line)}
+.bw-btn.gho:hover{background:var(--bg2);color:var(--ink)}
+.bw-btn.pri{background:var(--char);color:var(--bg)}
+.bw-btn.pri:hover{background:var(--rust-d)}
+.bw-btn.wa{background:#25d366;color:#0a3d1c;width:100%;justify-content:center}
+.bw-btn:disabled{opacity:.42;cursor:not-allowed}
+.bw-mode{font-family:var(--fu);font-size:9px;letter-spacing:.1em;color:var(--ink3);text-align:center;padding:6px 0 0}
+@media(max-width:600px){
+  .bw{padding:0}
+  .bw-sheet{max-width:none;max-height:100dvh;height:100dvh;border-radius:0;border:none}
+  .bw-btn{padding:12px 18px}
+  .bw-steps .s span{font-size:8px}
+}
 </style>
 </head>
 <body>
@@ -289,7 +405,7 @@ section{position:relative}
       <a href="#experience">التجربة</a>
       <a href="#menu">الخدمات والأسعار</a>
       <a href="#gallery">المعرض</a>
-      <a href="#book" class="nav-cta">احجزي موعدك <span class="ic">↗</span></a>
+      <a href="#book" class="nav-cta" data-book>احجزي موعدك <span class="ic">↗</span></a>
     </nav>
     <button class="burger" id="burger" aria-label="القائمة"><span></span><span></span></button>
   </div>
@@ -301,8 +417,8 @@ section{position:relative}
   <a href="#experience">التجربة</a>
   <a href="#menu">الخدمات والأسعار</a>
   <a href="#gallery">المعرض</a>
-  <a href="#book">تواصل وحجز</a>
-  <a href="https://wa.me/966567109942?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D9%85%D9%88%D8%B9%D8%AF%20%D9%81%D9%8A%20OiO%20Nail%20Spa" class="mcta">احجزي عبر واتساب</a>
+  <a href="#book">تواصل معنا</a>
+  <a href="#book" class="mcta" data-book>احجزي موعدك</a>
 </div>
 
 <!-- HERO -->
@@ -313,7 +429,7 @@ section{position:relative}
     <h1>دلالٌ هادئ<br>يبدأ من <em>أطراف أصابعك</em></h1>
     <p class="hero-lead">في أويو نمنحكِ تجربة عناية راقية بالأظافر — أجواء هادئة، نظافة تامة، وأيدٍ مختصّة بأدقّ التفاصيل. لحظتكِ تستحق الاهتمام.</p>
     <div class="hero-act">
-      <a href="#book" class="btn btn-p">احجزي موعدك <span class="ic">↗</span></a>
+      <a href="#book" class="btn btn-p" data-book>احجزي موعدك <span class="ic">↗</span></a>
       <a href="#menu" class="btn btn-g">الخدمات والأسعار <span class="ic">↓</span></a>
     </div>
   </div>
@@ -506,9 +622,9 @@ section{position:relative}
     <div>
       <span class="eyebrow rv">الحجز والتواصل</span>
       <h2 class="rv d1">احجزي <em>موعدك</em></h2>
-      <p class="lead rv d2">نعمل بنظام المواعيد المسبقة لضمان راحتك وخصوصيتك. تواصلي معنا عبر واتساب لاختيار الخدمة والوقت المناسب لكِ.</p>
+      <p class="lead rv d2">احجزي موعدك مباشرةً عبر النظام — اختاري خدماتكِ والوقت المناسب في دقائق، ويصلكِ تأكيد فوري برقم حجزكِ. وإن رغبتِ، يبقى واتساب متاحًا في أي وقت.</p>
       <div class="bk-act rv d3">
-        <a href="https://wa.me/966567109942?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D9%85%D9%88%D8%B9%D8%AF%20%D9%81%D9%8A%20OiO%20Nail%20Spa" class="btn btn-w">احجزي عبر واتساب <span class="ic">↗</span></a>
+        <button type="button" class="btn btn-p" data-book>احجزي موعدك الآن <span class="ic">↗</span></button>
         <a href="https://www.google.com/maps/place/OiO+Nail+Spa/@28.3808949,36.5784188,17z" target="_blank" rel="noopener" class="btn btn-o">الموقع على الخريطة <span class="ic">↗</span></a>
       </div>
     </div>
@@ -542,7 +658,7 @@ section{position:relative}
     <div class="foot-bot">
       <a href="#top" class="brand"><span class="bk" style="width:34px;height:34px"><b class="lat">O<i>i</i>O</b></span><span class="bn"><b>أويو نيل سبا</b></span></a>
       <small>© 2026 OiO Nail Spa · تبوك · جميع الحقوق محفوظة</small>
-      <small class="lat">OiO · Quiet Luxury Nail Spa</small>
+      <small class="lat">OiO · Quiet Luxury Nail Spa · <a href="admin.html" style="color:rgba(243,238,230,.5);border-bottom:1px solid rgba(243,238,230,.25)">إدارة</a></small>
     </div>
   </div>
 </footer>
@@ -552,6 +668,74 @@ section{position:relative}
 </a>
 
 <div id="lb"><button class="lbx">✕</button><img src="" alt=""></div>
+
+<!-- ===================== BOOKING WIZARD ===================== -->
+<div class="bw" id="bw" aria-hidden="true">
+  <div class="bw-scrim" data-bw-close></div>
+  <div class="bw-sheet" role="dialog" aria-modal="true" aria-label="حجز موعد في أويو نيل سبا">
+    <div class="bw-head">
+      <div class="bw-htop">
+        <div class="t">
+          <span class="bk"><b class="lat">O<i>i</i>O</b></span>
+          <span class="tt"><b>حجز موعد</b><small>OiO Nail Spa</small></span>
+        </div>
+        <button class="bw-x" type="button" data-bw-close aria-label="إغلاق">✕</button>
+      </div>
+      <div class="bw-steps">
+        <div class="s" data-st="0"><div class="bar"></div><span>الخدمات</span></div>
+        <div class="s" data-st="1"><div class="bar"></div><span>الموعد</span></div>
+        <div class="s" data-st="2"><div class="bar"></div><span>بياناتكِ</span></div>
+        <div class="s" data-st="3"><div class="bar"></div><span>تأكيد</span></div>
+      </div>
+    </div>
+    <div class="bw-body">
+      <section class="bw-pane" data-pane="0">
+        <div class="bw-ph">اختاري خدماتكِ</div>
+        <div class="bw-psub">يمكنكِ اختيار أكثر من خدمة — الأسعار شاملة الضريبة.</div>
+        <div id="bwServices"></div>
+      </section>
+      <section class="bw-pane" data-pane="1">
+        <div class="bw-ph">اختاري اليوم والوقت</div>
+        <div class="bw-psub">المواعيد تبدأ من الساعة ٢:٠٠ ظهرًا.</div>
+        <div class="bw-dates" id="bwDates"></div>
+        <div id="bwSlots" class="bw-slots"></div>
+        <div id="bwSlotsMsg" class="bw-empty" style="display:none"></div>
+      </section>
+      <section class="bw-pane" data-pane="2">
+        <div class="bw-ph">بياناتكِ</div>
+        <div class="bw-psub">لنتمكّن من تأكيد حجزكِ والتواصل معكِ.</div>
+        <div class="bw-fld">
+          <label>الاسم</label>
+          <input id="bwName" type="text" placeholder="الاسم الكريم" autocomplete="name">
+        </div>
+        <div class="bw-fld">
+          <label>رقم الجوال</label>
+          <input id="bwPhone" type="tel" inputmode="numeric" placeholder="05XXXXXXXX" autocomplete="tel">
+          <div class="hint" id="bwPhoneHint">نستخدمه لتأكيد الحجز فقط.</div>
+        </div>
+        <div class="bw-fld">
+          <label>ملاحظات (اختياري)</label>
+          <textarea id="bwNotes" placeholder="أي تفاصيل تساعدنا في خدمتكِ — تصميم معيّن، حساسية، ..."></textarea>
+        </div>
+      </section>
+      <section class="bw-pane" data-pane="3">
+        <div class="bw-ph">مراجعة الحجز</div>
+        <div class="bw-psub">تأكّدي من التفاصيل قبل الإرسال.</div>
+        <div id="bwReview"></div>
+      </section>
+      <section class="bw-pane" data-pane="4">
+        <div id="bwSuccess"></div>
+      </section>
+    </div>
+    <div class="bw-foot" id="bwFoot">
+      <div class="bw-fsum" id="bwFsum"></div>
+      <div class="bw-acts">
+        <button type="button" class="bw-btn gho bw-back">رجوع</button>
+        <button type="button" class="bw-btn pri bw-next">التالي</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -587,6 +771,252 @@ section{position:relative}
   document.querySelectorAll('.gi').forEach(function(p){p.addEventListener('click',function(){lbi.src=p.getAttribute('data-img');lb.classList.add('on');document.body.style.overflow='hidden'})});
   function close(){lb.classList.remove('on');document.body.style.overflow=''}
   lb.addEventListener('click',close);
+})();
+</script>
+
+<!-- ===== Firebase SDK (يعمل محليًا تلقائيًا إن لم تُضبط الإعدادات) ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<!-- ===== منطق معالج الحجز ===== -->
+<script>
+(function(){
+  const bw = document.getElementById('bw');
+  if(!bw || typeof Store==='undefined') return;
+
+  const panes   = [...bw.querySelectorAll('.bw-pane')];
+  const stepEls = [...bw.querySelectorAll('.bw-steps .s')];
+  const body    = bw.querySelector('.bw-body');
+  const foot    = document.getElementById('bwFoot');
+  const fsum    = document.getElementById('bwFsum');
+  const backBtn = bw.querySelector('.bw-back');
+  const nextBtn = bw.querySelector('.bw-next');
+  const nameEl  = document.getElementById('bwName');
+  const phoneEl = document.getElementById('bwPhone');
+  const notesEl = document.getElementById('bwNotes');
+  const phoneHint = document.getElementById('bwPhoneHint');
+
+  let step=0, selDate=null, selTime=null, dayToken=0;
+  const sel = new Set();
+
+  function totals(){ let price=0,dur=0; sel.forEach(id=>{const s=SERVICE_MAP[id];if(s){price+=s.price;dur+=s.dur;}}); return {price,dur}; }
+  function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  function buildServices(){
+    const host=document.getElementById('bwServices');
+    host.innerHTML = SERVICE_GROUPS.map(g=>`
+      <div class="bw-grp">
+        <div class="gh"><b>${g.title}</b><small>${g.en}</small></div>
+        ${g.items.map(it=>`
+          <div class="bw-it${sel.has(it.id)?' sel':''}" data-id="${it.id}">
+            <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>
+            <span class="nm"><b>${it.ar}</b><small>${it.en}</small></span>
+            <span class="px"><b>${it.price}</b><small>${SALON.currency}</small></span>
+          </div>`).join('')}
+      </div>`).join('');
+    host.querySelectorAll('.bw-it').forEach(el=>el.addEventListener('click',()=>{
+      const id=el.dataset.id;
+      if(sel.has(id)) sel.delete(id); else sel.add(id);
+      el.classList.toggle('sel'); updateFoot();
+    }));
+  }
+
+  function buildDates(){
+    const host=document.getElementById('bwDates');
+    const days=[]; const start=new Date(); start.setHours(0,0,0,0);
+    for(let i=0; days.length<14 && i<=SALON.maxAdvanceDays; i++){
+      const d=new Date(start); d.setDate(start.getDate()+i);
+      if(SALON.closedWeekdays.includes(d.getDay())) continue;
+      days.push(d);
+    }
+    host.innerHTML = days.map((d,i)=>{
+      const ds=Utils.dateStr(d);
+      const label = ds===Utils.todayStr() ? 'اليوم' : (i<=1 && days[0] && Utils.dateStr(days[0])===Utils.todayStr() && i===1 ? 'غدًا' : Utils.arWeekdayShort(d));
+      return `<div class="bw-day${ds===selDate?' sel':''}" data-d="${ds}"><small>${label}</small><b>${d.getDate()}</b><i>${Utils.arMonthShort(d)}</i></div>`;
+    }).join('');
+    host.querySelectorAll('.bw-day').forEach(el=>el.addEventListener('click',()=>{
+      host.querySelectorAll('.bw-day').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel'); selDate=el.dataset.d; selTime=null; loadSlots(selDate);
+    }));
+  }
+
+  // أوقات الشبكة المرشّحة (تتّسع لمدة الخدمة، وغير ماضية اليوم)
+  function candidateSlots(dateStr, dur){
+    const out=[]; const isToday=dateStr===Utils.todayStr();
+    const now=new Date(); const nowMin=now.getHours()*60+now.getMinutes()+SALON.bookingLeadMin;
+    for(let m=SALON.openHour*60; m+dur<=SALON.closeHour*60; m+=SALON.slotMinutes){
+      if(isToday && m<nowMin) continue;
+      out.push(Utils.fromMin(m));
+    }
+    return out;
+  }
+
+  async function loadSlots(dateStr){
+    const host=document.getElementById('bwSlots'), msg=document.getElementById('bwSlotsMsg');
+    const dur = totals().dur || SALON.slotMinutes;
+    const cands = candidateSlots(dateStr, dur);
+    if(!cands.length){
+      host.innerHTML=''; msg.style.display='block';
+      msg.textContent='لا تتوفّر مواعيد تتّسع لخدماتك في هذا اليوم — جرّبي يومًا آخر.';
+      selTime=null; updateFoot(); return;
+    }
+    msg.style.display='none';
+    // اعرضيها أولاً ثم علّمي غير المتاح بعد جلب الجدولة
+    host.innerHTML = cands.map(t=>`<div class="bw-slot" data-t="${t}">${Utils.pretty12(t)}</div>`).join('');
+    updateFoot();
+    const token=++dayToken;
+    let slots=[], blocks=[];
+    try{ [slots,blocks]=await Promise.all([Store.getDaySlots(dateStr), Store.getDayBlocks(dateStr)]); }catch(e){}
+    if(token!==dayToken) return;
+    const avail = new Set(Schedule.availableStarts(dateStr, dur, slots, blocks));
+    let anyFree=false;
+    host.querySelectorAll('.bw-slot').forEach(el=>{
+      const t=el.dataset.t;
+      if(!avail.has(t)){ el.classList.add('full'); el.title='غير متاح'; }
+      else {
+        anyFree=true;
+        el.addEventListener('click',()=>{
+          host.querySelectorAll('.bw-slot').forEach(x=>x.classList.remove('sel'));
+          el.classList.add('sel'); selTime=t; updateFoot();
+        });
+      }
+    });
+    // أعيدي تمييز الوقت المختار إن بقي متاحًا، وإلا ألغيه
+    if(selTime){
+      const sel=host.querySelector('.bw-slot[data-t="'+selTime+'"]');
+      if(sel && avail.has(selTime)) sel.classList.add('sel'); else selTime=null;
+    }
+    if(!anyFree){ msg.style.display='block'; msg.textContent='كل المواعيد محجوزة في هذا اليوم — جرّبي يومًا آخر.'; }
+    updateFoot();
+  }
+
+  function buildReview(){
+    const host=document.getElementById('bwReview'); const t=totals();
+    const d=Utils.parseDate(selDate);
+    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+    const svc=[...sel].map(id=>SERVICE_MAP[id]);
+    host.innerHTML=`
+      <div class="bw-rev">
+        <div class="bw-svc-list">
+          ${svc.map(s=>`<div class="sv"><span>${s.ar}</span><span class="p">${s.price} ${SALON.currency}</span></div>`).join('')}
+        </div>
+        <div class="rr"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
+        <div class="rr"><span class="k">المدة التقديرية</span><span class="v">${Utils.fmtDur(t.dur)}</span></div>
+        <div class="rr"><span class="k">الاسم</span><span class="v">${escapeHtml(nameEl.value.trim())}</span></div>
+        <div class="rr"><span class="k">الجوال</span><span class="v" style="direction:ltr">${Utils.prettyPhone(phoneEl.value)}</span></div>
+        ${notesEl.value.trim()?`<div class="rr"><span class="k">ملاحظات</span><span class="v">${escapeHtml(notesEl.value.trim())}</span></div>`:''}
+        <div class="bw-tot"><small>الإجمالي</small><b>${t.price} <s>${SALON.currency}</s></b></div>
+      </div>
+      <div class="bw-mode">سيتم حفظ الحجز فورًا ويصلكِ رقم تأكيد.</div>`;
+  }
+
+  function showSuccess(ref, svc, t){
+    const host=document.getElementById('bwSuccess');
+    const d=Utils.parseDate(selDate);
+    const dateLabel=`${Utils.arWeekday(d)} ${d.getDate()} ${Utils.arMonth(d)}`;
+    const lines=[
+      `مرحبًا، لديّ حجز في ${SALON.name} 🌸`,
+      `رقم الحجز: ${ref}`,
+      `الاسم: ${nameEl.value.trim()}`,
+      `الخدمات: ${svc.map(s=>s.ar).join('، ')}`,
+      `التاريخ: ${dateLabel}`,
+      `الوقت: ${Utils.pretty12(selTime)}`,
+      `الإجمالي: ${t.price} ${SALON.currency}`
+    ];
+    const wa=`https://wa.me/${SALON.whatsapp}?text=${encodeURIComponent(lines.join('\n'))}`;
+    host.innerHTML=`
+      <div class="bw-ok">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
+        <h3>تم استلام حجزكِ 🤍</h3>
+        <p>سعدنا بحجزكِ في ${SALON.nameAr}. احتفظي برقم الحجز، وسنؤكّده قريبًا.</p>
+        <div class="bw-ref">${ref}</div>
+        <div class="bw-okcard">
+          <div class="l"><span class="k">الموعد</span><span class="v">${dateLabel} · ${Utils.pretty12(selTime)}</span></div>
+          <div class="l"><span class="k">الخدمات</span><span class="v">${svc.map(s=>s.ar).join('، ')}</span></div>
+          <div class="l"><span class="k">الإجمالي</span><span class="v">${t.price} ${SALON.currency}</span></div>
+        </div>
+        <a class="bw-btn wa" href="${wa}" target="_blank" rel="noopener" style="margin-bottom:10px">إرسال نسخة عبر واتساب (اختياري)</a>
+        <button type="button" class="bw-btn gho" id="bwDone" style="width:100%;justify-content:center">تم</button>
+      </div>`;
+    document.getElementById('bwDone').addEventListener('click', close);
+    goto(4);
+  }
+
+  function goto(n){
+    step=n;
+    panes.forEach((p,i)=>p.classList.toggle('on', i===n));
+    body.scrollTop=0;
+    stepEls.forEach((s,i)=>{ s.classList.toggle('on', i===n); s.classList.toggle('done', i<n); });
+    foot.style.display = n>=4 ? 'none' : 'flex';
+    if(n===1 && selDate) loadSlots(selDate);   // أعِد الحساب لو تغيّرت الخدمات/المدة
+    if(n===3) buildReview();
+    updateFoot();
+  }
+  function validName(){ return nameEl.value.trim().length>=2; }
+  function canNext(){
+    if(step===0) return sel.size>0;
+    if(step===1) return !!(selDate&&selTime);
+    if(step===2) return validName() && Utils.validPhone(phoneEl.value);
+    return true;
+  }
+  function updateFoot(){
+    const t=totals();
+    fsum.innerHTML = sel.size
+      ? `<small>الإجمالي · ${Utils.fmtDur(t.dur)}</small><b>${t.price} <s>${SALON.currency}</s></b>`
+      : `<small>لم تُحدّد خدمة بعد</small><b>—</b>`;
+    backBtn.style.visibility = step===0 ? 'hidden' : 'visible';
+    nextBtn.textContent = step===3 ? 'تأكيد الحجز' : 'التالي';
+    nextBtn.disabled = !canNext();
+  }
+
+  backBtn.addEventListener('click',()=>{ if(step>0) goto(step-1); });
+  nextBtn.addEventListener('click', async ()=>{
+    if(!canNext()) return;
+    if(step<3){ goto(step+1); return; }
+    await submit();
+  });
+
+  async function submit(){
+    nextBtn.disabled=true; const old=nextBtn.textContent; nextBtn.textContent='جارٍ الحجز…';
+    const t=totals();
+    const svc=[...sel].map(id=>{const s=SERVICE_MAP[id];return {id,ar:s.ar,en:s.en,price:s.price,dur:s.dur};});
+    try{
+      const res=await Store.createBooking({ name:nameEl.value, phone:phoneEl.value, notes:notesEl.value, services:svc, totalPrice:t.price, totalDur:t.dur, date:selDate, time:selTime });
+      showSuccess(res.ref, svc, t);
+    }catch(e){ console.error(e); nextBtn.disabled=false; nextBtn.textContent=old; alert('تعذّر إتمام الحجز، تأكّدي من الاتصال وحاولي مرة أخرى.'); }
+  }
+
+  [nameEl,phoneEl].forEach(el=>el.addEventListener('input',()=>{
+    if(el===phoneEl){
+      const v=phoneEl.value.trim();
+      if(!v){ phoneHint.textContent='نستخدمه لتأكيد الحجز فقط.'; phoneHint.classList.remove('e'); }
+      else if(Utils.validPhone(v)){ phoneHint.textContent='✓ '+Utils.prettyPhone(v); phoneHint.classList.remove('e'); }
+      else { phoneHint.textContent='رقم جوال سعودي غير صحيح (مثال: 0512345678).'; phoneHint.classList.add('e'); }
+    }
+    if(step===2) updateFoot();
+  }));
+
+  function reset(){
+    sel.clear(); selDate=null; selTime=null;
+    nameEl.value=''; phoneEl.value=''; notesEl.value='';
+    phoneHint.textContent='نستخدمه لتأكيد الحجز فقط.'; phoneHint.classList.remove('e');
+    document.getElementById('bwSlots').innerHTML='';
+    document.getElementById('bwSlotsMsg').style.display='none';
+  }
+  function open(presetId){
+    reset();
+    if(presetId && SERVICE_MAP[presetId]) sel.add(presetId);
+    buildServices(); buildDates(); goto(0);
+    bw.classList.add('on'); bw.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  }
+  function close(){ bw.classList.remove('on'); bw.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+  document.querySelectorAll('[data-book]').forEach(el=>el.addEventListener('click',e=>{ e.preventDefault(); open(el.getAttribute('data-book')||null); }));
+  bw.querySelectorAll('[data-bw-close]').forEach(el=>el.addEventListener('click',close));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&bw.classList.contains('on')) close(); });
+  window.OiOBooking={ open, close };
 })();
 </script>
 </body>

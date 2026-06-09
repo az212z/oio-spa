@@ -1,0 +1,107 @@
+# دليل تشغيل نظام الحجوزات — OiO Nail Spa
+
+النظام يعمل من أول لحظة بدون أي إعداد (وضع محلي للتجربة).
+لتفعيل **المزامنة السحابية** — بحيث يصل حجز العميلة من جوالها فورًا إلى لوحة الإدارة في الصالون — اتبعي الخطوات التالية (مرّة واحدة فقط، ~٥ دقائق).
+
+---
+
+## ١) إنشاء مشروع Firebase (مجاني)
+1. ادخلي على <https://console.firebase.google.com> وسجّلي بحساب Google.
+2. اضغطي **Add project** ← سمّيه مثلاً `oio-spa` ← أكملي (يمكن إيقاف Google Analytics).
+
+## ٢) إضافة تطبيق ويب ونسخ الإعدادات
+1. داخل المشروع، اضغطي أيقونة الويب **`</>`** (Add app → Web).
+2. سمّيه `OiO Web` ← **Register app**.
+3. ستظهر شيفرة فيها كائن `firebaseConfig` — انسخي القيم.
+4. افتحي ملف **`firebase-config.js`** والصقي القيم في الأعلى:
+
+```js
+const FIREBASE_CONFIG = {
+  apiKey:            "AIza............",
+  authDomain:        "oio-spa.firebaseapp.com",
+  projectId:         "oio-spa",
+  storageBucket:     "oio-spa.appspot.com",
+  messagingSenderId: "1234567890",
+  appId:             "1:1234567890:web:abc123"
+};
+```
+> هذه القيم عامة وآمنة في كود الواجهة — الحماية تتم عبر قواعد Firestore بالأسفل.
+
+## ٣) تفعيل قاعدة البيانات Firestore
+1. من القائمة الجانبية: **Build ← Firestore Database ← Create database**.
+2. اختاري **Production mode** ← اختاري المنطقة (مثلاً `eur3` أو الأقرب) ← Enable.
+3. افتحي تبويب **Rules** والصقي التالي ثم **Publish**:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // الحجوزات: تحوي بيانات العميلة — القراءة للمدير فقط (خصوصية)
+    match /bookings/{id} {
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.name is string
+                    && request.resource.data.phone is string
+                    && request.resource.data.date is string
+                    && request.resource.data.time is string;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // الجدولة: نسخة بلا بيانات شخصية يقرأها الموقع لحساب الأوقات المتاحة
+    match /slots/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.date is string
+                    && request.resource.data.time is string;
+      allow update, delete: if request.auth != null;
+    }
+
+    // الأوقات المحظورة (غير متاح): يقرأها الموقع، ويديرها المدير فقط
+    match /blocks/{id} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+  }
+}
+```
+
+## ٤) تفعيل تسجيل الدخول للمدير
+1. من القائمة: **Build ← Authentication ← Get started**.
+2. فعّلي مزوّد **Email/Password**.
+3. تبويب **Users ← Add user**: أدخلي بريد وكلمة مرور للمديرة (مثال: `admin@oio.com`).
+   هذا هو حساب الدخول إلى صفحة `admin.html`.
+
+## ٥) رفع الموقع
+ارفعي الملفات إلى المستودع كالمعتاد:
+```bash
+git add -A
+git commit -m "تفعيل نظام الحجوزات السحابي"
+git push
+```
+بعد دقيقة سيُحدّث GitHub Pages تلقائيًا.
+
+---
+
+## كيف يعمل النظام؟
+- **الموقع (`index.html`):** زر «احجزي موعدك» يفتح معالج من ٤ خطوات. الأوقات المتاحة تُحسب تلقائيًا حسب **مدة الخدمة + الحجوزات القائمة + الأوقات المحظورة + عدد الفنيات**، فلا يظهر إلا الوقت الذي تتوفّر فيه فنية فعلًا. عند التأكيد يُحفظ الحجز ويُسند لأول فنية متاحة، ويصل رقم تأكيد للعميلة. واتساب يظهر كخيار اختياري.
+- **لوحة الإدارة (`admin.html`):** فيها عرضان:
+  - **📅 التقويم:** جدول زمني بأعمدة الفنيات × الوقت (مثل تطبيقات الحجز)، يعرض المواعيد في أماكنها بالألوان حسب الحالة، مع خط الوقت الحالي والتنقّل بين الأيام. اضغطي على **موعد** لعرض تفاصيله وتغيير حالته/فنيته/حذفه، وعلى **مساحة فارغة** (أو زر «＋ حظر وقت») لتعليم وقت **غير متاح** — وعندها يختفي فورًا من الأوقات المتاحة في الموقع.
+  - **📋 القائمة:** كل الحجوزات لحظيًا مع إحصائيات، فلترة بالحالة والتاريخ، بحث، أزرار الحالة، اتصال/واتساب مباشر، وتصدير CSV.
+  - الرابط موجود أسفل الموقع بكلمة «إدارة».
+
+## إعدادات يمكن تعديلها (في `firebase-config.js`)
+داخل كائن `SALON`:
+- `whatsapp` — رقم واتساب الصالون.
+- `openHour` / `closeHour` — بداية ونهاية الدوام.
+- `slotMinutes` — الفاصل بين المواعيد (افتراضي ٣٠ دقيقة).
+- `staff` — قائمة الفنيات (الاسم واللون). **عدد الفنيات = عدد الحجوزات الممكنة في نفس الوقت**، وكل فنية تظهر كعمود في تقويم الإدارة. أضيفي/احذفي/عدّلي الأسماء بحرية.
+- `slotCapacity` — احتياطي يُستخدم فقط إن تركتِ `staff` فارغة.
+- `closedWeekdays` — أيام الإغلاق، مثال للجمعة: `[5]` (0=الأحد .. 6=السبت).
+- `bookingLeadMin` — أقل مهلة قبل الموعد (افتراضي ٦٠ دقيقة).
+- `maxAdvanceDays` — أبعد مدى للحجز المسبق.
+
+كذلك يمكن تعديل الأسعار/الخدمات من `SERVICE_GROUPS`.
+
+## الوضع المحلي (بدون Firebase)
+إن تركتِ `FIREBASE_CONFIG` فارغًا، يعمل النظام محليًا على الجهاز نفسه فقط (للتجربة)،
+ورمز دخول لوحة الإدارة الافتراضي: **`oio2026`** (غيّريه من `LOCAL_ADMIN_PASSCODE`).

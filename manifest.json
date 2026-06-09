@@ -1,0 +1,16 @@
+{
+  "name": "OiO Nail Spa — لوحة الإدارة",
+  "short_name": "OiO إدارة",
+  "description": "إدارة حجوزات أويو نيل سبا",
+  "start_url": "admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1d1a16",
+  "theme_color": "#1d1a16",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
