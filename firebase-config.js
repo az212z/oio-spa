@@ -181,7 +181,7 @@ const Schedule = {
     return arr.length ? arr : [{ id:"main", name:SALON.nameAr||"الصالون", color:"#a96a4a" }];
   },
   _prep(slots, blocks){
-    const S = (slots||[]).filter(x=>x.status!=="cancelled").map(x=>{
+    const S = (slots||[]).filter(x=>x.status!=="cancelled" && x.status!=="noShow").map(x=>{
       const start = Utils.toMin(x.time || x.start);
       return { staff:x.staff, startMin:start, endMin:start + (x.durMin||x.totalDur||SALON.slotMinutes) };
     });
@@ -213,7 +213,7 @@ const Schedule = {
   assignStaff(startMin, durMin, slots, blocks){
     const { S, B } = this._prep(slots, blocks);
     const free = this.freeStaffAt(startMin, durMin, S, B);
-    if (!free.length) return this.staffList()[0].id;
+    if (!free.length) return "";   // لا أحد متاح ⇒ بلا إسناد (يظهر «غير معيّن») بدل حجز مزدوج صامت
     const cnt={}; free.forEach(id=>cnt[id]=0);
     S.forEach(sl=>{ if (cnt[sl.staff]!==undefined) cnt[sl.staff]++; });
     free.sort((a,b)=>cnt[a]-cnt[b]);
@@ -304,10 +304,10 @@ const Store = {
     if (this.mode === "firebase"){
       const snap = await _db.collection("slots").where("date","==",dateStr).get();
       const out=[]; snap.forEach(d=>out.push({ id:d.id, ...d.data() }));
-      return out.filter(s => s.status !== "cancelled");
+      return out.filter(s => s.status !== "cancelled" && s.status !== "noShow");
     }
     return this._localAll()
-      .filter(b => b.date===dateStr && b.status!=="cancelled" && b.time && !b.isGift)
+      .filter(b => b.date===dateStr && b.status!=="cancelled" && b.status!=="noShow" && b.time && !b.isGift)
       .map(b => ({ id:b.id, date:b.date, time:b.time, durMin:b.totalDur, staff:b.staff, status:b.status, bookingId:b.id }));
   },
 
@@ -423,8 +423,10 @@ const Store = {
       });
     }
     const emit=()=>{ const raw=localStorage.getItem("oio_staff"); _staffCache = raw?JSON.parse(raw):(SALON.staff||[]).slice(); cb(_staffCache); };
-    window.addEventListener("oio-local-change", emit); emit();
-    return ()=>window.removeEventListener("oio-local-change", emit);
+    window.addEventListener("oio-local-change", emit);
+    window.addEventListener("storage", emit);
+    emit();
+    return ()=>{ window.removeEventListener("oio-local-change", emit); window.removeEventListener("storage", emit); };
   },
   async createStaff({name, color}){
     if (this.mode === "firebase"){
